@@ -1,6 +1,6 @@
 NAME := minishell
 NAMEB := checker
-SRC := main.c
+SRC := main.c extract.c list_token.c
 OBJS_DIR := obj
 OBJS := $(SRC:%.c=$(OBJS_DIR)/%.o)
 INCLUDES := minishell.h
@@ -16,7 +16,7 @@ $(OBJS_DIR):
 
 $(NAME): $(OBJS) $(INCLUDES)
 	@echo "Building $(NAME)"
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) -lreadline
 
 $(OBJS_DIR)/%.o : %.c
 	@echo "Compiling $<"
