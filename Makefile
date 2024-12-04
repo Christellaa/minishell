@@ -1,9 +1,11 @@
 NAME := minishell
 NAMEB := checker
-SRC := main.c extract.c list_token.c
-OBJS_DIR := obj
-OBJS := $(SRC:%.c=$(OBJS_DIR)/%.o)
-INCLUDES := minishell.h
+SRC_DIR := ./src
+SRC := $(SRC_DIR)/main.c $(SRC_DIR)/keyval_lists.c $(SRC_DIR)/lexer.c $(SRC_DIR)/cleanup.c
+OBJS_DIR := ./obj
+OBJS := $(SRC:$(SRC_DIR)/%.c=$(OBJS_DIR)/%.o)
+INC_DIR := ./includes
+INC := $(INC_DIR)/minishell.h $(INC_DIR)/structs.h
 CC := gcc
 CFLAGS := -Wall -Wextra -Werror
 LIBFT_DIR := libft
@@ -14,11 +16,11 @@ all: $(OBJS_DIR) $(LIBFT) $(NAME)
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
 
-$(NAME): $(OBJS) $(INCLUDES)
+$(NAME): $(OBJS) $(INC)
 	@echo "Building $(NAME)"
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) -lreadline
 
-$(OBJS_DIR)/%.o : %.c
+$(OBJS_DIR)/%.o : $(SRC_DIR)/%.c
 	@echo "Compiling $<"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
@@ -28,7 +30,6 @@ $(LIBFT):
 
 clean:
 	@echo "Removing object files"
-	@rm -f $(OBJS)
 	@if [ -d $(OBJS_DIR) ]; then rm -rf $(OBJS_DIR); fi
 	@$(MAKE) -C $(LIBFT_DIR) clean
 

@@ -5,48 +5,43 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/02 10:25:58 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/02 17:07:19 by cde-sous         ###   ########.fr       */
+/*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
+/*   Updated: 2024/12/04 16:36:20 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
-void	lexing(t_tokens *tokens, char *input)
+void	init_data(t_data *data)
 {
-	int	i;
-
-	if (*input)
-		printf("%s\n", input);
-	else
-		printf("input: %s", input);
-	i = 0;
-	while (input[i])
-	{
-		if (ft_isspace(input[i]))
-			i++;
-		if (!input[i])
-			break ;
-		if (input[i] == '<' || input[i] == '>')
-			extract_file(tokens, &input[i], i);
-		i++;
-		// else
-		// 	extract_word(&input[i]);
-	}
+	data->token_list = NULL;
+	data->cmd_list = NULL;
+	data->env_list = NULL;
+	data->exit_code = 0;
+	data->nb_cmd = 0;
+	data->pids = 0;
 }
 
-int	main(int ac, char **env)
+int	main(int ac, char **av, char **envp)
 {
-	(void)ac;
-	(void)env;
-	t_tokens *tokens;
-	tokens = ft_memset(&tokens, 0, sizeof(tokens));
-	char *input = NULL;
+	(void)av;
+	char *input;
+	t_data *data;
+
+	data = malloc(sizeof(t_data));
+	data = ft_memset(data, 0, sizeof(data));
+	init_data(data);
+	if (!data || ac != 1)
+		return (1);
+	get_env_list(data, envp);
 	while (1)
 	{
 		input = readline("minishell$ ");
+		if (!input)
+			break ;
 		add_history(input);
-		lexing(tokens, input);
+		free(input);
 	}
-	free(input);
+	rl_clear_history();
+	cleanup(data);
 }

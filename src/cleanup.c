@@ -1,20 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   extract.c                                          :+:      :+:    :+:   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/02 17:01:47 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/02 17:06:23 by cde-sous         ###   ########.fr       */
+/*   Created: 2024/12/04 15:01:56 by cde-sous          #+#    #+#             */
+/*   Updated: 2024/12/04 15:17:48 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
-void	extract_file(t_tokens *token, char *input, int i)
+void	free_keyval(t_keyval *pair)
 {
-	printf("%s", input);
-	printf("%c", input[i]);
-	(void)token;
+	t_keyval	*tmp;
+
+	while (pair)
+	{
+		tmp = pair;
+		pair = pair->next;
+		free(tmp->raw);
+		free(tmp->key);
+		free(tmp->value);
+		free(tmp);
+	}
+}
+
+int	cleanup(t_data *data)
+{
+	if (data)
+	{
+		if (data->env_list)
+			free_keyval(data->env_list);
+		free(data);
+	}
+	exit(EXIT_SUCCESS);
 }
