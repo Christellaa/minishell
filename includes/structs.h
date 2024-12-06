@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 11:14:38 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/04 16:17:33 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/06 15:23:13 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,28 @@
 
 typedef enum s_error
 {
-	NEWLINE_ERR, // ?
+	NEWLINE_ERR, // i don't know???
 	QUOTES_ERR,  // quotes not finished
 	PIPE_ERR,    // double pipe?
-	SKIP_CMD     // when cmd not found/executable
+	SKIP_CMD,    // when cmd not found/executable
+	FORBIDDEN    // ';', '?' alone, '&', '||', '()',
+					// '{}', '\', '[]', '!', '*', ':'
 }					t_error;
 
 typedef enum s_token_type
 {
-	INFILE,  // < infile
-	HEREDOC, // << limiter
-	TRUNC,   // > outfile
-	APPEND,  // >> outfile
-	CMD,     // "ls" "echo"
+	ASSIGNMENT, // "test='o a'" "test=$USER" => will update env
+	INFILE,     // <
+	HEREDOC,    // <<
+	TRUNC,      // >
+	APPEND,     // >>
+	FILENAME,   // "infile" "Makefile" "outfile"
+	PIPE,       // |
+	CMD,        // "ls" "echo"
 	ARG,
 	// "-l" "hello" "$USER" "hello 'world'"
 	// "hello \'world\'" "hello "world"" "hello \"world\""
-	PIPE // |
+	WORD // everything that is not |, <, <<, >, >>, ASSIGNMENT; until parser
 }					t_token_type;
 
 typedef struct s_token
@@ -51,8 +56,8 @@ typedef struct s_arg
 
 typedef struct s_redirs
 {
-	char *path;        // file.txt
-	t_token_type type; // trunc
+	char *path;        // file.txt, >
+	t_token_type type; // filename, trunc
 	struct s_redirs	*next;
 }					t_redirs;
 
@@ -66,9 +71,10 @@ typedef struct s_cmd
 
 typedef struct s_keyval
 {
-	char *raw;   // USER=cde-sous
-	char *key;   // USER
-	char *value; // cde-sous
+	char *raw;       // USER=cde-sous
+	char *key;       // USER
+	char *value;     // cde-sous
+	int is_exported; // if exported, then give to child processes
 	struct s_keyval	*next;
 }					t_keyval;
 
@@ -80,7 +86,6 @@ typedef struct s_data
 	pid_t *pids;        // parent waiting, signals
 	int exit_code;      // last cmd, outfile
 	t_keyval *env_list; // environment list
-	t_keyval *exp_list; // export list
 }					t_data;
 
 #endif

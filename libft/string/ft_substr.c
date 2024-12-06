@@ -6,12 +6,12 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:55:35 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/09/25 09:38:43 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/06 12:32:44 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
-** Copy s beggining at start to a new string allocated, and of max size len
+** Copy s beginning at start to a new string allocated, and of max size len
 ** Returns the substring, or NULL if the allocation fails
 */
 

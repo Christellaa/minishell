@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/04 16:36:20 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/06 10:42:31 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	init_data(t_data *data)
 
 int	main(int ac, char **av, char **envp)
 {
-	(void)av;
-	char *input;
-	t_data *data;
+	char	*input;
+	t_data	*data;
 
+	(void)av;
 	data = malloc(sizeof(t_data));
 	data = ft_memset(data, 0, sizeof(data));
 	init_data(data);
@@ -40,6 +40,7 @@ int	main(int ac, char **av, char **envp)
 		if (!input)
 			break ;
 		add_history(input);
+		lexer(data, input);
 		free(input);
 	}
 	rl_clear_history();

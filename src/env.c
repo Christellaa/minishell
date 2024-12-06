@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   keyval_lists.c                                     :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 13:45:25 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/04 16:27:53 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/06 09:52:57 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_keyval	*create_keyval_pair(char *raw, char *key, char *value)
+t_keyval	*create_keyval_pair(char *raw, char *key, char *value,
+		int is_exported)
 {
 	t_keyval	*new_env;
 
@@ -28,6 +29,7 @@ t_keyval	*create_keyval_pair(char *raw, char *key, char *value)
 	new_env->value = ft_strdup(value);
 	if (!value)
 		return (free(new_env), free(raw), free(key), NULL);
+	new_env->is_exported = is_exported;
 	new_env->next = NULL;
 	return (new_env);
 }
@@ -63,7 +65,7 @@ t_keyval	*get_keyval_pair(char *current_env)
 	value = get_value(equal_pos);
 	if (!value)
 		return (free(raw), free(key), NULL);
-	new_env = create_keyval_pair(raw, key, value);
+	new_env = create_keyval_pair(raw, key, value, 1);
 	if (!new_env)
 		return (free(raw), free(key), free(value), NULL);
 	free(raw);
