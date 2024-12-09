@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:28:40 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/06 16:50:52 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/09 14:57:05 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	tokenize(t_token **tokens, char *word)
 
 	type = get_token_type(word);
 	if (type == -1)
-		return (-1);
+		return (-1); // forbidden char
 	len = get_type_len(word, type);
 	value = NULL;
 	value = create_token(type, word, len);
@@ -108,7 +108,6 @@ void	lexer(t_data *data, char *input)
 	int		i;
 	char	*word;
 	int		len;
-	t_token	*tmp;
 
 	i = 0;
 	if (!input)
@@ -127,12 +126,5 @@ void	lexer(t_data *data, char *input)
 				return ;
 			i += len;
 		}
-	}
-	// test it!
-	tmp = data->token_list;
-	while (tmp)
-	{
-		printf("token type: %d, value: %s\n", tmp->type, tmp->value);
-		tmp = tmp->next;
 	}
 }

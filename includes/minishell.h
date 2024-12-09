@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/06 16:41:19 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/09 14:14:23 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 // cleanup.c
 void		free_keyval(t_keyval *pair);
-int			cleanup(t_data *data);
+int			cleanup(t_data *data, int type);
 // env.c
 t_keyval	*create_keyval_pair(char *raw, char *key, char *value,
 				int is_exported);

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:01:56 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/04 15:17:48 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/09 14:39:10 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,35 @@ void	free_keyval(t_keyval *pair)
 	}
 }
 
-int	cleanup(t_data *data)
+void	free_tokens(t_token *token)
+{
+	t_token	*tmp;
+
+	while (token)
+	{
+		tmp = token;
+		token = token->next;
+		free(tmp->value);
+		free(tmp);
+	}
+}
+
+int	cleanup(t_data *data, int type)
 {
 	if (data)
 	{
-		if (data->env_list)
-			free_keyval(data->env_list);
-		free(data);
+		if (type == 1)
+		{
+			if (data->env_list)
+				free_keyval(data->env_list);
+			free(data);
+		}
+		if (type == 0)
+		{
+			if (data->token_list)
+				free_tokens(data->token_list);
+			data->token_list = NULL;
+		}
 	}
-	exit(EXIT_SUCCESS);
+	return (0);
 }

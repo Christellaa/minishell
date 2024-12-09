@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/06 10:42:31 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/09 14:19:56 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	main(int ac, char **av, char **envp)
 {
 	char	*input;
 	t_data	*data;
+	t_token	*tmp;
 
 	(void)av;
 	data = malloc(sizeof(t_data));
@@ -42,7 +43,15 @@ int	main(int ac, char **av, char **envp)
 		add_history(input);
 		lexer(data, input);
 		free(input);
+		// test it!
+		tmp = data->token_list;
+		while (tmp)
+		{
+			printf("token type: %d, value: %s\n", tmp->type, tmp->value);
+			tmp = tmp->next;
+		}
+		cleanup(data, 0);
 	}
 	rl_clear_history();
-	cleanup(data);
+	cleanup(data, 1);
 }

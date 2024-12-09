@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:56:41 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/06 16:43:15 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/09 15:30:49 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	check_forbidden_input(char *word)
 		else if (word[i] == '|' && word[i + 1] == '|' && !single_quote
 			&& !double_quote)
 			return (1);
-		else if (word[i] == '?' && i > 0 && word[i - 1] != '$' && !single_quote
-				&& !double_quote) // if i = 0 && word[i] == '?' return 1
+		else if (word[i] == '?' && word[i + 1] != '$' && !single_quote
+			&& !double_quote)
 			return (1);
 		i++;
 	}
