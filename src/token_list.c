@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:46 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/09 15:33:24 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:32:55 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int	get_token_type(char *word)
 
 	if (ft_strchr(word, '='))
 		return (ASSIGNMENT);
-	if (check_forbidden_input(word))
-		return (-1); // forbidden char
+	// if (check_forbidden_input(word))
+	//	return (FORBIDDEN);
 	type = is_word(word);
 	if (type != -1)
 		return (type);
@@ -47,10 +47,10 @@ int	get_word_len(char *word)
 		else if (word[i] == DOUBLE_QUOTE && !single_quote)
 			double_quote = !double_quote;
 		else if (ft_isspace(word[i]) && !single_quote & !double_quote)
-			return (i);
+			break ;
 		else if ((word[i] == '<' || word[i] == '>' || word[i] == '|')
 			&& !single_quote && !double_quote)
-			return (i);
+			break ;
 		i++;
 	}
 	return (i);
@@ -80,11 +80,20 @@ t_token	*create_token(int type, char *value, int len)
 
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
+	{
+		printf("Malloc error\n");
+		free(value);
 		return (NULL);
+	}
 	new_token->type = type;
 	new_token->value = ft_strndup(value, len);
-	if (!value)
+	if (!new_token->value)
+	{
+		printf("Malloc error\n");
+		free(value);
+		free(new_token);
 		return (NULL);
+	}
 	new_token->next = NULL;
 	return (new_token);
 }

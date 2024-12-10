@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:01:56 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/09 14:39:10 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:18:33 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,15 @@ int	cleanup(t_data *data, int type)
 {
 	if (data)
 	{
-		if (type == 1)
+		if (type == 1) // cleanup de fin
 		{
+			if (data->token_list)
+				free_tokens(data->token_list);
 			if (data->env_list)
 				free_keyval(data->env_list);
 			free(data);
 		}
-		if (type == 0)
+		if (type == 0) // cleanup a chaque boucle
 		{
 			if (data->token_list)
 				free_tokens(data->token_list);

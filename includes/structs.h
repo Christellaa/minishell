@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 11:14:38 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/06 15:23:13 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/10 09:34:50 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,25 @@
 
 typedef enum s_error
 {
-	NEWLINE_ERR, // i don't know???
-	QUOTES_ERR,  // quotes not finished
-	PIPE_ERR,    // double pipe?
-	SKIP_CMD,    // when cmd not found/executable
-	FORBIDDEN    // ';', '?' alone, '&', '||', '()',
-					// '{}', '\', '[]', '!', '*', ':'
+	NEWLINE_ERR = 10, // something to do with chevron
+	QUOTES_ERR,       // quotes not finished
+	PIPE_ERR,         // double pipe?
+	SKIP_CMD,         // when cmd not found/executable
+	CHEVRON_ERR,      // >>> and +, <<< and +, ><
+	FORBIDDEN         // ';', '?' alone, '&', '||', '()',
+						// '{}', '\', '[]', '!', '*', ':'
 }					t_error;
 
 typedef enum s_token_type
 {
-	ASSIGNMENT, // "test='o a'" "test=$USER" => will update env
-	INFILE,     // <
-	HEREDOC,    // <<
-	TRUNC,      // >
-	APPEND,     // >>
-	FILENAME,   // "infile" "Makefile" "outfile"
-	PIPE,       // |
-	CMD,        // "ls" "echo"
+	ASSIGNMENT = 0, // "test='o a'" "test=$USER" => will update env
+	INFILE,         // <
+	HEREDOC,        // <<
+	TRUNC,          // >
+	APPEND,         // >>
+	FILENAME,       // "infile" "Makefile" "outfile"
+	PIPE,           // |
+	CMD,            // "ls" "echo"
 	ARG,
 	// "-l" "hello" "$USER" "hello 'world'"
 	// "hello \'world\'" "hello "world"" "hello \"world\""

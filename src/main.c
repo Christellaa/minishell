@@ -6,11 +6,23 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/09 14:19:56 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:40:36 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	test_it(t_data *data)
+{
+	t_token	*tmp;
+
+	tmp = data->token_list;
+	while (tmp)
+	{
+		printf("token type: %d, value: %s\n", tmp->type, tmp->value);
+		tmp = tmp->next;
+	}
+}
 
 void	init_data(t_data *data)
 {
@@ -26,7 +38,6 @@ int	main(int ac, char **av, char **envp)
 {
 	char	*input;
 	t_data	*data;
-	t_token	*tmp;
 
 	(void)av;
 	data = malloc(sizeof(t_data));
@@ -44,12 +55,7 @@ int	main(int ac, char **av, char **envp)
 		lexer(data, input);
 		free(input);
 		// test it!
-		tmp = data->token_list;
-		while (tmp)
-		{
-			printf("token type: %d, value: %s\n", tmp->type, tmp->value);
-			tmp = tmp->next;
-		}
+		test_it(data);
 		cleanup(data, 0);
 	}
 	rl_clear_history();

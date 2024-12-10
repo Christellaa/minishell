@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:28:40 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/09 14:57:05 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:36:28 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,15 @@ int	is_word(char *word)
 
 int	is_chevron(char *word)
 {
-	if (word[0] == '<' && word[1] == '>' && word[2] != '<' && word[2] != '>')
+	if (word[0] == '<' && word[1] == '>')
 		return (TRUNC);
 	else if (word[0] == '<' && word[1] != '<')
 		return (INFILE);
-	else if (word[0] == '<' && word[1] == '<' && word[2] != '<'
-		&& word[2] != '>')
+	else if (word[0] == '<' && word[1] == '<')
 		return (HEREDOC);
 	else if (word[0] == '>' && word[1] != '>')
-	{
-		if (word[1] == '<')
-			return (-1);
 		return (TRUNC);
-	}
-	else if (word[0] == '>' && word[1] == '>' && word[2] != '<'
-		&& word[2] != '>')
+	else if (word[0] == '>' && word[1] == '>')
 		return (APPEND);
 	return (-1);
 }
@@ -68,8 +62,6 @@ int	tokenize(t_token **tokens, char *word)
 	t_token	*value;
 
 	type = get_token_type(word);
-	if (type == -1)
-		return (-1); // forbidden char
 	len = get_type_len(word, type);
 	value = NULL;
 	value = create_token(type, word, len);
@@ -100,6 +92,11 @@ char	*extract_word(char *input)
 		i++;
 	}
 	word = ft_substr(input, 0, i);
+	if (!word)
+	{
+		printf("Malloc error\n");
+		return (NULL);
+	}
 	return (word);
 }
 
@@ -122,8 +119,7 @@ void	lexer(t_data *data, char *input)
 			if (!word)
 				return ;
 			len = tokenize(&data->token_list, word);
-			if (len == -1)
-				return ;
+			free(word);
 			i += len;
 		}
 	}
