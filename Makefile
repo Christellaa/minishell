@@ -1,7 +1,8 @@
 NAME := minishell
 NAMEB := checker
 SRC_DIR := ./src
-SRC := $(SRC_DIR)/main.c $(SRC_DIR)/env.c $(SRC_DIR)/lexer.c $(SRC_DIR)/token_list.c $(SRC_DIR)/checks.c $(SRC_DIR)/cleanup.c
+SRC := $(SRC_DIR)/main.c $(SRC_DIR)/env.c $(SRC_DIR)/lexer.c $(SRC_DIR)/token_list.c \
+		$(SRC_DIR)/parser.c $(SRC_DIR)/checks.c $(SRC_DIR)/cleanup.c
 OBJS_DIR := ./obj
 OBJS := $(SRC:$(SRC_DIR)/%.c=$(OBJS_DIR)/%.o)
 INC_DIR := ./includes

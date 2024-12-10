@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:46 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/10 13:32:55 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/10 17:02:57 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	get_type_len(char *word, int type)
 	}
 	else if (type == HEREDOC || type == APPEND)
 		len = 2;
-	else
+	else if (type == WORD || type == ASSIGNMENT)
 		len = get_word_len(word);
 	return (len);
 }
@@ -118,3 +118,9 @@ void	add_token_to_list(t_token **tokens, t_token *new_token)
 		*tokens = new_token;
 	}
 }
+/*
+void	replace_assignment_token(t_token **tokens, t_token *token, )
+{
+	t_token *next_token;
+	next_token = tmp;
+} */

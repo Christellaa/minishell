@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/09 14:14:23 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/10 17:03:22 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,11 @@ t_keyval	*get_keyval_pair(char *current_env);
 void		add_keyval_to_list(t_keyval **env_list, t_keyval *new_env);
 void		get_env_list(t_data *data, char **envp);
 // checks.c
+int			check_assignment(t_token *token);
+int			check_chevrons(t_token *token);
 int			check_forbidden_input(char *word);
+// parser.c
+int			parser(t_data *data);
 // token_list.c
 int			get_token_type(char *word);
 int			get_type_len(char *word, int type);
