@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/10 17:03:22 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:29:00 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,33 @@
 // cleanup.c
 void		free_keyval(t_keyval *pair);
 int			cleanup(t_data *data, int type);
+// utils.c
+char		*get_value(char *equal_pos);
+void		delete_empty_quotes(t_token **token_list);
 // env.c
 t_keyval	*create_keyval_pair(char *raw, char *key, char *value,
 				int is_exported);
-char		*get_value(char *equal_pos);
 t_keyval	*get_keyval_pair(char *current_env);
 void		add_keyval_to_list(t_keyval **env_list, t_keyval *new_env);
 void		get_env_list(t_data *data, char **envp);
 // checks.c
-int			check_assignment(t_token *token);
+int			check_quotes_close(t_token *token);
+int			check_assignment(t_token **token_list);
 int			check_chevrons(t_token *token);
-int			check_forbidden_input(char *word);
+int			check_forbidden_chars(t_token *token);
+int			check_double_pipe(t_token *token);
 // parser.c
+int			check_token_list(t_token **token_list, int err);
 int			parser(t_data *data);
-// token_list.c
+// utils_lexer.c
 int			get_token_type(char *word);
+int			get_word_len(char *word);
 int			get_type_len(char *word, int type);
+// token_list.c
 t_token		*create_token(int type, char *value, int len);
 void		add_token_to_list(t_token **tokens, t_token *new_token);
+t_token		*replace_assignment_token(t_token **token_list, t_token *current,
+				char *key, char *value);
 // lexer.c
 int			is_word(char *word);
 int			is_chevron(char *word);

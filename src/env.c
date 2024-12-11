@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 13:45:25 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/06 09:52:57 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:25:47 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,6 @@ t_keyval	*create_keyval_pair(char *raw, char *key, char *value,
 	new_env->is_exported = is_exported;
 	new_env->next = NULL;
 	return (new_env);
-}
-
-char	*get_value(char *equal_pos)
-{
-	char	*value;
-
-	if (*(equal_pos + 1) != '\0')
-		value = ft_strdup(equal_pos + 1);
-	else
-		value = ft_strdup("");
-	return (value);
 }
 
 t_keyval	*get_keyval_pair(char *current_env)

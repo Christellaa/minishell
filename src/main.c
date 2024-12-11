@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/10 14:56:11 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/11 10:26:29 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,15 @@ int	main(int ac, char **av, char **envp)
 			break ;
 		add_history(input);
 		lexer(data, input);
-		// if token list is empty => error?
 		free(input);
+		test_it(data); // testing lexing
 		if (parser(data) != -1)
 			printf("do expander + execution\n");
 		else
 			printf("cleanup for next loop\n");
-		// test it!
-		test_it(data);
+		test_it(data); // testing parsing
 		cleanup(data, 0);
+		break ;
 	}
 	rl_clear_history();
 	cleanup(data, 1);
