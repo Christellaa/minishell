@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:24:28 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/12 15:35:00 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:48:11 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,8 @@ void	delete_empty_quotes(t_token **token_list)
 		next = tmp->next;
 		epur_token_value(&tmp);
 		if (is_value_empty(tmp->value) == 1)
-		{
-			if (tmp->type == ASSIGNMENT)
-				continue ;
-			else
+			if (tmp->type != ASSIGNMENT)
 				remove_token(token_list, tmp);
-		}
 		tmp = next;
 	}
 }
