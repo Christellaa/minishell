@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:24:28 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/12 15:48:11 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:01:18 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 char	*get_value(char *equal_pos)
 {
 	char	*value;
-	char	*epur;
 
 	if (*(equal_pos + 1) != '\0')
 		value = ft_strdup(equal_pos + 1);
@@ -23,11 +22,7 @@ char	*get_value(char *equal_pos)
 		value = ft_strdup("");
 	if (!value)
 		return (NULL);
-	epur = ft_strepur(value); // useful since i already trim all tokens' value?
-	free(value);
-	if (!epur)
-		return (NULL);
-	return (epur);
+	return (value);
 }
 
 void	epur_token_value(t_token **token)

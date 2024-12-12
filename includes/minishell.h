@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/12 15:07:01 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:57:43 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,19 +66,3 @@ char		*extract_word(char *input);
 void		lexer(t_data *data, char *input);
 
 #endif
-
-/*
-
-lexer:
-- if \n : NEWLINE
-- if \t or ' ' : discard spaces and tabs
-- if < : INFILE
-- if << : HEREDOC
-- if > : TRUNC
-- if >> : APPEND
-- if | : PIPE
-- if & => PAS GERER
-- if || => PAS GERER
-- if ; => PAS GERER
-
-*/
