@@ -6,11 +6,33 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:28:40 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/10 13:36:28 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:28:14 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	is_assignment(char *word)
+{
+	int		i;
+	char	*equal_pos;
+	int		in_quote;
+
+	in_quote = 0;
+	i = 0;
+	equal_pos = ft_strchr(word, '=');
+	if (!equal_pos)
+		return (-1);
+	while ((word + i) <= equal_pos)
+	{
+		if (word[i] == SINGLE_QUOTE || word[i] == DOUBLE_QUOTE)
+			in_quote = !in_quote;
+		if (in_quote)
+			return (-1);
+		i++;
+	}
+	return (ASSIGNMENT);
+}
 
 int	is_word(char *word)
 {
@@ -93,10 +115,7 @@ char	*extract_word(char *input)
 	}
 	word = ft_substr(input, 0, i);
 	if (!word)
-	{
-		printf("Malloc error\n");
-		return (NULL);
-	}
+		return (NULL); // malloc error
 	return (word);
 }
 

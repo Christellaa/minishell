@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:28:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/11 16:30:04 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/12 09:21:43 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ int	get_token_type(char *word)
 {
 	int	type;
 
-	if (ft_strchr(word, '='))
-		return (ASSIGNMENT);
+	type = is_assignment(word);
+	if (type != -1)
+		return (type);
 	type = is_word(word);
 	if (type != -1)
 		return (type);

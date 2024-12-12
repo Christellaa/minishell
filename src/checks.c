@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:56:41 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/11 16:07:01 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:04:58 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ int	check_quotes_close(t_token *token)
 
 	single_quote = 0;
 	double_quote = 0;
-	if (token->type == WORD)
+	if (token->type == WORD || token->type == ASSIGNMENT)
 	{
 		value = token->value;
 		while (*value)
 		{
-			if (*value == SINGLE_QUOTE)
+			if (*value == SINGLE_QUOTE && !double_quote)
 				single_quote = !single_quote;
-			if (*value == DOUBLE_QUOTE)
+			if (*value == DOUBLE_QUOTE && !single_quote)
 				double_quote = !double_quote;
 			value++;
 		}

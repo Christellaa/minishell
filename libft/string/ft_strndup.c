@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 16:10:35 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/06 16:15:57 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:27:30 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*ft_strndup(const char *s, size_t n)
 {
-	char *new;
-	size_t i;
+	char	*new;
+	size_t	i;
 
 	if (!s)
 		return (NULL);
