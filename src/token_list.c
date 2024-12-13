@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:46 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/12 15:48:07 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:23:28 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_token	*create_token(int type, char *value, int len)
 	if (!new_token->value)
 	{
 		printf("Malloc error\n");
-		return (free(value), free(new_token), NULL);
+		return (free(new_token), NULL);
 	}
 	new_token->next = NULL;
 	return (new_token);
@@ -54,29 +54,13 @@ void	add_token_to_list(t_token **tokens, t_token *new_token)
 	}
 }
 
-void	remove_token(t_token **token_list, t_token *target)
-{
-	t_token	*prev;
-
-	if (*token_list == target)
-		*token_list = target->next;
-	else
-	{
-		prev = *token_list;
-		while (prev && prev->next != target)
-			prev = prev->next;
-		prev->next = target->next;
-	}
-	free(target->value);
-	free(target);
-}
-
 t_token	*replace_assignment_token(t_token **token_list, t_token *current,
 		char *key, char *value)
 {
 	t_token	*next;
 	t_token	*key_token;
 	t_token	*value_token;
+	t_token	*prev;
 
 	next = current->next;
 	key_token = create_token(ASSIGNMENT, key, ft_strlen(key));
@@ -86,7 +70,12 @@ t_token	*replace_assignment_token(t_token **token_list, t_token *current,
 	if (*token_list == current)
 		*token_list = key_token;
 	else
-		remove_token(token_list, current);
+	{
+		prev = *token_list;
+		while (prev && prev->next != current)
+			prev = prev->next;
+		prev->next = key_token;
+	}
 	key_token->next = value_token;
 	value_token->next = next;
 	free(current->value);

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:08:29 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/13 12:10:23 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:26:24 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,39 @@ int	check_token_list(t_token **token_list, int err)
 	return (0);
 }
 
+void	replace_type_word(t_token **token_list)
+{
+	t_token	*tmp;
+	t_token	*prev;
+
+	tmp = *token_list;
+	prev = *token_list;
+	while (tmp)
+	{
+		if (tmp->type == WORD)
+		{
+			if (prev != tmp)
+			{
+				determine_token_type(prev, &tmp);
+				prev = prev->next;
+			}
+			else
+				tmp->type = CMD;
+		}
+		tmp = tmp->next;
+	}
+}
+
+int	check_pipeline_order(t_token *token_list)
+{
+}
+
 int	parser(t_data *data)
 {
 	int	err;
 
 	if (!data->token_list)
-	{
-		printf("empty token list\n"); // not an error
-		return (-1);
-	}
+		return (-1); // empty token list, not an error
 	err = check_assignment(&data->token_list);
 	if (err == -1)
 		return (-1); // need a word before '='
@@ -51,12 +75,10 @@ int	parser(t_data *data)
 		return (-1);
 	delete_empty_quotes(&data->token_list);
 	if (!data->token_list)
-	{
-		printf("token list now empty\n");
-		// if it was just "" or '' as pipeline => error: cmd not found
-		return (-1);
-	}
-	// check what type of WORD: CMD, ARG, FILENAME
+		return (-1); // empty token list,
+						// error if it was just "" or '' (=> cmd not found)
+	replace_type_word(&data->token_list);
 	// check if order of pipeline is valid
+	check_pipeline_order(data->token_list);
 	return (0);
 }

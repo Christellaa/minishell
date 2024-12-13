@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/13 12:10:16 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:23:37 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char		*get_value(char *equal_pos);
 void		epur_token_value(t_token **token);
 int			is_value_empty(char *value);
 void		delete_empty_quotes(t_token **token_list);
+void		determine_token_type(t_token *prev, t_token **tmp);
 // env.c
 t_keyval	*create_keyval_pair(char *raw, char *key, char *value,
 				int is_exported);
@@ -49,7 +50,6 @@ int			get_token_type(char *word);
 int			get_word_len(char *word);
 int			get_type_len(char *word, int type);
 // token_list.c
-void		remove_token(t_token **token_list, t_token *target);
 t_token		*create_token(int type, char *value, int len);
 void		add_token_to_list(t_token **tokens, t_token *new_token);
 t_token		*replace_assignment_token(t_token **token_list, t_token *current,
