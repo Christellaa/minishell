@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:08:29 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/12 15:25:14 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:10:23 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ int	check_token_list(t_token **token_list, int err)
 			return (-1); // no filename after chevrons
 		if (check_quotes_close(tmp) == -1)
 			return (-1); // ' or \" not closed
-		if (check_forbidden_chars(tmp) == -1)
-			return (-1); // forbidden char found
 		if (check_double_pipe(tmp) == -1)
 			return (-1); // pipe after pipe
 		tmp = tmp->next;
@@ -58,7 +56,6 @@ int	parser(t_data *data)
 		// if it was just "" or '' as pipeline => error: cmd not found
 		return (-1);
 	}
-	// delete first quotes surrounding word
 	// check what type of WORD: CMD, ARG, FILENAME
 	// check if order of pipeline is valid
 	return (0);

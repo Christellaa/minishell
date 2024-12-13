@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/12 15:57:43 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:10:16 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 
 # define SINGLE_QUOTE '\''
 # define DOUBLE_QUOTE '\"'
-# define FORBIDDEN_CHARS ";:&(){}[]\\!*" // ? without $ before, ||
-// a voir pour le \ si dans " ou ' c'est autorisé
 
 // cleanup.c
 void		free_keyval(t_keyval *pair);
@@ -42,7 +40,6 @@ void		get_env_list(t_data *data, char **envp);
 int			check_quotes_close(t_token *token);
 int			check_assignment(t_token **token_list);
 int			check_chevrons(t_token *token);
-int			check_forbidden_chars(t_token *token);
 int			check_double_pipe(t_token *token);
 // parser.c
 int			check_token_list(t_token **token_list, int err);

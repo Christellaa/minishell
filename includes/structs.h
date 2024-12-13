@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 11:14:38 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/10 09:34:50 by cde-sous         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:09:39 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ typedef enum s_error
 	PIPE_ERR,         // double pipe?
 	SKIP_CMD,         // when cmd not found/executable
 	CHEVRON_ERR,      // >>> and +, <<< and +, ><
-	FORBIDDEN         // ';', '?' alone, '&', '||', '()',
-						// '{}', '\', '[]', '!', '*', ':'
 }					t_error;
 
 typedef enum s_token_type
