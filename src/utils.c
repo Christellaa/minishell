@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:24:28 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/13 14:22:48 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/06 16:24:48 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	is_value_empty(char *value)
 	return (0);
 }
 
+// if wer"" => doesn't delete ""
 void	delete_empty_quotes(t_token **token_list)
 {
 	t_token	*tmp;
@@ -75,9 +76,7 @@ void	delete_empty_quotes(t_token **token_list)
 				*token_list = tmp->next;
 			else
 			{
-				prev = *token_list;
-				while (prev && prev->next != tmp)
-					prev = prev->next;
+				prev = get_prev_token(*token_list, tmp);
 				prev->next = tmp->next;
 			}
 			free(tmp->value);
@@ -87,10 +86,11 @@ void	delete_empty_quotes(t_token **token_list)
 	}
 }
 
-void	determine_token_type(t_token *prev, t_token **tmp)
+void	determine_token_type(t_token **list, t_token **tmp)
 {
-	while (prev && prev->next != *tmp)
-		prev = prev->next;
+	t_token	*prev;
+
+	prev = get_prev_token(*list, *tmp);
 	if (prev->type == INFILE || prev->type == HEREDOC || prev->type == TRUNC
 		|| prev->type == APPEND)
 		(*tmp)->type = FILENAME;

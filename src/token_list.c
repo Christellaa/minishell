@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:46 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/13 14:23:28 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/06 16:24:53 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,7 @@ t_token	*replace_assignment_token(t_token **token_list, t_token *current,
 		*token_list = key_token;
 	else
 	{
-		prev = *token_list;
-		while (prev && prev->next != current)
-			prev = prev->next;
+		prev = get_prev_token(*token_list, current);
 		prev->next = key_token;
 	}
 	key_token->next = value_token;

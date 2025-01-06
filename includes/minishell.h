@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/13 14:23:37 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/06 16:18:01 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # define SINGLE_QUOTE '\''
 # define DOUBLE_QUOTE '\"'
 
+// helpers.c
+t_token		*get_prev_token(t_token *prev, t_token *current);
 // cleanup.c
 void		free_keyval(t_keyval *pair);
 int			cleanup(t_data *data, int type);
@@ -30,7 +32,7 @@ char		*get_value(char *equal_pos);
 void		epur_token_value(t_token **token);
 int			is_value_empty(char *value);
 void		delete_empty_quotes(t_token **token_list);
-void		determine_token_type(t_token *prev, t_token **tmp);
+void		determine_token_type(t_token **list, t_token **tmp);
 // env.c
 t_keyval	*create_keyval_pair(char *raw, char *key, char *value,
 				int is_exported);
