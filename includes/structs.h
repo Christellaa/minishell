@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 11:14:38 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/13 12:09:39 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/07 16:33:07 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,23 +68,23 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
-typedef struct s_keyval
+typedef struct s_env
 {
 	char *raw;       // USER=cde-sous
 	char *key;       // USER
 	char *value;     // cde-sous
 	int is_exported; // if exported, then give to child processes
-	struct s_keyval	*next;
-}					t_keyval;
+	struct s_env	*next;
+}					t_env;
 
 typedef struct s_data
 {
 	t_token			*token_list;
 	t_cmd			*cmd_list;
-	int nb_cmd;         // to malloc t_cmd
-	pid_t *pids;        // parent waiting, signals
-	int exit_code;      // last cmd, outfile
-	t_keyval *env_list; // environment list
+	int nb_cmd;      // to malloc t_cmd
+	pid_t *pids;     // parent waiting, signals
+	int exit_code;   // last cmd, outfile
+	t_env *env_list; // environment list
 }					t_data;
 
 #endif

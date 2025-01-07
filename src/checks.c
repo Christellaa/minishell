@@ -6,38 +6,35 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:56:41 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/13 12:10:22 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/07 16:29:56 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	check_quotes_close(t_token *token)
+int	are_quotes_closed(t_token **token_list)
 {
-	int		single_quote;
-	int		double_quote;
+	t_token	*tmp;
 	char	*value;
+	int		i;
 
-	single_quote = 0;
-	double_quote = 0;
-	if (token->type == WORD || token->type == ASSIGNMENT)
+	tmp = *token_list;
+	i = 0;
+	while (tmp)
 	{
-		value = token->value;
-		while (*value)
+		if (tmp->type == WORD || tmp->type == ASSIGNMENT)
 		{
-			if (*value == SINGLE_QUOTE && !double_quote)
-				single_quote = !single_quote;
-			if (*value == DOUBLE_QUOTE && !single_quote)
-				double_quote = !double_quote;
-			value++;
+			value = tmp->value;
+			i = get_word_len(value, 0);
+			if (i == -1)
+				return (-1);
 		}
-		if (single_quote || double_quote)
-			return (-1);
+		tmp = tmp->next;
 	}
 	return (0);
 }
 
-int	check_assignment(t_token **token_list)
+int	is_valid_assignment(t_token **token_list)
 {
 	t_token	*tmp;
 	char	*equal_pos;
@@ -63,30 +60,5 @@ int	check_assignment(t_token **token_list)
 		else
 			tmp = tmp->next;
 	}
-	return (0);
-}
-
-int	check_chevrons(t_token *token)
-{
-	if (token->type == INFILE || token->type == HEREDOC || token->type == TRUNC
-		|| token->type == APPEND)
-	{
-		if (!token->next)
-			return (-2);
-		if (token->next->type == INFILE || token->next->type == HEREDOC
-			|| token->next->type == TRUNC || token->next->type == APPEND)
-			return (-1);
-		if (token->next->type != WORD)
-			return (-2);
-	}
-	return (0);
-}
-
-int	check_double_pipe(t_token *token)
-{
-	if (token->type == PIPE)
-		if (token->next)
-			if (token->next->type == PIPE)
-				return (-1);
 	return (0);
 }

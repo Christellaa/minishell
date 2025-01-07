@@ -6,96 +6,95 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 13:45:25 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/12/11 16:25:47 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/07 16:40:14 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_keyval	*create_keyval_pair(char *raw, char *key, char *value,
-		int is_exported)
+t_env	*create_env_pair(char *raw, char *key, char *value, int is_exported)
 {
-	t_keyval	*new_env;
+	t_env	*new_env_pair;
 
-	new_env = malloc(sizeof(t_keyval));
-	if (!new_env)
+	new_env_pair = malloc(sizeof(t_env));
+	if (!new_env_pair)
 		return (NULL);
-	new_env->raw = ft_strdup(raw);
+	new_env_pair->raw = ft_strdup(raw);
 	if (!raw)
-		return (free(new_env), NULL);
-	new_env->key = ft_strdup(key);
+		return (free(new_env_pair), NULL);
+	new_env_pair->key = ft_strdup(key);
 	if (!key)
-		return (free(new_env), free(raw), NULL);
-	new_env->value = ft_strdup(value);
+		return (free(new_env_pair), free(raw), NULL);
+	new_env_pair->value = ft_strdup(value);
 	if (!value)
-		return (free(new_env), free(raw), free(key), NULL);
-	new_env->is_exported = is_exported;
-	new_env->next = NULL;
-	return (new_env);
+		return (free(new_env_pair), free(raw), free(key), NULL);
+	new_env_pair->is_exported = is_exported;
+	new_env_pair->next = NULL;
+	return (new_env_pair);
 }
 
-t_keyval	*get_keyval_pair(char *current_env)
+t_env	*get_env_pair(char *current_env_pair)
 {
-	t_keyval	*new_env;
-	char		*raw;
-	char		*key;
-	char		*value;
-	char		*equal_pos;
+	t_env	*new_env_pair;
+	char	*raw;
+	char	*key;
+	char	*value;
+	char	*equal_pos;
 
-	equal_pos = ft_strchr(current_env, '=');
+	equal_pos = ft_strchr(current_env_pair, '=');
 	if (!equal_pos)
 		return (NULL);
-	raw = ft_strdup(current_env);
+	raw = ft_strdup(current_env_pair);
 	if (!raw)
 		return (NULL);
-	key = ft_substr(current_env, 0, equal_pos - current_env);
+	key = ft_substr(current_env_pair, 0, equal_pos - current_env_pair);
 	if (!key)
 		return (free(raw), NULL);
 	value = get_value(equal_pos);
 	if (!value)
 		return (free(raw), free(key), NULL);
-	new_env = create_keyval_pair(raw, key, value, 1);
-	if (!new_env)
+	new_env_pair = create_env_pair(raw, key, value, 1);
+	if (!new_env_pair)
 		return (free(raw), free(key), free(value), NULL);
 	free(raw);
 	free(key);
 	free(value);
-	return (new_env);
+	return (new_env_pair);
 }
 
-void	add_keyval_to_list(t_keyval **env_list, t_keyval *new_env)
+void	add_env_pair_to_list(t_env **env_list, t_env *new_env_pair)
 {
-	t_keyval	*last;
+	t_env	*last_pair;
 
-	if (!env_list || !new_env)
+	if (!env_list || !new_env_pair)
 		return ;
 	if (*env_list)
 	{
-		last = (*env_list);
-		while (last->next)
-			last = last->next;
-		last->next = new_env;
-		new_env->next = NULL;
+		last_pair = (*env_list);
+		while (last_pair->next)
+			last_pair = last_pair->next;
+		last_pair->next = new_env_pair;
+		new_env_pair->next = NULL;
 	}
 	else
 	{
-		new_env->next = NULL;
-		(*env_list) = new_env;
+		new_env_pair->next = NULL;
+		(*env_list) = new_env_pair;
 	}
 }
 
 void	get_env_list(t_data *data, char **envp)
 {
-	t_keyval	*env;
-	int			i;
+	t_env	*env_pair;
+	int		i;
 
-	env = NULL;
+	env_pair = NULL;
 	i = 0;
 	while (envp[i])
 	{
-		env = get_keyval_pair(envp[i]);
-		if (env)
-			add_keyval_to_list(&data->env_list, env);
+		env_pair = get_env_pair(envp[i]);
+		if (env_pair)
+			add_env_pair_to_list(&data->env_list, env_pair);
 		i++;
 	}
 }

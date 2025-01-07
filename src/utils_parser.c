@@ -1,43 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:24:28 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/06 16:24:48 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/07 16:56:51 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-char	*get_value(char *equal_pos)
-{
-	char	*value;
-
-	if (*(equal_pos + 1) != '\0')
-		value = ft_strdup(equal_pos + 1);
-	else
-		value = ft_strdup("");
-	if (!value)
-		return (NULL);
-	return (value);
-}
-
-void	epur_token_value(t_token **token)
-{
-	char	*trimmed;
-
-	trimmed = ft_strepur((*token)->value);
-	free((*token)->value);
-	if (!trimmed)
-		return ;
-	(*token)->value = ft_strdup(trimmed);
-	free(trimmed);
-	if (!(*token)->value)
-		return ;
-}
 
 int	is_value_empty(char *value)
 {
@@ -58,8 +31,7 @@ int	is_value_empty(char *value)
 	return (0);
 }
 
-// if wer"" => doesn't delete ""
-void	delete_empty_quotes(t_token **token_list)
+void	delete_empty_tokens(t_token **token_list)
 {
 	t_token	*tmp;
 	t_token	*next;
@@ -69,7 +41,6 @@ void	delete_empty_quotes(t_token **token_list)
 	while (tmp)
 	{
 		next = tmp->next;
-		epur_token_value(&tmp);
 		if (is_value_empty(tmp->value) == 1 && tmp->type != ASSIGNMENT)
 		{
 			if (*token_list == tmp)
@@ -86,7 +57,7 @@ void	delete_empty_quotes(t_token **token_list)
 	}
 }
 
-void	determine_token_type(t_token **list, t_token **tmp)
+void	replace_word_type(t_token **list, t_token **tmp)
 {
 	t_token	*prev;
 
