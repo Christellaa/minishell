@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 11:14:38 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/07 16:33:07 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/08 12:54:22 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ typedef enum s_token_type
 	APPEND,         // >>
 	FILENAME,       // "infile" "Makefile" "outfile"
 	PIPE,           // |
-	CMD,            // "ls" "echo"
+	CMD,            // ls "echo"
 	ARG,
 	// "-l" "hello" "$USER" "hello 'world'"
 	// "hello \'world\'" "hello "world"" "hello \"world\""
-	WORD // everything that is not |, <, <<, >, >>, ASSIGNMENT; until parser
+	WORD // stops at PIPE, CHEVRON, ", ' or space encountered
 }					t_token_type;
 
 typedef struct s_token

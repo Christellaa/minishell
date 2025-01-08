@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:56:41 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/07 16:29:56 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/08 19:32:13 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	are_quotes_closed(t_token **token_list)
 	return (0);
 }
 
+// we search if there's a key before '=', then split the token into two tokens:
+// key + value
 int	is_valid_assignment(t_token **token_list)
 {
 	t_token	*tmp;

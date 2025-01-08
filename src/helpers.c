@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 16:16:12 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/07 16:49:10 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/08 18:17:26 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,29 +35,20 @@ t_token	*get_prev_token(t_token *prev, t_token *current)
 int	get_quoted_word_len(char *word)
 {
 	int	i;
-	int	single_quote;
-	int	double_quote;
 
 	i = 1;
-	single_quote = 0;
-	double_quote = 0;
 	while (word[i] && word[i] != word[0])
-	{
-		if (word[i] == SINGLE_QUOTE && !double_quote)
-			single_quote = !single_quote;
-		if (word[i] == DOUBLE_QUOTE && !single_quote)
-			double_quote = !double_quote;
 		i++;
-	}
 	if (word[i] == word[0])
-		i++;
-	return (i);
+		return (i + 1);
+	return (-1);
 }
 
 int	get_word_len(char *word, int flag)
 {
 	int	i;
 
+	(void)flag;
 	i = 0;
 	if (word[0] == SINGLE_QUOTE || word[0] == DOUBLE_QUOTE)
 		i = get_quoted_word_len(word);
@@ -67,13 +58,27 @@ int	get_word_len(char *word, int flag)
 		{
 			if (word[i] == SINGLE_QUOTE || word[i] == DOUBLE_QUOTE)
 				break ;
-			if (flag == 1 && ft_isspace(word[i]))
+			if (ft_isspace(word[i]))
 				break ;
-			if (flag == 2 && (word[i] == '<' || word[i] == '>'
+			if (flag == 1 && (word[i] == '<' || word[i] == '>'
 					|| word[i] == '|'))
 				break ;
 			i++;
 		}
 	}
 	return (i);
+}
+
+void	epur_token_value(t_token **token)
+{
+	char *trimmed;
+
+	trimmed = ft_strepur((*token)->value);
+	free((*token)->value);
+	if (!trimmed)
+		return ;
+	(*token)->value = ft_strdup(trimmed);
+	free(trimmed);
+	if (!(*token)->value)
+		return ;
 }

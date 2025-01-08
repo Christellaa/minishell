@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:28:40 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/07 11:29:36 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/08 14:38:23 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,19 @@ char	*extract_word(char *input)
 	i = 0;
 	if (!input)
 		return (NULL);
-	i = get_word_len(input, 1);
+	i = get_word_len(input, 0);
+	if (i == -1)
+	{
+		printf("unclosed quote\n");
+		return (NULL);
+	}
 	word = ft_substr(input, 0, i);
 	if (!word)
 		return (NULL); // malloc error
 	return (word);
 }
 
-void	lexer(t_data *data, char *input)
+int	lexer(t_data *data, char *input)
 {
 	int		i;
 	char	*word;
@@ -49,7 +54,7 @@ void	lexer(t_data *data, char *input)
 
 	i = 0;
 	if (!input)
-		return ;
+		return (0);
 	while (input[i])
 	{
 		if (ft_isspace(input[i]))
@@ -58,10 +63,11 @@ void	lexer(t_data *data, char *input)
 		{
 			word = extract_word(&input[i]);
 			if (!word)
-				return ;
+				return (-1);
 			len = tokenize(&data->token_list, word);
 			free(word);
 			i += len;
 		}
 	}
+	return (0);
 }

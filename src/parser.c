@@ -6,39 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:08:29 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/07 16:56:51 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/08 14:39:09 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	replace_token_type(t_token **token_list)
-{
-	t_token	*tmp;
-	t_token	*prev;
-
-	tmp = *token_list;
-	while (tmp)
-	{
-		if (tmp->type == ASSIGNMENT)
-		{
-			if (*token_list != tmp)
-			{
-				prev = get_prev_token(*token_list, tmp);
-				if (prev->type == CMD || prev->type == ARG)
-					tmp->type = ARG;
-			}
-		}
-		else if (tmp->type == WORD)
-		{
-			if (*token_list != tmp)
-				replace_word_type(token_list, &tmp);
-			else
-				tmp->type = CMD;
-		}
-		tmp = tmp->next;
-	}
-}
 
 int	is_order_valid(t_token *list, t_token *current, t_token *next)
 {
@@ -89,13 +61,7 @@ int	parser(t_data *data)
 	if (!data->token_list)
 		return (-1); // empty token list
 	replace_token_type(&data->token_list);
-	// check if order of pipeline is valid
 	if (!validate_pipeline(data->token_list))
 		return (-1); // invalid pipeline order
 	return (0);
 }
-
-/*
-TODO:
-- rename functions
-*/

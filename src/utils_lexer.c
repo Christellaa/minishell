@@ -6,12 +6,13 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:28:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/07 11:29:41 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/08 19:31:52 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+// not an assignment if key has anything else than alphanumeric and underscore
 int	is_assignment(char *word)
 {
 	int		i;
@@ -34,7 +35,7 @@ int	is_word(char *word)
 {
 	int	i;
 
-	i = get_word_len(word, 2);
+	i = get_word_len(word, 1);
 	if (i > 0)
 		return (WORD);
 	else
@@ -88,6 +89,6 @@ int	get_type_len(char *word, int type)
 	else if (type == HEREDOC || type == APPEND)
 		len = 2;
 	else if (type == WORD || type == ASSIGNMENT)
-		len = get_word_len(word, 2);
+		len = get_word_len(word, 1);
 	return (len);
 }
