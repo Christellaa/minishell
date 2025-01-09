@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 16:16:12 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/08 18:17:26 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/09 21:08:00 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,53 +32,48 @@ t_token	*get_prev_token(t_token *prev, t_token *current)
 	return (prev);
 }
 
-int	get_quoted_word_len(char *word)
+char	has_quote(char quote, char current_char)
 {
-	int	i;
-
-	i = 1;
-	while (word[i] && word[i] != word[0])
-		i++;
-	if (word[i] == word[0])
-		return (i + 1);
-	return (-1);
+	if (current_char == SINGLE_QUOTE || current_char == DOUBLE_QUOTE)
+	{
+		if (quote == '\0')
+			quote = current_char;
+		else if (quote == current_char)
+			quote = '\0';
+	}
+	return (quote);
 }
 
 int	get_word_len(char *word, int flag)
 {
-	int	i;
+	int		i;
+	char	quote;
 
-	(void)flag;
 	i = 0;
-	if (word[0] == SINGLE_QUOTE || word[0] == DOUBLE_QUOTE)
-		i = get_quoted_word_len(word);
-	else
+	quote = '\0';
+	while (word[i])
 	{
-		while (word[i])
-		{
-			if (word[i] == SINGLE_QUOTE || word[i] == DOUBLE_QUOTE)
-				break ;
-			if (ft_isspace(word[i]))
-				break ;
-			if (flag == 1 && (word[i] == '<' || word[i] == '>'
-					|| word[i] == '|'))
-				break ;
-			i++;
-		}
+		quote = has_quote(quote, word[i]);
+		if (quote == '\0' && ft_isspace(word[i]))
+			break ;
+		else if (quote == '\0' && flag == 1 && (word[i] == '<' || word[i] == '>'
+				|| word[i] == '|'))
+			break ;
+		i++;
 	}
+	if (quote != '\0')
+		return (-1);
 	return (i);
 }
 
-void	epur_token_value(t_token **token)
+char	*ft_strjoin_free_both(char *s1, char *s2)
 {
-	char *trimmed;
+	char	*s3;
 
-	trimmed = ft_strepur((*token)->value);
-	free((*token)->value);
-	if (!trimmed)
-		return ;
-	(*token)->value = ft_strdup(trimmed);
-	free(trimmed);
-	if (!(*token)->value)
-		return ;
+	if (!s1 || !s2)
+		return (NULL);
+	s3 = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (s3);
 }

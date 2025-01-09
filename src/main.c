@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/08 14:39:02 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/09 20:55:40 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,32 +24,23 @@ void	test_it(t_data *data)
 	}
 }
 
-void	input_loop(t_data *data, char *input)
+void	process_input(t_data *data, char *input)
 {
-	while (1)
+	if (lexer(data, input) == -1)
 	{
-		input = readline("minishell$ ");
-		if (!input)
-			break ;
-		add_history(input);
-		if (lexer(data, input) == -1)
-		{
-			free(input);
-			break ;
-		}
 		free(input);
-		test_it(data); // testing lexing
-		if (parser(data) != -1)
-		{
-			printf("do expander + execution\n");
-			expander(data);
-		}
-		else
-			printf("cleanup for next loop\n");
-		test_it(data); // testing parsing
-		cleanup(data, 0);
-		break ;
+		return ;
 	}
+	free(input);
+	test_it(data); // testing lexing
+	if (parser(data) != -1)
+	{
+		printf("do expander + execution\n");
+		expander(data);
+	}
+	else
+		printf("cleanup for next loop\n");
+	test_it(data); // testing parsing
 }
 
 void	init_data(t_data *data)
@@ -73,9 +64,18 @@ int	main(int ac, char **av, char **envp)
 	init_data(data);
 	if (!data || ac != 1)
 		return (1);
-	get_env_list(data, envp);
-	input = NULL;
-	input_loop(data, input);
+	create_env_list(data, envp);
+	while (1)
+	{
+		input = readline("minishell$ ");
+		if (!input)
+			break ;
+		add_history(input);
+		process_input(data, input);
+		cleanup(data, 0);
+	}
 	rl_clear_history();
 	cleanup(data, 1);
 }
+
+// for export built-in: assignment key can only be alphanumeric + underscore

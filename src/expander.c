@@ -6,108 +6,93 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 13:03:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/08 19:29:43 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/09 21:08:51 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*extract_var_name(char *start)
-{
-	char	*var_name;
-	char	*end;
-
-	start++;
-	end = start;
-	while (*end && !ft_isspace(*end) && *end != SINGLE_QUOTE
-		&& *end != DOUBLE_QUOTE)
-		end++;
-	var_name = ft_substr(start, 0, end - start);
-	return (var_name);
-}
-
-char	*ft_strjoin_three(char *start, char *middle, char *end)
-{
-	char	*new_value;
-	int		len_start;
-	int		len_middle;
-	int		len_end;
-
-	len_start = ft_strchr(start, '$') - start;
-	len_middle = ft_strlen(middle);
-	len_end = ft_strlen(end);
-	new_value = malloc(len_start + len_middle + len_end + 1);
-	if (!new_value)
-		return (NULL);
-	ft_strlcpy(new_value, start, len_start + 1);
-	ft_strlcat(new_value, middle, len_start + len_middle + 1);
-	if (end)
-		ft_strlcat(new_value, end, len_start + len_middle + len_end + 1);
-	return (new_value);
-}
-
-void	replace_var_name(t_env *env_list, t_token **tmp)
+char	*get_env_var(char *var_name, t_env *env)
 {
 	t_env	*tmp_env;
-	char	*var_name;
-	char	*value;
-	char	*start;
 
-	tmp_env = env_list;
-	start = ft_strchr((*tmp)->value, '$');
-	var_name = extract_var_name(start);
-	if (!var_name)
-		return ;
+	tmp_env = env;
 	while (tmp_env)
 	{
 		if (ft_strcmp(tmp_env->key, var_name) == 0)
-		{
-			value = ft_strjoin_three((*tmp)->value, tmp_env->value, start
-					+ ft_strlen(var_name) + 1);
-			free((*tmp)->value);
-			(*tmp)->value = ft_strdup(value);
-			break ;
-		}
+			return (tmp_env->value);
 		tmp_env = tmp_env->next;
 	}
-	printf("value: %s\n", (*tmp)->value);
-	free(value);
+	return (NULL);
 }
 
-void	handle_env_var(t_token **tmp, t_data *data)
+int	replace_var_name(char *start, t_data *data, char **expanded)
 {
-	if (ft_strchr((*tmp)->value, '$'))
+	char	*var_name;
+	char	*env_value;
+
+	if (*(start + 1) == '?')
 	{
-		if ((*tmp)->value[0] == SINGLE_QUOTE)
-			return ;
-		else
-		{
-			if ((*tmp)->value[1] == '?')
-			{
-				free((*tmp)->value);
-				(*tmp)->value = ft_itoa(data->exit_code);
-			}
-			else
-			{
-				replace_var_name(data->env_list, tmp);
-				if ((*tmp)->value[0] != DOUBLE_QUOTE)
-					epur_token_value(tmp);
-			}
-		}
+		*expanded = ft_itoa(data->exit_code);
+		return (1);
 	}
+	var_name = ft_strndup(start + 1, var_name_len(start + 1));
+	env_value = get_env_var(var_name, data->env_list);
+	free(var_name);
+	if (!env_value)
+		return (0);
+	else // if no quote -> dup + trim it
+		*expanded = ft_strdup(env_value);
+	return (1);
+}
+
+void	expand_var(t_token **tmp, t_data *data)
+{
+	char	quote;
+	char	*value;
+	char	*expanded;
+	char	*new_value;
+
+	quote = '\0';
+	value = (*tmp)->value;
+	expanded = NULL;
+	new_value = ft_strdup("");
+	while (*value)
+	{
+		quote = has_quote(quote, *value);
+		if (*value == '$' && quote != SINGLE_QUOTE && replace_var_name(value,
+				data, &expanded))
+		{
+			new_value = ft_strjoin_free_both(new_value, expanded);
+			value += var_name_len(value);
+			continue ;
+		}
+		new_value = ft_strjoin_free_s1(new_value, ft_char_to_str(*value));
+		value++;
+	}
+	free((*tmp)->value);
+	(*tmp)->value = new_value;
 }
 
 void	remove_external_quotes(t_token **token)
 {
+	char	quote;
 	char	*value;
+	char	*new_value;
 
-	if ((*token)->value[0] == SINGLE_QUOTE
-		|| (*token)->value[0] == DOUBLE_QUOTE)
+	quote = '\0';
+	value = (*token)->value;
+	new_value = ft_strdup("");
+	while (*value)
 	{
-		value = ft_substr((*token)->value, 1, ft_strlen((*token)->value) - 2);
-		free((*token)->value);
-		(*token)->value = ft_strdup(value);
+		if (*value == SINGLE_QUOTE || *value == DOUBLE_QUOTE)
+			quote = *value;
+		if (quote != *value)
+			new_value = ft_strjoin_free_s1(new_value, ft_char_to_str(*value));
+		value++;
 	}
+	free((*token)->value);
+	(*token)->value = new_value;
 }
 
 void	expander(t_data *data)
@@ -117,7 +102,7 @@ void	expander(t_data *data)
 	tmp = data->token_list;
 	while (tmp)
 	{
-		handle_env_var(&tmp, data);
+		expand_var(&tmp, data);
 		remove_external_quotes(&tmp);
 		tmp = tmp->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:46 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/06 16:24:53 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/09 09:54:22 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,31 +52,4 @@ void	add_token_to_list(t_token **tokens, t_token *new_token)
 		new_token->next = NULL;
 		*tokens = new_token;
 	}
-}
-
-t_token	*replace_assignment_token(t_token **token_list, t_token *current,
-		char *key, char *value)
-{
-	t_token	*next;
-	t_token	*key_token;
-	t_token	*value_token;
-	t_token	*prev;
-
-	next = current->next;
-	key_token = create_token(ASSIGNMENT, key, ft_strlen(key));
-	value_token = create_token(ASSIGNMENT, value, ft_strlen(value));
-	if (!key_token || !value_token)
-		return (free(key), free(value), NULL);
-	if (*token_list == current)
-		*token_list = key_token;
-	else
-	{
-		prev = get_prev_token(*token_list, current);
-		prev->next = key_token;
-	}
-	key_token->next = value_token;
-	value_token->next = next;
-	free(current->value);
-	free(current);
-	return (value_token->next);
 }

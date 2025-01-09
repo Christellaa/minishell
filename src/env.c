@@ -6,13 +6,13 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 13:45:25 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/07 16:40:14 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/09 20:57:40 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_env	*create_env_pair(char *raw, char *key, char *value, int is_exported)
+t_env	*create_env_node(char *raw, char *key, char *value, int is_exported)
 {
 	t_env	*new_env_pair;
 
@@ -53,7 +53,7 @@ t_env	*get_env_pair(char *current_env_pair)
 	value = get_value(equal_pos);
 	if (!value)
 		return (free(raw), free(key), NULL);
-	new_env_pair = create_env_pair(raw, key, value, 1);
+	new_env_pair = create_env_node(raw, key, value, 1);
 	if (!new_env_pair)
 		return (free(raw), free(key), free(value), NULL);
 	free(raw);
@@ -62,7 +62,7 @@ t_env	*get_env_pair(char *current_env_pair)
 	return (new_env_pair);
 }
 
-void	add_env_pair_to_list(t_env **env_list, t_env *new_env_pair)
+void	add_env_node_to_list(t_env **env_list, t_env *new_env_pair)
 {
 	t_env	*last_pair;
 
@@ -83,7 +83,7 @@ void	add_env_pair_to_list(t_env **env_list, t_env *new_env_pair)
 	}
 }
 
-void	get_env_list(t_data *data, char **envp)
+void	create_env_list(t_data *data, char **envp)
 {
 	t_env	*env_pair;
 	int		i;
@@ -94,7 +94,7 @@ void	get_env_list(t_data *data, char **envp)
 	{
 		env_pair = get_env_pair(envp[i]);
 		if (env_pair)
-			add_env_pair_to_list(&data->env_list, env_pair);
+			add_env_node_to_list(&data->env_list, env_pair);
 		i++;
 	}
 }

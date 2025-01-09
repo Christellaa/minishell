@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 11:14:38 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/08 12:54:22 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/09 09:54:41 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,13 @@ typedef enum s_error
 
 typedef enum s_token_type
 {
-	ASSIGNMENT = 0, // "test='o a'" "test=$USER" => will update env
-	INFILE,         // <
-	HEREDOC,        // <<
-	TRUNC,          // >
-	APPEND,         // >>
-	FILENAME,       // "infile" "Makefile" "outfile"
-	PIPE,           // |
-	CMD,            // ls "echo"
+	INFILE = 0, // <
+	HEREDOC,    // <<
+	TRUNC,      // >
+	APPEND,     // >>
+	FILENAME,   // "infile" "Makefile" "outfile"
+	PIPE,       // |
+	CMD,        // ls "echo"
 	ARG,
 	// "-l" "hello" "$USER" "hello 'world'"
 	// "hello \'world\'" "hello "world"" "hello \"world\""

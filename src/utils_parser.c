@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:24:28 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/08 12:58:15 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/09 21:17:55 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,8 @@
 
 int	is_value_empty(char *value)
 {
-	int		i;
-	char	quote_type;
-
-	quote_type = value[0];
-	i = -1;
-	while (value[++i])
-	{
-		if (value[i] != SINGLE_QUOTE && value[i] != DOUBLE_QUOTE)
-			break ;
-		else if (value[i] != quote_type)
-			break ;
-	}
-	if (value[i] == '\0')
-		return (1);
-	return (0);
+	return ((value[0] == SINGLE_QUOTE || value[0] == DOUBLE_QUOTE)
+		&& value[1] == value[0] && value[2] == '\0');
 }
 
 void	delete_empty_tokens(t_token **token_list)
@@ -41,7 +28,7 @@ void	delete_empty_tokens(t_token **token_list)
 	while (tmp)
 	{
 		next = tmp->next;
-		if (is_value_empty(tmp->value) == 1 && tmp->type != ASSIGNMENT)
+		if (is_value_empty(tmp->value) == 1)
 		{
 			if (*token_list == tmp)
 				*token_list = tmp->next;
@@ -57,44 +44,57 @@ void	delete_empty_tokens(t_token **token_list)
 	}
 }
 
-void	replace_word_type(t_token **list, t_token **tmp)
-{
-	t_token	*prev;
-
-	prev = get_prev_token(*list, *tmp);
-	if (prev->type == INFILE || prev->type == HEREDOC || prev->type == TRUNC
-		|| prev->type == APPEND)
-		(*tmp)->type = FILENAME;
-	else if (prev->type == CMD || prev->type == ARG)
-		(*tmp)->type = ARG;
-	else
-		(*tmp)->type = CMD;
-}
-
 void	replace_token_type(t_token **token_list)
 {
-	t_token *tmp;
-	t_token *prev;
+	t_token	*tmp;
+	t_token	*prev;
 
 	tmp = *token_list;
 	while (tmp)
 	{
-		if (tmp->type == ASSIGNMENT)
+		if (tmp->type == WORD)
 		{
-			if (*token_list != tmp)
-			{
+			if (*token_list == tmp)
+				tmp->type = CMD;
+			else
 				prev = get_prev_token(*token_list, tmp);
-				if (prev->type == CMD || prev->type == ARG)
-					tmp->type = ARG;
-			}
-		}
-		else if (tmp->type == WORD)
-		{
-			if (*token_list != tmp)
-				replace_word_type(token_list, &tmp);
+			if (prev->type == INFILE || prev->type == HEREDOC
+				|| prev->type == TRUNC || prev->type == APPEND)
+				tmp->type = FILENAME;
+			else if (prev->type == CMD || prev->type == ARG)
+				tmp->type = ARG;
 			else
 				tmp->type = CMD;
 		}
 		tmp = tmp->next;
 	}
+}
+
+int	var_name_len(char *value)
+{
+	int	len;
+
+	len = 0;
+	while (value[len])
+	{
+		if (ft_isspace(value[len]) || value[len] == SINGLE_QUOTE
+			|| value[len] == DOUBLE_QUOTE)
+			break ;
+		len++;
+	}
+	return (len);
+}
+
+void	epur_token_value(t_token **token)
+{
+	char	*trimmed;
+
+	trimmed = ft_strepur((*token)->value);
+	free((*token)->value);
+	if (!trimmed)
+		return ;
+	(*token)->value = ft_strdup(trimmed);
+	free(trimmed);
+	if (!(*token)->value)
+		return ;
 }

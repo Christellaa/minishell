@@ -6,30 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:28:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/08 19:31:52 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/09 11:10:31 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-// not an assignment if key has anything else than alphanumeric and underscore
-int	is_assignment(char *word)
-{
-	int		i;
-	char	*equal_pos;
-
-	i = 0;
-	equal_pos = ft_strchr(word, '=');
-	if (!equal_pos)
-		return (-1);
-	while ((word + i) <= equal_pos)
-	{
-		if (word[i] == SINGLE_QUOTE || word[i] == DOUBLE_QUOTE)
-			return (-1);
-		i++;
-	}
-	return (ASSIGNMENT);
-}
 
 int	is_word(char *word)
 {
@@ -61,9 +42,6 @@ int	get_token_type(char *word)
 {
 	int	type;
 
-	type = is_assignment(word);
-	if (type != -1)
-		return (type);
 	type = is_word(word);
 	if (type != -1)
 		return (type);
@@ -88,7 +66,7 @@ int	get_type_len(char *word, int type)
 	}
 	else if (type == HEREDOC || type == APPEND)
 		len = 2;
-	else if (type == WORD || type == ASSIGNMENT)
+	else if (type == WORD)
 		len = get_word_len(word, 1);
 	return (len);
 }
