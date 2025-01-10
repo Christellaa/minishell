@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:28:40 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/09 11:26:47 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/10 14:55:39 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	lexer(t_data *data, char *input)
 {
 	int		i;
 	char	*word;
-	int		len;
 
 	i = 0;
 	if (!input)
@@ -64,9 +63,8 @@ int	lexer(t_data *data, char *input)
 			word = extract_word(&input[i]);
 			if (!word)
 				return (-1);
-			len = tokenize(&data->token_list, word);
+			i += tokenize(&data->token_list, word);
 			free(word);
-			i += len;
 		}
 	}
 	return (0);

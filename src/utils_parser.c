@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:24:28 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/09 21:17:55 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/10 16:48:02 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,16 @@ void	replace_token_type(t_token **token_list)
 			if (*token_list == tmp)
 				tmp->type = CMD;
 			else
+			{
 				prev = get_prev_token(*token_list, tmp);
-			if (prev->type == INFILE || prev->type == HEREDOC
-				|| prev->type == TRUNC || prev->type == APPEND)
-				tmp->type = FILENAME;
-			else if (prev->type == CMD || prev->type == ARG)
-				tmp->type = ARG;
-			else
-				tmp->type = CMD;
+				if (prev->type == INFILE || prev->type == HEREDOC
+					|| prev->type == TRUNC || prev->type == APPEND)
+					tmp->type = FILENAME;
+				else if (prev->type == CMD || prev->type == ARG)
+					tmp->type = ARG;
+				else
+					tmp->type = CMD;
+			}
 		}
 		tmp = tmp->next;
 	}
@@ -85,16 +87,19 @@ int	var_name_len(char *value)
 	return (len);
 }
 
-void	epur_token_value(t_token **token)
+char	*epur_token_value(char *value)
 {
 	char	*trimmed;
+	char	*copy;
 
-	trimmed = ft_strepur((*token)->value);
-	free((*token)->value);
+	copy = ft_strdup(value);
+	trimmed = ft_strepur(copy);
+	free(copy);
 	if (!trimmed)
-		return ;
-	(*token)->value = ft_strdup(trimmed);
+		return (NULL);
+	copy = ft_strdup(trimmed);
 	free(trimmed);
-	if (!(*token)->value)
-		return ;
+	if (!copy)
+		return (NULL);
+	return (copy);
 }

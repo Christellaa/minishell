@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 11:14:38 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/09 09:54:41 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/10 16:00:35 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef enum s_token_type
 	ARG,
 	// "-l" "hello" "$USER" "hello 'world'"
 	// "hello \'world\'" "hello "world"" "hello \"world\""
-	WORD // stops at PIPE, CHEVRON, ", ' or space encountered
+	WORD // stops at PIPE, CHEVRON, space encountered
 }					t_token_type;
 
 typedef struct s_token
@@ -54,18 +54,18 @@ typedef struct s_arg
 
 typedef struct s_redirs
 {
-	char *path;        // file.txt, >
+	char *value;       // file.txt, >
 	t_token_type type; // filename, trunc
 	struct s_redirs	*next;
 }					t_redirs;
 
-typedef struct s_cmd
+typedef struct s_exec
 {
 	char *cmd;        // ls
 	t_arg *arg_list;  // -l
 	t_redirs *redirs; // pipes, files
-	struct s_cmd	*next;
-}					t_cmd;
+	struct s_exec	*next;
+}					t_exec;
 
 typedef struct s_env
 {
@@ -79,8 +79,8 @@ typedef struct s_env
 typedef struct s_data
 {
 	t_token			*token_list;
-	t_cmd			*cmd_list;
-	int nb_cmd;      // to malloc t_cmd
+	t_exec			*exec_list;
+	int nb_cmd;      // to malloc t_exec
 	pid_t *pids;     // parent waiting, signals
 	int exit_code;   // last cmd, outfile
 	t_env *env_list; // environment list

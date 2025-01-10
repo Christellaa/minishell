@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:08:29 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/09 21:12:20 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/10 15:15:00 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 
 int	is_order_valid(t_token *list, t_token *current, t_token *next)
 {
-	if (current->type == INFILE || current->type == HEREDOC
-		|| current->type == TRUNC || current->type == APPEND)
-		return (next && next->type == FILENAME);
-	else if (current->type == PIPE)
+	if (current->type == PIPE)
 	{
 		if (current == list)
 			return (0);
@@ -43,12 +40,12 @@ int	validate_pipeline(t_token *token_list)
 int	parser(t_data *data)
 {
 	if (!data->token_list)
-		return (-1); // empty token list, not an error
+		return (-1); // empty token list, not an error; uselful??
 	delete_empty_tokens(&data->token_list);
 	if (!data->token_list)
 		return (-1); // empty token list, not an error
 	replace_token_type(&data->token_list);
 	if (!validate_pipeline(data->token_list))
-		return (-1); // invalid pipeline order
+		return (-2); // invalid pipeline order
 	return (0);
 }

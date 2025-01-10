@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/09 21:10:02 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/10 16:29:17 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@
 void	free_env(t_env *pair);
 void	free_tokens(t_token *token);
 int		cleanup(t_data *data, int type);
+// exec_list.c
+t_exec	*create_exec_node(void);
+void	add_value_to_node(t_exec **node, char *value, int type);
+void	add_node_to_list(t_exec **exec_list, t_exec *node);
+int		create_and_add_node_to_list(t_data *data, t_exec *new_node);
+int		create_exec_list(t_data *data);
 // env.c
 t_env	*create_env_node(char *raw, char *key, char *value, int is_exported);
 t_env	*get_env_pair(char *current_env);
@@ -33,7 +39,8 @@ void	add_env_node_to_list(t_env **env_list, t_env *new_env);
 void	create_env_list(t_data *data, char **envp);
 // expander.c
 char	*get_env_var(char *var_name, t_env *env);
-int		replace_var_name(char *start, t_data *data, char **expanded);
+void	replace_var_name(char *start, t_data *data, char **expanded,
+			char quote);
 void	expand_var(t_token **tmp, t_data *data);
 void	remove_external_quotes(t_token **token);
 void	expander(t_data *data);
@@ -64,6 +71,6 @@ int		is_value_empty(char *value);
 void	delete_empty_tokens(t_token **token_list);
 void	replace_token_type(t_token **token_list);
 int		var_name_len(char *value);
-void	epur_token_value(t_token **token);
+char	*epur_token_value(char *value);
 
 #endif

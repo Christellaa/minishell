@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/09 20:55:40 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/10 16:38:17 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	process_input(t_data *data, char *input)
 	}
 	free(input);
 	test_it(data); // testing lexing
-	if (parser(data) != -1)
+	if (parser(data) >= 0)
 	{
 		printf("do expander + execution\n");
 		expander(data);
@@ -41,12 +41,14 @@ void	process_input(t_data *data, char *input)
 	else
 		printf("cleanup for next loop\n");
 	test_it(data); // testing parsing
+	// create_exec_list(data);
+	printf("exec list created\n");
 }
 
 void	init_data(t_data *data)
 {
 	data->token_list = NULL;
-	data->cmd_list = NULL;
+	data->exec_list = NULL;
 	data->env_list = NULL;
 	data->exit_code = 0;
 	data->nb_cmd = 0;
