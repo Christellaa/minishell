@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 13:03:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/10 14:28:46 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/01/13 12:03:37 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,12 @@ void	expand_var(t_token **tmp, t_data *data)
 	while (*value)
 	{
 		quote = has_quote(quote, *value);
-		if (*value == '$' && quote != SINGLE_QUOTE)
+		if (*value == '$' && (*(value + 1) != '$' && *(value + 1) != '\0'
+				&& quote != SINGLE_QUOTE))
 		{
 			replace_var_name(value, data, &expanded, quote);
 			new_value = ft_strjoin_free_both(new_value, expanded);
-			value += var_name_len(value);
+			value += 1 + var_name_len(value + 1);
 			continue ;
 		}
 		new_value = ft_strjoin_free_s1(new_value, ft_char_to_str(*value));

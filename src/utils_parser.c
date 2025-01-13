@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:24:28 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/10 16:48:02 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/01/13 14:01:43 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ void	replace_token_type(t_token **token_list)
 				if (prev->type == INFILE || prev->type == HEREDOC
 					|| prev->type == TRUNC || prev->type == APPEND)
 					tmp->type = FILENAME;
-				else if (prev->type == CMD || prev->type == ARG)
-					tmp->type = ARG;
-				else
+				else if (prev->type == PIPE)
 					tmp->type = CMD;
+				else
+					tmp->type = ARG;
 			}
 		}
 		tmp = tmp->next;
@@ -80,7 +80,7 @@ int	var_name_len(char *value)
 	while (value[len])
 	{
 		if (ft_isspace(value[len]) || value[len] == SINGLE_QUOTE
-			|| value[len] == DOUBLE_QUOTE)
+			|| value[len] == DOUBLE_QUOTE || (value[len] == '$'))
 			break ;
 		len++;
 	}

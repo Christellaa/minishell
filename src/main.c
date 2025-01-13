@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/10 16:38:17 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/01/13 14:23:46 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,32 @@ void	test_it(t_data *data)
 	while (tmp)
 	{
 		printf("token type: %d, value: %s\n", tmp->type, tmp->value);
+		tmp = tmp->next;
+	}
+}
+
+void	test_it_2(t_data *data)
+{
+	t_exec	*tmp;
+
+	tmp = data->exec_list;
+	while (tmp)
+	{
+		printf("cmd: %s\n", tmp->cmd);
+		while (tmp->arg_list)
+		{
+			if (tmp->arg_list->value)
+				printf("arg: %s\n", tmp->arg_list->value);
+			tmp->arg_list = tmp->arg_list->next;
+		}
+		while (tmp->redirs)
+		{
+			if (tmp->redirs->value)
+				printf("redir val: %s, type: %d\n", tmp->redirs->value,
+					tmp->redirs->type);
+			tmp->redirs = tmp->redirs->next;
+		}
+		printf("\n\nnext\n");
 		tmp = tmp->next;
 	}
 }
@@ -41,8 +67,8 @@ void	process_input(t_data *data, char *input)
 	else
 		printf("cleanup for next loop\n");
 	test_it(data); // testing parsing
-	// create_exec_list(data);
-	printf("exec list created\n");
+	create_exec_list(data);
+	test_it_2(data); // testing exec list creation
 }
 
 void	init_data(t_data *data)

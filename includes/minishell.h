@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/10 16:29:17 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/01/13 12:25:49 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ void	free_env(t_env *pair);
 void	free_tokens(t_token *token);
 int		cleanup(t_data *data, int type);
 // exec_list.c
-t_exec	*create_exec_node(void);
+void	create_exec_node(t_exec **new_node);
 void	add_value_to_node(t_exec **node, char *value, int type);
 void	add_node_to_list(t_exec **exec_list, t_exec *node);
-int		create_and_add_node_to_list(t_data *data, t_exec *new_node);
+int		create_and_add_node_to_list(t_data *data, t_exec **new_node);
 int		create_exec_list(t_data *data);
 // env.c
 t_env	*create_env_node(char *raw, char *key, char *value, int is_exported);
