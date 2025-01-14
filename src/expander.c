@@ -5,76 +5,77 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/08 13:03:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/13 12:03:37 by cde-sous         ###   ########.fr       */
+/*   Created: 2025/01/13 16:53:48 by cde-sous          #+#    #+#             */
+/*   Updated: 2025/01/14 16:57:02 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*get_env_var(char *var_name, t_env *env)
+int	is_expandable(t_token *token_list, t_token *cur_token, int flag)
 {
-	t_env	*tmp_env;
+	t_token	*prev;
+	t_token	*tmp;
 
-	tmp_env = env;
-	while (tmp_env)
-	{
-		if (ft_strcmp(tmp_env->key, var_name) == 0)
-			return (tmp_env->value);
-		tmp_env = tmp_env->next;
-	}
-	return (ft_strdup(""));
+	prev = token_list;
+	tmp = cur_token;
+	if (token_list != cur_token)
+		prev = get_prev_token(token_list, tmp);
+	if (flag == 1 && prev->type != INFILE && prev->type != HEREDOC
+		&& prev->type != TRUNC && prev->type != APPEND)
+		return (1);
+	return (0);
 }
 
-void	replace_var_name(char *start, t_data *data, char **expanded, char quote)
+char	*expand(char *pos, t_data *data, int *to_split, char quote)
 {
 	char	*var_name;
 	char	*env_value;
+	char	*value;
 
-	if (*(start + 1) == '?')
-	{
-		*expanded = ft_itoa(data->exit_code);
-		return ;
-	}
-	var_name = ft_strndup(start + 1, var_name_len(start + 1));
+	if (quote == SINGLE_QUOTE)
+		return (ft_strndup(pos - 1, var_name_len(pos) + 1));
+	else if (*pos == '$' || ft_isspace(*pos) || *pos == '\0'
+		|| *pos == SINGLE_QUOTE || *pos == DOUBLE_QUOTE)
+		return (ft_strdup("$"));
+	else if (*pos == '?')
+		return (ft_itoa(data->exit_code));
+	var_name = ft_strndup(pos, var_name_len(pos));
 	env_value = get_env_var(var_name, data->env_list);
 	free(var_name);
 	if (!env_value)
-		return ;
-	else if (quote == '\0')
-		*expanded = ft_strdup(epur_token_value(env_value));
-	else
-		*expanded = ft_strdup((env_value));
-	return ;
+		return (NULL);
+	value = ft_strdup(env_value);
+	if (ft_strchr(value, ' '))
+		*to_split = 1;
+	return (value);
 }
 
-void	expand_var(t_token **tmp, t_data *data)
+void	expand_var(t_token **token, t_data *data, char *quote)
 {
-	char	quote;
-	char	*value;
+	char	*copy;
+	char	*pos;
 	char	*expanded;
-	char	*new_value;
+	int		to_split;
 
-	quote = '\0';
-	value = (*tmp)->value;
-	expanded = NULL;
-	new_value = ft_strdup("");
-	while (*value)
+	copy = init_copy(token);
+	while (ft_strchr(copy, '$'))
 	{
-		quote = has_quote(quote, *value);
-		if (*value == '$' && (*(value + 1) != '$' && *(value + 1) != '\0'
-				&& quote != SINGLE_QUOTE))
-		{
-			replace_var_name(value, data, &expanded, quote);
-			new_value = ft_strjoin_free_both(new_value, expanded);
-			value += 1 + var_name_len(value + 1);
-			continue ;
-		}
-		new_value = ft_strjoin_free_s1(new_value, ft_char_to_str(*value));
-		value++;
+		expanded = NULL;
+		to_split = 0;
+		pos = ft_strchr(copy, '$');
+		*quote = search_quote(*quote, copy, pos - copy);
+		join_until_dollar(token, copy, pos - copy);
+		expanded = expand(pos + 1, data, &to_split, *quote);
+		copy = pos + 1 + var_name_len((pos + 1));
+		if (to_split == 1 && *quote == '\0' && is_expandable(data->token_list,
+				*token, 1))
+			return (split_token(expanded, token, copy), free(expanded));
+		if (expanded)
+			(*token)->value = ft_strjoin_free_both((*token)->value, expanded);
 	}
-	free((*tmp)->value);
-	(*tmp)->value = new_value;
+	if (*copy != '\0')
+		(*token)->value = ft_strjoin_free_s1((*token)->value, copy);
 }
 
 void	remove_external_quotes(t_token **token)
@@ -103,12 +104,20 @@ void	remove_external_quotes(t_token **token)
 void	expander(t_data *data)
 {
 	t_token	*tmp;
+	t_token	*prev;
+	char	quote;
 
 	tmp = data->token_list;
+	prev = data->token_list;
+	quote = '\0';
 	while (tmp)
 	{
-		expand_var(&tmp, data);
+		if (prev != data->token_list)
+			prev = get_prev_token(prev, tmp);
+		if (prev->type != HEREDOC)
+			expand_var(&tmp, data, &quote);
 		remove_external_quotes(&tmp);
 		tmp = tmp->next;
 	}
+	delete_empty_tokens(&data->token_list);
 }

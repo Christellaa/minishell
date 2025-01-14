@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:24:28 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/13 14:01:43 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/14 16:55:50 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 int	is_value_empty(char *value)
 {
-	return ((value[0] == SINGLE_QUOTE || value[0] == DOUBLE_QUOTE)
-		&& value[1] == value[0] && value[2] == '\0');
+	return (value[0] == '\0' || ((value[0] == SINGLE_QUOTE
+				|| value[0] == DOUBLE_QUOTE) && value[1] == value[0]
+			&& value[2] == '\0'));
 }
 
 void	delete_empty_tokens(t_token **token_list)
@@ -77,29 +78,14 @@ int	var_name_len(char *value)
 	int	len;
 
 	len = 0;
+	if (value[len] == '?')
+		return (1);
 	while (value[len])
 	{
 		if (ft_isspace(value[len]) || value[len] == SINGLE_QUOTE
-			|| value[len] == DOUBLE_QUOTE || (value[len] == '$'))
+			|| value[len] == DOUBLE_QUOTE || value[len] == '$')
 			break ;
 		len++;
 	}
 	return (len);
-}
-
-char	*epur_token_value(char *value)
-{
-	char	*trimmed;
-	char	*copy;
-
-	copy = ft_strdup(value);
-	trimmed = ft_strepur(copy);
-	free(copy);
-	if (!trimmed)
-		return (NULL);
-	copy = ft_strdup(trimmed);
-	free(trimmed);
-	if (!copy)
-		return (NULL);
-	return (copy);
 }

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/13 12:25:49 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/14 16:57:34 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,9 @@ t_env	*get_env_pair(char *current_env);
 void	add_env_node_to_list(t_env **env_list, t_env *new_env);
 void	create_env_list(t_data *data, char **envp);
 // expander.c
-char	*get_env_var(char *var_name, t_env *env);
-void	replace_var_name(char *start, t_data *data, char **expanded,
-			char quote);
-void	expand_var(t_token **tmp, t_data *data);
+int		is_expandable(t_token *token_list, t_token *cur_token, int flag);
+char	*expand(char *pos, t_data *data, int *to_split, char quote);
+void	expand_var(t_token **token, t_data *data, char *quote);
 void	remove_external_quotes(t_token **token);
 void	expander(t_data *data);
 // helpers.c
@@ -71,6 +70,11 @@ int		is_value_empty(char *value);
 void	delete_empty_tokens(t_token **token_list);
 void	replace_token_type(t_token **token_list);
 int		var_name_len(char *value);
-char	*epur_token_value(char *value);
+// utils_expander.c
+char	*init_copy(t_token **cur_token);
+char	*get_env_var(char *var_name, t_env *env);
+char	search_quote(char quote, char *copy, int len);
+void	join_until_dollar(t_token **cur_token, char *copy, int len);
+void	split_token(char *expanded, t_token **cur_token, char *copy);
 
 #endif

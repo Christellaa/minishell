@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:08:29 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/10 15:15:00 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/01/13 14:39:09 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,6 @@ int	parser(t_data *data)
 {
 	if (!data->token_list)
 		return (-1); // empty token list, not an error; uselful??
-	delete_empty_tokens(&data->token_list);
-	if (!data->token_list)
-		return (-1); // empty token list, not an error
 	replace_token_type(&data->token_list);
 	if (!validate_pipeline(data->token_list))
 		return (-2); // invalid pipeline order
