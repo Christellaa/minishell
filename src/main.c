@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/14 12:14:14 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:34:08 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,31 +19,34 @@ void	test_it(t_data *data)
 	tmp = data->token_list;
 	while (tmp)
 	{
-		printf("token type: %d, value: %s\n", tmp->type, tmp->value);
+		printf("token type: %d, value: [%s]\n", tmp->type, tmp->value);
 		tmp = tmp->next;
 	}
 }
 
 void	test_it_2(t_data *data)
 {
-	t_exec	*tmp;
+	t_exec		*tmp;
+	t_arg		*arg;
+	t_redirs	*redir;
 
 	tmp = data->exec_list;
 	while (tmp)
 	{
-		printf("cmd: %s\n", tmp->cmd);
-		while (tmp->arg_list)
+		arg = tmp->arg_list;
+		while (arg)
 		{
-			if (tmp->arg_list->value)
-				printf("arg: %s\n", tmp->arg_list->value);
-			tmp->arg_list = tmp->arg_list->next;
+			if (arg->value)
+				printf("arg: [%s]\n", arg->value);
+			arg = arg->next;
 		}
-		while (tmp->redirs)
+		redir = tmp->redirs;
+		while (redir)
 		{
-			if (tmp->redirs->value)
-				printf("redir val: %s, type: %d\n", tmp->redirs->value,
-					tmp->redirs->type);
-			tmp->redirs = tmp->redirs->next;
+			if (redir->value)
+				printf("redir val: [%s], type: %d\n", redir->value,
+					redir->type);
+			redir = redir->next;
 		}
 		printf("\n\nnext\n");
 		tmp = tmp->next;
@@ -52,20 +55,8 @@ void	test_it_2(t_data *data)
 
 void	process_input(t_data *data, char *input)
 {
-	if (lexer(data, input) == -1)
-	{
-		free(input);
+	if (parser(data, input) == -2)
 		return ;
-	}
-	free(input);
-	test_it(data); // testing lexing
-	if (parser(data) >= 0)
-	{
-		printf("do expander + execution\n");
-		expander(data);
-	}
-	else
-		printf("cleanup for next loop\n");
 	test_it(data); // testing parsing
 	create_exec_list(data);
 	test_it_2(data); // testing exec struct
@@ -93,6 +84,8 @@ int	main(int ac, char **av, char **envp)
 	if (!data || ac != 1)
 		return (1);
 	create_env_list(data, envp);
+	if (!data->env_list)
+		printf("Need to create env: oldpwd (export), pwd, shlvl, _\n");
 	while (1)
 	{
 		input = readline("minishell$ ");
@@ -110,4 +103,9 @@ int	main(int ac, char **av, char **envp)
 for export built-in:
 - assignment key can only be alphanumeric + underscore
 - if there's no '=' -> it will show in export() but not in env()
+- export() reorders the env (uppercase then lowercase)
 */
+
+// TODO:
+// parsing protection
+// create error messages (in .h) and their function

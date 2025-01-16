@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:55:32 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/14 16:57:06 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/16 15:32:26 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*get_env_var(char *var_name, t_env *env)
 			return (tmp_env->value);
 		tmp_env = tmp_env->next;
 	}
-	return (ft_strdup(""));
+	return (NULL);
 }
 
 char	search_quote(char quote, char *copy, int len)
@@ -75,4 +75,8 @@ void	split_token(char *expanded, t_token **cur_token, char *copy)
 	}
 	last->next = next;
 	last->value = ft_strjoin_free_s1(last->value, copy);
+	i = 0;
+	while (split[++i])
+		free(split[i]);
+	free(split);
 }

@@ -6,13 +6,13 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 13:45:25 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/09 20:57:40 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/16 14:02:51 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_env	*create_env_node(char *raw, char *key, char *value, int is_exported)
+t_env	*create_env_node(char *raw, char *key, char *value, int show_in_env)
 {
 	t_env	*new_env_pair;
 
@@ -28,7 +28,7 @@ t_env	*create_env_node(char *raw, char *key, char *value, int is_exported)
 	new_env_pair->value = ft_strdup(value);
 	if (!value)
 		return (free(new_env_pair), free(raw), free(key), NULL);
-	new_env_pair->is_exported = is_exported;
+	new_env_pair->show_in_env = show_in_env;
 	new_env_pair->next = NULL;
 	return (new_env_pair);
 }
@@ -78,8 +78,8 @@ void	add_env_node_to_list(t_env **env_list, t_env *new_env_pair)
 	}
 	else
 	{
-		new_env_pair->next = NULL;
 		(*env_list) = new_env_pair;
+		new_env_pair->next = NULL;
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 11:14:38 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/10 16:00:35 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/01/16 14:02:50 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,8 @@ typedef enum s_token_type
 	APPEND,     // >>
 	FILENAME,   // "infile" "Makefile" "outfile"
 	PIPE,       // |
-	CMD,        // ls "echo"
-	ARG,
-	// "-l" "hello" "$USER" "hello 'world'"
-	// "hello \'world\'" "hello "world"" "hello \"world\""
-	WORD // stops at PIPE, CHEVRON, space encountered
+	ARG,        // cmd, option, arg
+	WORD        // stops at PIPE, CHEVRON, or space
 }					t_token_type;
 
 typedef struct s_token
@@ -61,8 +58,7 @@ typedef struct s_redirs
 
 typedef struct s_exec
 {
-	char *cmd;        // ls
-	t_arg *arg_list;  // -l
+	t_arg *arg_list;  // cmd, option, arg: echo, -n, hello
 	t_redirs *redirs; // pipes, files
 	struct s_exec	*next;
 }					t_exec;
@@ -72,7 +68,7 @@ typedef struct s_env
 	char *raw;       // USER=cde-sous
 	char *key;       // USER
 	char *value;     // cde-sous
-	int is_exported; // if exported, then give to child processes
+	int show_in_env; // if exported, then give to child processes
 	struct s_env	*next;
 }					t_env;
 

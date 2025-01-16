@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 16:50:17 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/13 14:30:19 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/16 11:58:12 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	create_exec_node(t_exec **new_node)
 		printf("Malloc error\n");
 		return ;
 	}
-	(*new_node)->cmd = NULL;
 	(*new_node)->arg_list = NULL;
 	(*new_node)->redirs = NULL;
 	(*new_node)->next = NULL;
@@ -55,9 +54,7 @@ void	add_value_to_node(t_exec **node, char *value, int type)
 	t_arg		*last_arg;
 	t_redirs	*last_redir;
 
-	if (type == CMD)
-		(*node)->cmd = value;
-	else if (type == ARG)
+	if (type == ARG)
 	{
 		if (!(*node)->arg_list)
 		{

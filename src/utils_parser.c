@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:24:28 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/14 16:55:50 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/16 11:56:57 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,13 @@ void	replace_token_type(t_token **token_list)
 		if (tmp->type == WORD)
 		{
 			if (*token_list == tmp)
-				tmp->type = CMD;
+				tmp->type = ARG;
 			else
 			{
 				prev = get_prev_token(*token_list, tmp);
 				if (prev->type == INFILE || prev->type == HEREDOC
 					|| prev->type == TRUNC || prev->type == APPEND)
 					tmp->type = FILENAME;
-				else if (prev->type == PIPE)
-					tmp->type = CMD;
 				else
 					tmp->type = ARG;
 			}
