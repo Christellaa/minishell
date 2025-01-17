@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:28:40 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/17 09:54:37 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/17 15:27:13 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ char	*extract_word(char *input)
 		return (NULL);
 	i = get_word_len(input, 0);
 	if (i == -1)
-		return (print_error(5, QUOTE_ERR, NULL), NULL);
+		return (print_error(5, NULL, NULL), NULL);
 	word = ft_substr(input, 0, i);
 	if (!word)
-		return (print_error(6, MALLOC_ERR, NULL), NULL);
+		return (print_error(6, NULL, NULL), NULL);
 	return (word);
 }
 

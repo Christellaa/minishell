@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:46 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/17 14:16:35 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/17 15:27:23 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ t_token	*create_token(int type, char *value, int len)
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
 	{
-		print_error(6, MALLOC_ERR, NULL);
+		print_error(6, NULL, NULL);
 		return (free(value), NULL);
 	}
 	new_token->type = type;
 	new_token->value = ft_strndup(value, len);
 	if (!new_token->value)
 	{
-		print_error(6, MALLOC_ERR, NULL);
+		print_error(6, NULL, NULL);
 		return (free(new_token), NULL);
 	}
 	new_token->next = NULL;

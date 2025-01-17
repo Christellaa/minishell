@@ -6,11 +6,13 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/17 14:53:46 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/17 17:15:17 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+pid_t	g_signal;
 
 void	test_it(t_data *data)
 {
@@ -60,6 +62,7 @@ void	process_input(t_data *data, char *input)
 	test_it(data); // testing parsing
 	create_exec_list(data);
 	test_it_2(data); // testing exec struct
+	g_signal = 0;
 }
 
 void	init_data(t_data *data)
@@ -86,15 +89,15 @@ int	main(int ac, char **av, char **envp)
 	if (ac != 1)
 		return (1);
 	create_env_list(data, envp);
+	handle_signals();
 	while (1)
 	{
 		input = readline("minishell$ ");
 		if (!input)
-			break ;
+			return (printf("exit\n"), free(input), cleanup(data, 1), 0);
 		add_history(input);
 		process_input(data, input);
 		cleanup(data, 0);
-		break ;
 	}
 	rl_clear_history();
 	cleanup(data, 1);
@@ -106,7 +109,3 @@ for export built-in:
 - if there's no '=' -> it will show in export() but not in env()
 - export() reorders the env (uppercase then lowercase)
 */
-
-// TODO:
-// parsing protection
-// create error messages (in .h) and their function
