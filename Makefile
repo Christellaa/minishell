@@ -5,7 +5,7 @@ SRC := $(SRC_DIR)/main.c $(SRC_DIR)/env.c $(SRC_DIR)/lexer.c \
 		$(SRC_DIR)/utils_lexer.c $(SRC_DIR)/token_list.c $(SRC_DIR)/parser.c \
 		$(SRC_DIR)/utils_parser.c $(SRC_DIR)/cleanup.c \
 		$(SRC_DIR)/helpers.c $(SRC_DIR)/expander.c $(SRC_DIR)/utils_expander.c \
-		$(SRC_DIR)/exec_list.c
+		$(SRC_DIR)/utils_expander2.c $(SRC_DIR)/exec_list.c $(SRC_DIR)/utils_exec_list.c
 OBJS_DIR := ./obj
 OBJS := $(SRC:$(SRC_DIR)/%.c=$(OBJS_DIR)/%.o)
 INC_DIR := ./includes

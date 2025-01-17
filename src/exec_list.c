@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 16:50:17 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/16 11:58:12 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/17 14:50:59 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	create_exec_node(t_exec **new_node)
 	*new_node = malloc(sizeof(t_exec));
 	if (!new_node)
 	{
-		printf("Malloc error\n");
+		print_error(6, NULL, NULL);
 		return ;
 	}
 	(*new_node)->arg_list = NULL;
@@ -25,70 +25,13 @@ void	create_exec_node(t_exec **new_node)
 	(*new_node)->next = NULL;
 }
 
-t_arg	*find_last_arg(t_arg *arg)
-{
-	t_arg	*tmp;
-
-	tmp = arg;
-	if (!tmp)
-		return (NULL);
-	while (tmp->next)
-		tmp = tmp->next;
-	return (tmp);
-}
-
-t_redirs	*find_last_redir(t_redirs *redir)
-{
-	t_redirs	*tmp;
-
-	tmp = redir;
-	if (!tmp)
-		return (NULL);
-	while (tmp->next)
-		tmp = tmp->next;
-	return (tmp);
-}
-
 void	add_value_to_node(t_exec **node, char *value, int type)
 {
-	t_arg		*last_arg;
-	t_redirs	*last_redir;
-
 	if (type == ARG)
-	{
-		if (!(*node)->arg_list)
-		{
-			(*node)->arg_list = malloc(sizeof(t_arg)); // check fail
-			(*node)->arg_list->value = value;
-			(*node)->arg_list->next = NULL;
-		}
-		else
-		{
-			last_arg = find_last_arg((*node)->arg_list);
-			last_arg->next = malloc(sizeof(t_arg)); // check fail
-			last_arg->next->value = value;
-			last_arg->next->next = NULL;
-		}
-	}
+		add_arg_to_node(node, value);
 	else if (type == FILENAME || type == INFILE || type == HEREDOC
 		|| type == TRUNC || type == APPEND)
-	{
-		if (!(*node)->redirs)
-		{
-			(*node)->redirs = malloc(sizeof(t_redirs)); // check fail
-			(*node)->redirs->value = value;
-			(*node)->redirs->type = type;
-			(*node)->redirs->next = NULL;
-		}
-		else
-		{
-			last_redir = find_last_redir((*node)->redirs);
-			last_redir->next = malloc(sizeof(t_redirs)); // check fail
-			last_redir->next->value = value;
-			last_redir->next->type = type;
-			last_redir->next->next = NULL;
-		}
-	}
+		add_redir_to_node(node, value, type);
 }
 
 void	add_node_to_list(t_exec **exec_list, t_exec *node)

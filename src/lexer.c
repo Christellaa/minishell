@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:28:40 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/10 14:55:39 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/01/17 09:54:37 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	tokenize(t_token **tokens, char *word)
 	value = NULL;
 	value = create_token(type, word, len);
 	add_token_to_list(tokens, value);
+	if (!tokens || !value)
+		return (-1);
 	return (len);
 }
 
@@ -36,13 +38,10 @@ char	*extract_word(char *input)
 		return (NULL);
 	i = get_word_len(input, 0);
 	if (i == -1)
-	{
-		printf("unclosed quote\n");
-		return (NULL);
-	}
+		return (print_error(5, QUOTE_ERR, NULL), NULL);
 	word = ft_substr(input, 0, i);
 	if (!word)
-		return (NULL); // malloc error
+		return (print_error(6, MALLOC_ERR, NULL), NULL);
 	return (word);
 }
 
@@ -50,6 +49,7 @@ int	lexer(t_data *data, char *input)
 {
 	int		i;
 	char	*word;
+	int		len;
 
 	i = 0;
 	if (!input)
@@ -62,10 +62,13 @@ int	lexer(t_data *data, char *input)
 		{
 			word = extract_word(&input[i]);
 			if (!word)
-				return (-1);
-			i += tokenize(&data->token_list, word);
+				return (0);
+			len = tokenize(&data->token_list, word);
+			if (len == -1)
+				return (free(word), 0);
+			i += len;
 			free(word);
 		}
 	}
-	return (0);
+	return (1);
 }

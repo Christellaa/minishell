@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:01:56 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/16 16:08:59 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/17 09:40:43 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,25 @@ void	free_exec(t_exec *exec)
 	}
 }
 
-int	cleanup(t_data *data, int type)
+void	print_error(int flag, char *error, char *option)
+{
+	if (flag == 0)
+		printf("%s '%s'\n", SYNTAX_ERR, error);
+	else if (flag == 1)
+		printf("%s%s\n", error, CMD_ERR);
+	else if (flag == 2)
+		printf("%s%s '%s'\n", error, OPTION_ERR, option);
+	else if (flag == 3)
+		printf("%s%s\n", error, FILE_ERR);
+	else if (flag == 4)
+		printf("%s%s\n", error, FILE_DENY);
+	else if (flag == 5)
+		printf("%s\n", QUOTE_ERR);
+	else if (flag == 6)
+		printf("%s\n", MALLOC_ERR);
+}
+
+void	cleanup(t_data *data, int type)
 {
 	if (data)
 	{
@@ -92,5 +110,4 @@ int	cleanup(t_data *data, int type)
 			data->exec_list = NULL;
 		}
 	}
-	return (0);
 }

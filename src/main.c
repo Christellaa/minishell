@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/16 16:34:08 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/17 14:53:46 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	test_it_2(t_data *data)
 
 void	process_input(t_data *data, char *input)
 {
-	if (parser(data, input) == -2)
+	if (!parser(data, input))
 		return ;
 	test_it(data); // testing parsing
 	create_exec_list(data);
@@ -79,13 +79,13 @@ int	main(int ac, char **av, char **envp)
 
 	(void)av;
 	data = malloc(sizeof(t_data));
+	if (!data)
+		return (print_error(6, NULL, NULL), 1);
 	data = ft_memset(data, 0, sizeof(data));
 	init_data(data);
-	if (!data || ac != 1)
+	if (ac != 1)
 		return (1);
 	create_env_list(data, envp);
-	if (!data->env_list)
-		printf("Need to create env: oldpwd (export), pwd, shlvl, _\n");
 	while (1)
 	{
 		input = readline("minishell$ ");
@@ -94,6 +94,7 @@ int	main(int ac, char **av, char **envp)
 		add_history(input);
 		process_input(data, input);
 		cleanup(data, 0);
+		break ;
 	}
 	rl_clear_history();
 	cleanup(data, 1);

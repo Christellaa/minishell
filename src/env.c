@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 13:45:25 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/16 14:02:51 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/17 14:12:44 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,6 @@ void	create_env_list(t_data *data, char **envp)
 			add_env_node_to_list(&data->env_list, env_pair);
 		i++;
 	}
+	if (!data->env_list)
+		printf("Need to create env: oldpwd (export), pwd, shlvl, _\n");
 }

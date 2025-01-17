@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 10:26:46 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/09/25 09:38:22 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/17 11:17:31 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	buffer = malloc((len + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
-	while (s1[i])
+	while (s1 && s1[i])
 	{
 		buffer[i] = s1[i];
 		i++;
 	}
-	while (s2[j])
+	while (s2 && s2[j])
 	{
 		buffer[i + j] = s2[j];
 		j++;

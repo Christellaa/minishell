@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 16:16:12 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/14 15:45:26 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/17 11:16:46 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ char	*ft_strjoin_free_both(char *s1, char *s2)
 {
 	char	*s3;
 
-	if (!s1 || !s2)
-		return (NULL);
 	s3 = ft_strjoin(s1, s2);
 	free(s1);
 	free(s2);

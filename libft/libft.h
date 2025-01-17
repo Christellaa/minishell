@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 08:03:37 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/09 20:15:24 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/17 11:40:35 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "ft_dprintf/ft_dprintf.h"
 # include "ft_printf/ft_printf.h"
-# include "get_next_line/get_next_line.h"
 # include <fcntl.h>
 # include <limits.h>
 # include <stdint.h>
@@ -52,7 +51,7 @@ size_t				ft_strlen(const char *s);
 size_t				ft_strlcpy(char *dst, const char *src, size_t siz);
 size_t				ft_strlcat(char *dst, const char *src, size_t siz);
 char				*ft_strjoin(char const *s1, char const *s2);
-char				*ft_strjoin_free_s1(char *s1, const char *s2);
+char				*ft_strjoin_free_s1(char *s1, const char *s2, char *ptr);
 char				*ft_strnjoin(char *s1, char *s2, size_t n);
 char				*ft_strnjoin_free_s1(char *s1, char const *s2, size_t len);
 char				*ft_strdup(const char *s);

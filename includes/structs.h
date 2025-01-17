@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 11:14:38 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/16 14:02:50 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/17 09:10:52 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,6 @@
 # define STRUCTS_H
 
 # include "minishell.h"
-
-typedef enum s_error
-{
-	NEWLINE_ERR = 10, // something to do with chevron
-	QUOTES_ERR,       // quotes not finished
-	PIPE_ERR,         // double pipe?
-	SKIP_CMD,         // when cmd not found/executable
-	CHEVRON_ERR,      // >>> and +, <<< and +, ><
-}					t_error;
 
 typedef enum s_token_type
 {
@@ -76,10 +67,10 @@ typedef struct s_data
 {
 	t_token			*token_list;
 	t_exec			*exec_list;
-	int nb_cmd;      // to malloc t_exec
+	int nb_cmd;      // useless?
 	pid_t *pids;     // parent waiting, signals
 	int exit_code;   // last cmd, outfile
-	t_env *env_list; // environment list
+	t_env *env_list; // environment & export list
 }					t_data;
 
 #endif
