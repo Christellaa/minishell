@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/17 17:15:17 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/18 16:36:59 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ void	test_it_2(t_data *data)
 void	process_input(t_data *data, char *input)
 {
 	if (!parser(data, input))
+	{
+		data->exit_code = 1;
 		return ;
+	}
 	test_it(data); // testing parsing
 	create_exec_list(data);
 	test_it_2(data); // testing exec struct
@@ -71,7 +74,6 @@ void	init_data(t_data *data)
 	data->exec_list = NULL;
 	data->env_list = NULL;
 	data->exit_code = 0;
-	data->nb_cmd = 0;
 	data->pids = 0;
 }
 

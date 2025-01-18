@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 11:14:38 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/17 09:10:52 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/18 16:57:53 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ typedef struct s_exec
 {
 	t_arg *arg_list;  // cmd, option, arg: echo, -n, hello
 	t_redirs *redirs; // pipes, files
+	int				skip;
+	int				fdpipe[2];
 	struct s_exec	*next;
 }					t_exec;
 
@@ -67,7 +69,6 @@ typedef struct s_data
 {
 	t_token			*token_list;
 	t_exec			*exec_list;
-	int nb_cmd;      // useless?
 	pid_t *pids;     // parent waiting, signals
 	int exit_code;   // last cmd, outfile
 	t_env *env_list; // environment & export list

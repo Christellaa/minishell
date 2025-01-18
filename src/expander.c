@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 16:53:48 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/17 14:42:26 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/18 16:01:35 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,5 +116,7 @@ int	expander(t_data *data)
 		tmp = tmp->next;
 	}
 	delete_empty_tokens(&data->token_list);
+	if (!data->token_list)
+		return (0);
 	return (1);
 }
