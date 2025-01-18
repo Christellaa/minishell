@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:24:28 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/16 11:56:57 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/18 20:34:15 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	replace_token_type(t_token **token_list)
 	t_token	*tmp;
 	t_token	*prev;
 
+	if (!*token_list)
+		return ;
 	tmp = *token_list;
 	while (tmp)
 	{

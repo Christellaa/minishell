@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:01:56 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/17 09:40:43 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/18 19:48:22 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ void	print_error(int flag, char *error, char *option)
 		printf("%s\n", QUOTE_ERR);
 	else if (flag == 6)
 		printf("%s\n", MALLOC_ERR);
+	else if (flag == 7)
+		printf("%s\n", TOO_MANY_ARG);
 }
 
 void	cleanup(t_data *data, int type)

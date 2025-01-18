@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 16:53:48 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/18 16:01:35 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/18 21:03:53 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*handle_expansion(char *pos, t_data *data, int *to_split, char quote)
 	else if (*pos == SINGLE_QUOTE || *pos == DOUBLE_QUOTE)
 		return (NULL);
 	else if (*pos == '?')
-		var_value = ft_itoa(data->exit_code);
+		var_value = ft_itoa(g_signal);
 	else
 		var_value = fetch_env_value(pos, data, to_split);
 	if (!var_value)
@@ -110,13 +110,13 @@ int	expander(t_data *data)
 			prev = get_prev_token(prev, tmp);
 		if (prev->type != HEREDOC)
 			if (!expand_when_dollar(&tmp, data, quote))
-				return (0);
+				return (1);
 		if (!remove_external_quotes(&tmp))
-			return (0);
+			return (1);
 		tmp = tmp->next;
 	}
 	delete_empty_tokens(&data->token_list);
 	if (!data->token_list)
-		return (0);
-	return (1);
+		return (2);
+	return (3);
 }

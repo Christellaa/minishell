@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/18 14:05:32 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/18 19:49:26 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 // <a (no permission) -> a: Permission...
 # define QUOTE_ERR "Unclosed quote"
 # define MALLOC_ERR "Malloc error"
+# define TOO_MANY_ARG "Too many arguments. It should be [./minishell]"
 
 extern pid_t	g_signal;
 
@@ -75,8 +76,11 @@ int				tokenize(t_token **tokens, char *word);
 char			*extract_word(char *input);
 int				lexer(t_data *data, char *input);
 // parser.c
-int				is_order_valid(t_token *list, t_token *current, t_token *next);
-int				validate_pipeline(t_token *token_list);
+void			delete_token_chevron(t_token **list, t_token *current,
+					t_token **next);
+int				is_order_valid(t_token **list, t_token *current,
+					t_token **next);
+int				validate_pipeline(t_token **token_list);
 int				parser(t_data *data, char *input);
 // signals.c
 void			sig_int(int code);

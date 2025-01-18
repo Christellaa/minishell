@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:28:40 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/17 15:27:13 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/18 21:00:57 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	lexer(t_data *data, char *input)
 
 	i = 0;
 	if (!input)
-		return (0);
+		return (2);
 	while (input[i])
 	{
 		if (ft_isspace(input[i]))
@@ -65,10 +65,10 @@ int	lexer(t_data *data, char *input)
 				return (0);
 			len = tokenize(&data->token_list, word);
 			if (len == -1)
-				return (free(word), 0);
+				return (free(word), 1);
 			i += len;
 			free(word);
 		}
 	}
-	return (1);
+	return (3);
 }

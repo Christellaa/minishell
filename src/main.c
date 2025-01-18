@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/18 16:36:59 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/18 21:00:23 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,21 @@ void	test_it_2(t_data *data)
 
 void	process_input(t_data *data, char *input)
 {
-	if (!parser(data, input))
+	int	code;
+
+	code = 0;
+	code = parser(data, input);
+	if (code <= 2)
 	{
-		data->exit_code = 1;
+		if (!code)
+			g_signal = 2;
+		else if (code == 1)
+			g_signal = 1;
 		return ;
 	}
 	test_it(data); // testing parsing
 	create_exec_list(data);
 	test_it_2(data); // testing exec struct
-	g_signal = 0;
 }
 
 void	init_data(t_data *data)
@@ -73,7 +79,6 @@ void	init_data(t_data *data)
 	data->token_list = NULL;
 	data->exec_list = NULL;
 	data->env_list = NULL;
-	data->exit_code = 0;
 	data->pids = 0;
 }
 
@@ -83,13 +88,14 @@ int	main(int ac, char **av, char **envp)
 	t_data	*data;
 
 	(void)av;
+	g_signal = 0;
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (print_error(6, NULL, NULL), 1);
 	data = ft_memset(data, 0, sizeof(data));
 	init_data(data);
 	if (ac != 1)
-		return (1);
+		return (print_error(7, NULL, NULL), 1);
 	create_env_list(data, envp);
 	handle_signals();
 	while (1)
@@ -110,4 +116,10 @@ for export built-in:
 - assignment key can only be alphanumeric + underscore
 - if there's no '=' -> it will show in export() but not in env()
 - export() reorders the env (uppercase then lowercase)
+
+for signals:
+inside child processes:
+-> ctrl+d does nothing
+-> ctrl+c quits
+-> ctrl+\ quits (core dumped)
 */
