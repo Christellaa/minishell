@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/18 19:49:26 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/19 14:48:16 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int				is_order_valid(t_token **list, t_token *current,
 int				validate_pipeline(t_token **token_list);
 int				parser(t_data *data, char *input);
 // signals.c
-void			sig_int(int code);
+void			sig_int_quit(int code);
 void			handle_signals(void);
 // token_list.c
 t_token			*create_token(int type, char *value, int len);

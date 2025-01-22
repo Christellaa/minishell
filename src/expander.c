@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 16:53:48 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/18 21:03:53 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/19 14:26:48 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,11 @@ char	*handle_expansion(char *pos, t_data *data, int *to_split, char quote)
 	else if (*pos == SINGLE_QUOTE || *pos == DOUBLE_QUOTE)
 		return (NULL);
 	else if (*pos == '?')
-		var_value = ft_itoa(g_signal);
+	{
+		if (g_signal != 0)
+			data->exit_code = g_signal;
+		var_value = ft_itoa(data->exit_code);
+	}
 	else
 		var_value = fetch_env_value(pos, data, to_split);
 	if (!var_value)

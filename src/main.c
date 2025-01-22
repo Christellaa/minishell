@@ -6,13 +6,13 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/18 21:00:23 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/22 14:04:27 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-pid_t	g_signal;
+int		g_signal;
 
 void	test_it(t_data *data)
 {
@@ -61,17 +61,25 @@ void	process_input(t_data *data, char *input)
 
 	code = 0;
 	code = parser(data, input);
+	g_signal = 0;
 	if (code <= 2)
 	{
 		if (!code)
-			g_signal = 2;
+			data->exit_code = 2;
 		else if (code == 1)
-			g_signal = 1;
+			data->exit_code = 1;
+		else
+			data->exit_code = 0;
 		return ;
 	}
 	test_it(data); // testing parsing
 	create_exec_list(data);
 	test_it_2(data); // testing exec struct
+	if (!execute(data))
+	{
+		data->exit_code = 1;
+		return ;
+	}
 }
 
 void	init_data(t_data *data)
@@ -79,7 +87,7 @@ void	init_data(t_data *data)
 	data->token_list = NULL;
 	data->exec_list = NULL;
 	data->env_list = NULL;
-	data->pids = 0;
+	data->exit_code = 0;
 }
 
 int	main(int ac, char **av, char **envp)
@@ -107,9 +115,13 @@ int	main(int ac, char **av, char **envp)
 		process_input(data, input);
 		cleanup(data, 0);
 	}
-	rl_clear_history();
-	cleanup(data, 1);
 }
+
+/*
+TODO:
+- exit_code pendant print_error
+- creer env quand ca exist pas
+*/
 
 /*
 for export built-in:
@@ -120,6 +132,40 @@ for export built-in:
 for signals:
 inside child processes:
 -> ctrl+d does nothing
--> ctrl+c quits
--> ctrl+\ quits (core dumped)
+-> ctrl+c stop process => 130
+-> ctrl+\ stop process (core dumped) => 131
+
+for execution:
+-> signals don't copy to child process
+-> STDIN and STDOUT must be dup before dup2 when exec is in main process,
+	then dup2 modified with original ones before closing modified ones
+eg:
+save_out = dup(STDOUT);
+fd = open(WRITE);
+dup2(fd, STDOUT);
+exec
+dup2(save_out, STDOUT);
+close(save_out);
+
+si plusieurs nodes ou pas builtin:
+1. pipe(pipefd) pour chaque node sauf le dernier où pipefd[0] = pipefd[1] = -1
+2. loop through nodes
+- fork
+- handle redirs:
+-- if there are redirs:
+--- loop through redirs
+----open file
+----- if heredoc -> open WRITE, nommer, ecrire dedans, close et open READ
+---- dup2 file with stdin or stdout
+---- close file
+-- if it's not the last node:
+--- if there are no redirs CHEVRON_GAUCHE && there's a prev node:
+	dup2 prevfdout with STDIN
+--- if there are no redirs CHEVRON_DROITE
+	&& there's a next node: dup2 pipefd[1] with STDOUT
+--- close pipefd[0], pipefd[1] and prevfdout
+- handle path
+- execve
+3. waitpid
 */
+// ls > a > b > c | wc - l

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 16:50:17 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/18 16:59:58 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/19 18:43:56 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@ void	create_exec_node(t_exec **new_node)
 	}
 	(*new_node)->arg_list = NULL;
 	(*new_node)->redirs = NULL;
+	(*new_node)->pid = -1;
 	(*new_node)->skip = 0;
-	(*new_node)->fdpipe[0] = STDIN_FILENO;
-	(*new_node)->fdpipe[1] = STDOUT_FILENO;
+	(*new_node)->pipefd[0] = -1;
+	(*new_node)->pipefd[1] = -1;
 	(*new_node)->next = NULL;
 }
 

@@ -101,8 +101,9 @@ void	cleanup(t_data *data, int type)
 			if (data->env_list)
 				free_env(data->env_list);
 			free(data);
+			rl_clear_history();
 		}
-		if (type == 0) // cleanup at each loop
+		else if (type == 0) // cleanup at each loop
 		{
 			if (data->token_list)
 				free_tokens(data->token_list);

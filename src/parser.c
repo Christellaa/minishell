@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:08:29 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/18 21:01:27 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/19 14:38:34 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,15 @@ int	is_order_valid(t_token **list, t_token *current, t_token **next)
 int	validate_pipeline(t_token **token_list)
 {
 	t_token	*current;
+	t_token	*next;
 
 	current = *token_list;
 	while (current)
 	{
-		if (!is_order_valid(token_list, current, &current->next))
+		next = current->next;
+		if (!is_order_valid(token_list, current, &next))
 			return (0);
-		current = current->next;
+		current = next;
 	}
 	return (1);
 }
