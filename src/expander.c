@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 16:53:48 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/19 14:26:48 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/22 15:51:41 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ char	*handle_expansion(char *pos, t_data *data, int *to_split, char quote)
 	else if (*pos == '?')
 	{
 		if (g_signal != 0)
+		{
 			data->exit_code = g_signal;
+			g_signal = 0;
+		}
 		var_value = ft_itoa(data->exit_code);
 	}
 	else
@@ -80,7 +83,7 @@ int	expand_when_dollar(t_token **token, t_data *data, char quote)
 
 	copy = init_copy(token);
 	if (!copy)
-		return (0);
+		return (1);
 	tmp = copy;
 	while (ft_strchr(copy, '$'))
 	{
@@ -91,12 +94,12 @@ int	expand_when_dollar(t_token **token, t_data *data, char quote)
 			return (split_token(expanded, token, copy, tmp));
 		(*token)->value = ft_strjoin_free_both((*token)->value, expanded);
 		if (!(*token)->value)
-			return (print_error(6, NULL, NULL), free(tmp), 0);
+			return (free(tmp), print_error(6, NULL, NULL));
 	}
 	(*token)->value = ft_strjoin_free_s1((*token)->value, copy, tmp);
 	if (!(*token)->value)
-		return (print_error(6, NULL, NULL), 0);
-	return (1);
+		return (print_error(6, NULL, NULL));
+	return (0);
 }
 
 int	expander(t_data *data)
@@ -113,14 +116,18 @@ int	expander(t_data *data)
 		if (prev != data->token_list)
 			prev = get_prev_token(prev, tmp);
 		if (prev->type != HEREDOC)
-			if (!expand_when_dollar(&tmp, data, quote))
-				return (1);
-		if (!remove_external_quotes(&tmp))
-			return (1);
+			if (expand_when_dollar(&tmp, data, quote))
+			{
+				data->exit_code = 1;
+				return (0);
+			}
+		if (!remove_external_quotes(&tmp, data))
+			return (0);
 		tmp = tmp->next;
 	}
 	delete_empty_tokens(&data->token_list);
 	if (!data->token_list)
-		return (2);
-	return (3);
+		return (0);
+	data->exit_code = 0;
+	return (1);
 }

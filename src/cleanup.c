@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:01:56 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/18 19:48:22 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/22 14:43:09 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,24 +66,43 @@ void	free_exec(t_exec *exec)
 	}
 }
 
-void	print_error(int flag, char *error, char *option)
+int	get_err_code(int flag)
 {
-	if (flag == 0)
-		printf("%s '%s'\n", SYNTAX_ERR, error);
+	int	code;
+
+	if (flag == 3 || flag == 4 || flag == 6 || flag == 7 || flag == 8)
+		code = 1;
+	else if (flag == 0 || flag == 2 || flag == 5)
+		code = 2;
 	else if (flag == 1)
+		code = 127;
+	return (code);
+}
+
+int	print_error(int flag, char *error, char *option)
+{
+	int	code;
+
+	code = get_err_code(flag);
+	if (flag == 0) // 2
+		printf("%s '%s'\n", SYNTAX_ERR, error);
+	else if (flag == 1) // 127
 		printf("%s%s\n", error, CMD_ERR);
-	else if (flag == 2)
+	else if (flag == 2) // 2
 		printf("%s%s '%s'\n", error, OPTION_ERR, option);
-	else if (flag == 3)
+	else if (flag == 3) // 1
 		printf("%s%s\n", error, FILE_ERR);
-	else if (flag == 4)
+	else if (flag == 4) // 1
 		printf("%s%s\n", error, FILE_DENY);
-	else if (flag == 5)
+	else if (flag == 5) // 2
 		printf("%s\n", QUOTE_ERR);
-	else if (flag == 6)
+	else if (flag == 6) // 1
 		printf("%s\n", MALLOC_ERR);
-	else if (flag == 7)
+	else if (flag == 7) // 1
 		printf("%s\n", TOO_MANY_ARG);
+	else if (flag == 8) // 1; function errors
+		printf("%s error", error);
+	return (code);
 }
 
 void	cleanup(t_data *data, int type)

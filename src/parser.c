@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:08:29 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/19 14:38:34 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/22 15:53:12 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,35 +33,40 @@ int	is_order_valid(t_token **list, t_token *current, t_token **next)
 	if (current->type == PIPE)
 	{
 		if (current == *list || !*next || (*next && (*next)->type == PIPE))
-			return (print_error(0, "|", NULL), 0);
+			return (print_error(0, "|", NULL));
 	}
 	else if (current->type == INFILE || current->type == HEREDOC
 		|| current->type == TRUNC || current->type == APPEND)
 	{
 		if (!*next)
-			return (print_error(0, "newline", NULL), 0);
+			return (print_error(0, "newline", NULL));
 		else if (*next && (*next)->type != FILENAME)
-			return (print_error(0, (*next)->value, NULL), 0);
+			return (print_error(0, (*next)->value, NULL));
 		else
 		{
 			(*next)->type = current->type;
 			delete_token_chevron(list, current, next);
 		}
 	}
-	return (1);
+	return (0);
 }
 
-int	validate_pipeline(t_token **token_list)
+int	validate_pipeline(t_token **token_list, t_data *data)
 {
 	t_token	*current;
 	t_token	*next;
+	int		code;
 
 	current = *token_list;
 	while (current)
 	{
 		next = current->next;
-		if (!is_order_valid(token_list, current, &next))
+		code = is_order_valid(token_list, current, &next);
+		if (code != 0)
+		{
+			data->exit_code = code;
 			return (0);
+		}
 		current = next;
 	}
 	return (1);
@@ -69,16 +74,14 @@ int	validate_pipeline(t_token **token_list)
 
 int	parser(t_data *data, char *input)
 {
-	int	code;
-
-	code = 0;
-	code = lexer(data, input);
+	if (!lexer(data, input))
+	{
+		free(input);
+		return (0);
+	}
 	free(input);
-	if (code <= 2)
-		return (code);
 	replace_token_type(&data->token_list);
-	code = validate_pipeline(&data->token_list);
-	if (!code)
-		return (code);
+	if (!validate_pipeline(&data->token_list, data))
+		return (0);
 	return (expander(data));
 }

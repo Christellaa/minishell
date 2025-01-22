@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:21:59 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/17 14:37:12 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/22 15:50:34 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*join_str_without_external_quotes(char *value, char quote)
 
 	new_value = ft_strdup("");
 	if (!new_value)
-		return (print_error(6, NULL, NULL), NULL);
+		return (NULL);
 	while (*value)
 	{
 		if ((*value == SINGLE_QUOTE || *value == DOUBLE_QUOTE) && quote == '\0')
@@ -43,11 +43,10 @@ char	*join_str_without_external_quotes(char *value, char quote)
 		{
 			str = ft_char_to_str(*value);
 			if (!str)
-				return (print_error(6, NULL, NULL), NULL);
+				return (NULL);
 			new_value = ft_strjoin_free_both(new_value, str);
 			if (!new_value)
-				return (print_error(6, NULL, NULL), free(new_value), free(str),
-					NULL);
+				return (free(new_value), free(str), NULL);
 		}
 		else if (quote == *value)
 			quote = '\0';
@@ -56,7 +55,7 @@ char	*join_str_without_external_quotes(char *value, char quote)
 	return (new_value);
 }
 
-int	remove_external_quotes(t_token **token)
+int	remove_external_quotes(t_token **token, t_data *data)
 {
 	char	quote;
 	char	*value;
@@ -66,7 +65,10 @@ int	remove_external_quotes(t_token **token)
 	value = (*token)->value;
 	new_value = join_str_without_external_quotes(value, quote);
 	if (!new_value)
+	{
+		data->exit_code = print_error(6, NULL, NULL);
 		return (0);
+	}
 	free((*token)->value);
 	(*token)->value = new_value;
 	return (1);

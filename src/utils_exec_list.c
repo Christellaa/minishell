@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:50:39 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/18 17:45:54 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/22 15:56:23 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_redirs	*find_last_redir(t_redirs *redir)
 	return (tmp);
 }
 
-void	add_arg_to_node(t_exec **node, char *value)
+int	add_arg_to_node(t_exec **node, char *value)
 {
 	t_arg	*last_arg;
 
@@ -44,7 +44,7 @@ void	add_arg_to_node(t_exec **node, char *value)
 	{
 		(*node)->arg_list = malloc(sizeof(t_arg));
 		if (!(*node)->arg_list)
-			return (print_error(6, NULL, NULL));
+			return (0);
 		(*node)->arg_list->value = value;
 		(*node)->arg_list->next = NULL;
 	}
@@ -53,13 +53,14 @@ void	add_arg_to_node(t_exec **node, char *value)
 		last_arg = find_last_arg((*node)->arg_list);
 		last_arg->next = malloc(sizeof(t_arg));
 		if (!last_arg->next)
-			return (print_error(6, NULL, NULL));
+			return (0);
 		last_arg->next->value = value;
 		last_arg->next->next = NULL;
 	}
+	return (1);
 }
 
-void	add_redir_to_node(t_exec **node, char *value, int type)
+int	add_redir_to_node(t_exec **node, char *value, int type)
 {
 	t_redirs	*last_redir;
 
@@ -67,7 +68,7 @@ void	add_redir_to_node(t_exec **node, char *value, int type)
 	{
 		(*node)->redirs = malloc(sizeof(t_redirs));
 		if (!(*node)->redirs)
-			return (print_error(6, NULL, NULL));
+			return (0);
 		(*node)->redirs->value = value;
 		(*node)->redirs->type = type;
 		(*node)->redirs->next = NULL;
@@ -77,9 +78,10 @@ void	add_redir_to_node(t_exec **node, char *value, int type)
 		last_redir = find_last_redir((*node)->redirs);
 		last_redir->next = malloc(sizeof(t_redirs));
 		if (!last_redir->next)
-			return (print_error(6, NULL, NULL));
+			return (0);
 		last_redir->next->value = value;
 		last_redir->next->type = type;
 		last_redir->next->next = NULL;
 	}
+	return (1);
 }

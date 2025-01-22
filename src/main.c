@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/22 14:04:27 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/22 16:05:21 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,29 +57,14 @@ void	test_it_2(t_data *data)
 
 void	process_input(t_data *data, char *input)
 {
-	int	code;
-
-	code = 0;
-	code = parser(data, input);
-	g_signal = 0;
-	if (code <= 2)
-	{
-		if (!code)
-			data->exit_code = 2;
-		else if (code == 1)
-			data->exit_code = 1;
-		else
-			data->exit_code = 0;
+	if (!parser(data, input))
 		return ;
-	}
 	test_it(data); // testing parsing
-	create_exec_list(data);
-	test_it_2(data); // testing exec struct
-	if (!execute(data))
-	{
-		data->exit_code = 1;
+	if (!create_exec_list(data))
 		return ;
-	}
+	test_it_2(data); // testing exec struct
+						// if (!execute(data))
+						// 	return ;
 }
 
 void	init_data(t_data *data)
@@ -119,7 +104,6 @@ int	main(int ac, char **av, char **envp)
 
 /*
 TODO:
-- exit_code pendant print_error
 - creer env quand ca exist pas
 */
 

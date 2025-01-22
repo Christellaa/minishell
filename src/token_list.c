@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:46 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/17 15:27:23 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/22 15:16:24 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,11 @@ t_token	*create_token(int type, char *value, int len)
 
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
-	{
-		print_error(6, NULL, NULL);
 		return (free(value), NULL);
-	}
 	new_token->type = type;
 	new_token->value = ft_strndup(value, len);
 	if (!new_token->value)
-	{
-		print_error(6, NULL, NULL);
 		return (free(new_token), NULL);
-	}
 	new_token->next = NULL;
 	return (new_token);
 }
@@ -68,15 +62,15 @@ int	create_and_add_token(t_token **cur_token, char *copy, char **split)
 	{
 		new_token = create_token(ARG, split[i], ft_strlen(split[i]));
 		if (!new_token)
-			return (print_error(6, NULL, NULL), 0);
+			return (print_error(6, NULL, NULL));
 		last->next = new_token;
 		last = new_token;
 	}
 	last->next = next;
 	last->value = ft_strjoin_free_s1(last->value, copy, NULL);
 	if (!last->value)
-		return (print_error(6, NULL, NULL), 0);
-	return (1);
+		return (print_error(6, NULL, NULL));
+	return (0);
 }
 
 int	split_token(char *expanded, t_token **cur_token, char *copy, char *tmp)
@@ -87,18 +81,16 @@ int	split_token(char *expanded, t_token **cur_token, char *copy, char *tmp)
 
 	split = ft_split(expanded, ' ');
 	if (!split)
-		return (print_error(6, NULL, NULL), 0);
+		return (print_error(6, NULL, NULL));
 	free(expanded);
 	(*cur_token)->value = ft_strjoin_free_both((*cur_token)->value, split[0]);
 	if (!(*cur_token)->value)
-		return (print_error(6, NULL, NULL), 0);
+		return (print_error(6, NULL, NULL));
 	split_res = create_and_add_token(cur_token, copy, split);
 	i = 0;
 	while (split[++i])
 		free(split[i]);
 	free(split);
 	free(tmp);
-	if (!split_res)
-		return (0);
-	return (1);
+	return (split_res);
 }

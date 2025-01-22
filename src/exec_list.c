@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 16:50:17 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/19 18:43:56 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/22 16:01:01 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,26 @@ void	create_exec_node(t_exec **new_node)
 	(*new_node)->next = NULL;
 }
 
-void	add_value_to_node(t_exec **node, char *value, int type)
+int	add_value_to_node(t_exec **node, char *value, int type, t_data *data)
 {
 	if (type == ARG)
-		add_arg_to_node(node, value);
+	{
+		if (!add_arg_to_node(node, value))
+		{
+			data->exit_code = 1;
+			return (0);
+		}
+	}
 	else if (type == FILENAME || type == INFILE || type == HEREDOC
 		|| type == TRUNC || type == APPEND)
-		add_redir_to_node(node, value, type);
+	{
+		if (!add_redir_to_node(node, value, type))
+		{
+			data->exit_code = 1;
+			return (0);
+		}
+	}
+	return (1);
 }
 
 void	add_node_to_list(t_exec **exec_list, t_exec *node)
@@ -59,9 +72,12 @@ int	create_and_add_node_to_list(t_data *data, t_exec **new_node)
 {
 	create_exec_node(new_node);
 	if (!new_node)
-		return (-1);
+	{
+		data->exit_code = 1;
+		return (0);
+	}
 	add_node_to_list(&(data->exec_list), *new_node);
-	return (0);
+	return (1);
 }
 
 int	create_exec_list(t_data *data)
@@ -74,18 +90,19 @@ int	create_exec_list(t_data *data)
 	{
 		if (token == data->token_list)
 		{
-			if (create_and_add_node_to_list(data, &new_node) == -1)
-				return (-1);
-			add_value_to_node(&new_node, token->value, token->type);
+			if (!create_and_add_node_to_list(data, &new_node))
+				return (0);
+			if (!add_value_to_node(&new_node, token->value, token->type, data))
+				return (0);
 		}
 		else if (token->type == PIPE)
 		{
-			if (create_and_add_node_to_list(data, &new_node) == -1)
-				return (-1);
+			if (!create_and_add_node_to_list(data, &new_node))
+				return (0);
 		}
-		else
-			add_value_to_node(&new_node, token->value, token->type);
+		else if (!add_value_to_node(&new_node, token->value, token->type, data))
+			return (0);
 		token = token->next;
 	}
-	return (0);
+	return (1);
 }
