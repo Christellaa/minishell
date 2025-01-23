@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 13:45:25 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/17 14:12:44 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/22 21:13:38 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,46 +20,63 @@ t_env	*create_env_node(char *raw, char *key, char *value, int show_in_env)
 	if (!new_env_pair)
 		return (NULL);
 	new_env_pair->raw = ft_strdup(raw);
-	if (!raw)
+	if (!new_env_pair->raw)
 		return (free(new_env_pair), NULL);
 	new_env_pair->key = ft_strdup(key);
-	if (!key)
-		return (free(new_env_pair), free(raw), NULL);
-	new_env_pair->value = ft_strdup(value);
+	if (!new_env_pair->key)
+		return (free(new_env_pair->raw), free(new_env_pair), NULL);
 	if (!value)
-		return (free(new_env_pair), free(raw), free(key), NULL);
+		new_env_pair->value = NULL;
+	new_env_pair->value = ft_strdup(value);
+	if (value && !new_env_pair->value)
+		return (free(new_env_pair->raw), free(new_env_pair->key),
+			free(new_env_pair), NULL);
 	new_env_pair->show_in_env = show_in_env;
 	new_env_pair->next = NULL;
 	return (new_env_pair);
+}
+
+t_env	*create_env_pair(char *raw, char *equal_pos)
+{
+	t_env	*new_env_pair;
+	char	*key;
+	char	*value;
+
+	if (!equal_pos) // 'VAR'
+	{
+		key = ft_strdup(raw);
+		if (!key)
+			return (NULL);
+		value = NULL;
+		new_env_pair = create_env_node(raw, key, value, 0);
+	}
+	else // 'VAR=' or 'VAR=val'
+	{
+		key = ft_substr(raw, 0, equal_pos - raw);
+		if (!key)
+			return (NULL);
+		value = get_value(equal_pos);
+		if (!value)
+			return (free(key), NULL);
+		new_env_pair = create_env_node(raw, key, value, 1);
+	}
+	return (free(key), free(value), new_env_pair);
 }
 
 t_env	*get_env_pair(char *current_env_pair)
 {
 	t_env	*new_env_pair;
 	char	*raw;
-	char	*key;
-	char	*value;
 	char	*equal_pos;
 
-	equal_pos = ft_strchr(current_env_pair, '=');
-	if (!equal_pos)
-		return (NULL);
 	raw = ft_strdup(current_env_pair);
 	if (!raw)
 		return (NULL);
-	key = ft_substr(current_env_pair, 0, equal_pos - current_env_pair);
-	if (!key)
-		return (free(raw), NULL);
-	value = get_value(equal_pos);
-	if (!value)
-		return (free(raw), free(key), NULL);
-	new_env_pair = create_env_node(raw, key, value, 1);
+	equal_pos = ft_strchr(raw, '=');
+	new_env_pair = create_env_pair(raw, equal_pos);
 	if (!new_env_pair)
-		return (free(raw), free(key), free(value), NULL);
-	free(raw);
-	free(key);
-	free(value);
-	return (new_env_pair);
+		return (free(raw), NULL);
+	return (free(raw), new_env_pair);
 }
 
 void	add_env_node_to_list(t_env **env_list, t_env *new_env_pair)
@@ -83,7 +100,7 @@ void	add_env_node_to_list(t_env **env_list, t_env *new_env_pair)
 	}
 }
 
-void	create_env_list(t_data *data, char **envp)
+int	create_env_list(t_data *data, char **envp)
 {
 	t_env	*env_pair;
 	int		i;
@@ -93,10 +110,15 @@ void	create_env_list(t_data *data, char **envp)
 	while (envp[i])
 	{
 		env_pair = get_env_pair(envp[i]);
-		if (env_pair)
-			add_env_node_to_list(&data->env_list, env_pair);
+		if (!env_pair)
+			return (print_error(6, NULL, NULL), 0);
+		add_env_node_to_list(&data->env_list, env_pair);
 		i++;
 	}
+	if (!*envp)
+		if (!create_env_list2(data))
+			return (0);
 	if (!data->env_list)
-		printf("Need to create env: oldpwd (export), pwd, shlvl, _\n");
+		return (0);
+	return (1);
 }

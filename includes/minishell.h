@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/22 15:59:43 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/22 21:11:49 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ t_env			*create_env_node(char *raw, char *key, char *value,
 					int show_in_env);
 t_env			*get_env_pair(char *current_env);
 void			add_env_node_to_list(t_env **env_list, t_env *new_env);
-void			create_env_list(t_data *data, char **envp);
+int				create_env_list(t_data *data, char **envp);
+// env2.c
+int				create_env_list2(t_data *data);
 // exec_list.c
 void			create_exec_node(t_exec **new_node);
 int				add_value_to_node(t_exec **node, char *value, int type,

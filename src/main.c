@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/22 16:05:21 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/22 21:36:50 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ int	main(int ac, char **av, char **envp)
 	init_data(data);
 	if (ac != 1)
 		return (print_error(7, NULL, NULL), 1);
-	create_env_list(data, envp);
+	if (!create_env_list(data, envp))
+		return (cleanup(data, 1), 1);
 	handle_signals();
 	while (1)
 	{
@@ -104,14 +105,24 @@ int	main(int ac, char **av, char **envp)
 
 /*
 TODO:
-- creer env quand ca exist pas
+- augmenter shlvl a chaque ouverture de ./minishell
+=> implement a way to persist the env (save to a file?)
+- _ = dernier arg d'un node solo (cmd incluse)
+*/
+
+/*
+QUESTIONS:
+- what's the FD_MAX allowed?
+- what's the SHLVL_MAX allowed?
 */
 
 /*
 for export built-in:
 - assignment key can only be alphanumeric + underscore
 - if there's no '=' -> it will show in export() but not in env()
+- if show_in_env = 2 -> it will show in env() but not in export()
 - export() reorders the env (uppercase then lowercase)
+	+ show value inside double quotes
 
 for signals:
 inside child processes:
