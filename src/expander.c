@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 16:53:48 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/22 15:51:41 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/23 11:11:23 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,18 +116,17 @@ int	expander(t_data *data)
 		if (prev != data->token_list)
 			prev = get_prev_token(prev, tmp);
 		if (prev->type != HEREDOC)
+		{
 			if (expand_when_dollar(&tmp, data, quote))
 			{
 				data->exit_code = 1;
 				return (0);
 			}
+		}
 		if (!remove_external_quotes(&tmp, data))
 			return (0);
 		tmp = tmp->next;
 	}
 	delete_empty_tokens(&data->token_list);
-	if (!data->token_list)
-		return (0);
-	data->exit_code = 0;
 	return (1);
 }

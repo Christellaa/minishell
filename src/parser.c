@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:08:29 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/22 15:53:12 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/23 11:11:34 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,8 @@ int	parser(t_data *data, char *input)
 	replace_token_type(&data->token_list);
 	if (!validate_pipeline(&data->token_list, data))
 		return (0);
-	return (expander(data));
+	if (!expander(data) || !data->token_list)
+		return (0);
+	data->exit_code = 0;
+	return (1);
 }

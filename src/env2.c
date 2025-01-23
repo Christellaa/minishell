@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:58:42 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/22 21:23:16 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/23 11:05:49 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,10 @@ int	*get_exported(void)
 int	create_env_list2(t_data *data)
 {
 	t_env	*new_node;
+	char	**raw;
 	char	**keys;
 	char	**values;
 	int		*exported;
-	int		i;
-	char	**raw;
 
 	raw = get_raw();
 	keys = get_keys();
@@ -119,13 +118,16 @@ int	create_env_list2(t_data *data)
 	exported = get_exported();
 	if (!raw || !keys || !values || !exported)
 		return (print_error(6, NULL, NULL), 0);
-	i = -1;
-	while (++i < 4)
+	while (*raw)
 	{
-		new_node = create_env_node(raw[i], keys[i], values[i], exported[i]);
+		new_node = create_env_node(*raw, *keys, *values, *exported);
 		if (!new_node)
 			return (print_error(6, NULL, NULL), 0);
 		add_env_node_to_list(&data->env_list, new_node);
+		raw++;
+		keys++;
+		values++;
+		exported++;
 	}
 	return (1);
 }
