@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/23 11:06:43 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/26 16:57:00 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,7 @@ void	process_input(t_data *data, char *input)
 	if (!create_exec_list(data))
 		return ;
 	test_it_2(data); // testing exec struct
-						// if (!execute(data))
-						// 	return ;
+						// execute(data));
 }
 
 void	init_data(t_data *data)
@@ -146,19 +145,16 @@ si plusieurs nodes ou pas builtin:
 1. pipe(pipefd) pour chaque node sauf le dernier où pipefd[0] = pipefd[1] = -1
 2. loop through nodes
 - fork
+- handle pipe_fds
+-- STDIN will be prev_fd[1] -> if there's a prev node
+-- STDOUT will be current_fd[1] -> if there's a next node
 - handle redirs:
--- if there are redirs:
---- loop through redirs
-----open file
------ if heredoc -> open WRITE, nommer, ecrire dedans, close et open READ
----- dup2 file with stdin or stdout
----- close file
--- if it's not the last node:
---- if there are no redirs CHEVRON_GAUCHE && there's a prev node:
-	dup2 prevfdout with STDIN
---- if there are no redirs CHEVRON_DROITE
-	&& there's a next node: dup2 pipefd[1] with STDOUT
---- close pipefd[0], pipefd[1] and prevfdout
+-- loop through redirs
+--- open file
+---- if heredoc -> open WRITE, nommer, ecrire dedans, close et open READ
+--- dup2 file with stdin or stdout
+--- close file
+-- close all fds
 - handle path
 - execve
 3. waitpid

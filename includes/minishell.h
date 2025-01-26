@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/22 21:11:49 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/23 12:23:56 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 // abc -> abc: command...
 # define OPTION_ERR ": invalid option --"
 // ls -z -> ls: invalid option -- 'z'
-# define FILE_ERR ": No such file or directory"
+# define FILE_ERR ": No such file or directory" // if redir = 1, if cmd = 127
 // <a (inexistant) -> a: No...
 # define FILE_DENY ": Permission denied"
 // <a (no permission) -> a: Permission...
