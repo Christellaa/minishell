@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 11:14:38 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/19 18:43:40 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/27 21:09:10 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,17 @@ typedef struct s_arg
 	struct s_arg	*next;
 }					t_arg;
 
-typedef struct s_redirs
+typedef struct s_files
 {
 	char *value;       // file.txt, >
 	t_token_type type; // filename, trunc
-	struct s_redirs	*next;
-}					t_redirs;
+	struct s_files	*next;
+}					t_files;
 
 typedef struct s_exec
 {
-	t_arg *arg_list;  // cmd, option, arg: echo, -n, hello
-	t_redirs *redirs; // files
+	t_arg *arg_list; // cmd, option, arg: echo, -n, hello
+	t_files *files;  // files
 	pid_t			pid;
 	int				skip;
 	int				pipefd[2];

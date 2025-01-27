@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:01:56 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/22 14:43:09 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/27 21:09:10 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ void	free_tokens(t_token *token)
 
 void	free_exec(t_exec *exec)
 {
-	t_exec		*tmp;
-	t_arg		*arg;
-	t_redirs	*redir;
+	t_exec	*tmp;
+	t_arg	*arg;
+	t_files	*file;
 
 	while (exec)
 	{
@@ -56,11 +56,11 @@ void	free_exec(t_exec *exec)
 			tmp->arg_list = tmp->arg_list->next;
 			free(arg);
 		}
-		while (tmp->redirs)
+		while (tmp->files)
 		{
-			redir = tmp->redirs;
-			tmp->redirs = tmp->redirs->next;
-			free(redir);
+			file = tmp->files;
+			tmp->files = tmp->files->next;
+			free(file);
 		}
 		free(tmp);
 	}

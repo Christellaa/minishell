@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/26 16:57:00 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/27 21:09:28 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	test_it(t_data *data)
 
 void	test_it_2(t_data *data)
 {
-	t_exec		*tmp;
-	t_arg		*arg;
-	t_redirs	*redir;
+	t_exec	*tmp;
+	t_arg	*arg;
+	t_files	*file;
 
 	tmp = data->exec_list;
 	while (tmp)
@@ -42,13 +42,12 @@ void	test_it_2(t_data *data)
 				printf("arg: [%s]\n", arg->value);
 			arg = arg->next;
 		}
-		redir = tmp->redirs;
-		while (redir)
+		file = tmp->files;
+		while (file)
 		{
-			if (redir->value)
-				printf("redir val: [%s], type: %d\n", redir->value,
-					redir->type);
-			redir = redir->next;
+			if (file->value)
+				printf("file val: [%s], type: %d\n", file->value, file->type);
+			file = file->next;
 		}
 		printf("\n\nnext\n");
 		tmp = tmp->next;
@@ -146,10 +145,10 @@ si plusieurs nodes ou pas builtin:
 2. loop through nodes
 - fork
 - handle pipe_fds
--- STDIN will be prev_fd[1] -> if there's a prev node
+-- STDIN will be current_fd[0] -> if there's a prev node
 -- STDOUT will be current_fd[1] -> if there's a next node
-- handle redirs:
--- loop through redirs
+- handle files:
+-- loop through files
 --- open file
 ---- if heredoc -> open WRITE, nommer, ecrire dedans, close et open READ
 --- dup2 file with stdin or stdout

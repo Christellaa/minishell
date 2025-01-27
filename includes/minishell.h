@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/23 12:23:56 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/27 21:09:10 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 // abc -> abc: command...
 # define OPTION_ERR ": invalid option --"
 // ls -z -> ls: invalid option -- 'z'
-# define FILE_ERR ": No such file or directory" // if redir = 1, if cmd = 127
+# define FILE_ERR ": No such file or directory" // if file = 1, if cmd = 127
 // <a (inexistant) -> a: No...
 # define FILE_DENY ": Permission denied"
 // <a (no permission) -> a: Permission...
@@ -97,9 +97,9 @@ int				split_token(char *expanded, t_token **cur_token, char *copy,
 					char *tmp);
 // utils_exec_list.c
 t_arg			*find_last_arg(t_arg *arg);
-t_redirs		*find_last_redir(t_redirs *redir);
+t_files			*find_last_file(t_files *file);
 int				add_arg_to_node(t_exec **node, char *value);
-int				add_redir_to_node(t_exec **node, char *value, int type);
+int				add_file_to_node(t_exec **node, char *value, int type);
 // utils_expander.c
 char			*init_copy(t_token **cur_token);
 char			*get_env_var(char *var_name, t_env *env);

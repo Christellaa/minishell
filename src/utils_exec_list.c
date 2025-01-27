@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:50:39 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/22 15:56:23 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/27 21:09:10 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ t_arg	*find_last_arg(t_arg *arg)
 	return (tmp);
 }
 
-t_redirs	*find_last_redir(t_redirs *redir)
+t_files	*find_last_file(t_files *file)
 {
-	t_redirs	*tmp;
+	t_files	*tmp;
 
-	tmp = redir;
+	tmp = file;
 	if (!tmp)
 		return (NULL);
 	while (tmp->next)
@@ -60,28 +60,28 @@ int	add_arg_to_node(t_exec **node, char *value)
 	return (1);
 }
 
-int	add_redir_to_node(t_exec **node, char *value, int type)
+int	add_file_to_node(t_exec **node, char *value, int type)
 {
-	t_redirs	*last_redir;
+	t_files	*last_file;
 
-	if (!(*node)->redirs)
+	if (!(*node)->files)
 	{
-		(*node)->redirs = malloc(sizeof(t_redirs));
-		if (!(*node)->redirs)
+		(*node)->files = malloc(sizeof(t_files));
+		if (!(*node)->files)
 			return (0);
-		(*node)->redirs->value = value;
-		(*node)->redirs->type = type;
-		(*node)->redirs->next = NULL;
+		(*node)->files->value = value;
+		(*node)->files->type = type;
+		(*node)->files->next = NULL;
 	}
 	else
 	{
-		last_redir = find_last_redir((*node)->redirs);
-		last_redir->next = malloc(sizeof(t_redirs));
-		if (!last_redir->next)
+		last_file = find_last_file((*node)->files);
+		last_file->next = malloc(sizeof(t_files));
+		if (!last_file->next)
 			return (0);
-		last_redir->next->value = value;
-		last_redir->next->type = type;
-		last_redir->next->next = NULL;
+		last_file->next->value = value;
+		last_file->next->type = type;
+		last_file->next->next = NULL;
 	}
 	return (1);
 }
