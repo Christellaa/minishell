@@ -6,13 +6,13 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 16:16:12 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/17 11:16:46 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 10:09:16 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*get_value(char *equal_pos)
+char	*get_env_value(char *equal_pos)
 {
 	char	*value;
 
@@ -25,8 +25,11 @@ char	*get_value(char *equal_pos)
 	return (value);
 }
 
-t_token	*get_prev_token(t_token *prev, t_token *current)
+t_token	*get_prev_token(t_token *list, t_token *current)
 {
+	t_token	*prev;
+
+	prev = list;
 	while (prev && prev->next != current)
 		prev = prev->next;
 	return (prev);
@@ -44,26 +47,43 @@ char	has_quote(char quote, char current_char)
 	return (quote);
 }
 
-int	get_word_len(char *word, int flag)
+int	get_word_len(char *word)
 {
-	int		i;
+	int		len;
 	char	quote;
 
-	i = 0;
+	len = 0;
 	quote = '\0';
-	while (word[i])
+	while (word[len])
 	{
-		quote = has_quote(quote, word[i]);
-		if (quote == '\0' && ft_isspace(word[i]))
+		quote = has_quote(quote, word[len]);
+		if (quote == '\0' && ft_isspace(word[len]))
 			break ;
-		else if (quote == '\0' && flag == 1 && (word[i] == '<' || word[i] == '>'
-				|| word[i] == '|'))
-			break ;
-		i++;
+		len++;
 	}
 	if (quote != '\0')
 		return (-1);
-	return (i);
+	return (len);
+}
+
+int	stop_word_len_at_special_char(char *word, int len)
+{
+	int		new_len;
+	char	quote;
+
+	new_len = 0;
+	quote = '\0';
+	while (new_len < len)
+	{
+		quote = has_quote(quote, word[new_len]);
+		if (quote == '\0' && (ft_isspace(word[new_len]) || word[new_len] == '<'
+				|| word[new_len] == '>' || word[new_len] == '|'))
+			break ;
+		new_len++;
+	}
+	if (quote != '\0')
+		return (-1);
+	return (new_len);
 }
 
 char	*ft_strjoin_free_both(char *s1, char *s2)

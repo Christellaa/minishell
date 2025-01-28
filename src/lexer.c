@@ -6,48 +6,58 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:28:40 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/22 15:54:36 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 09:49:21 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	tokenize(t_data **data, char *word)
-{
-	t_token	**tokens;
-	int		len;
-	int		type;
-	t_token	*value;
+char	*extract_word(char *input, t_data *data);
+int		tokenize_word(char *word, t_data **data);
 
-	tokens = &(*data)->token_list;
-	type = get_token_type(word);
-	len = get_type_len(word, type);
-	value = NULL;
-	value = create_token(type, word, len);
-	add_token_to_list(tokens, value);
-	if (!tokens || !value)
+int	lex_input(char *input, t_data *data)
+{
+	int		total_len;
+	char	*word;
+	int		token_len;
+
+	total_len = 0;
+	if (!input)
+		return (0);
+	while (input[total_len])
 	{
-		(*data)->exit_code = print_error(6, NULL, NULL);
-		return (-1);
+		if (ft_isspace(input[total_len]))
+			total_len++;
+		else
+		{
+			word = extract_word(&input[total_len], data);
+			if (!word)
+				return (0);
+			token_len = tokenize_word(word, &data);
+			if (token_len == -1)
+				return (free(word), 0);
+			total_len += token_len;
+			free(word);
+		}
 	}
-	return (len);
+	return (1);
 }
 
 char	*extract_word(char *input, t_data *data)
 {
-	int		i;
+	int		len;
 	char	*word;
 
-	i = 0;
+	len = 0;
 	if (!input)
 		return (NULL);
-	i = get_word_len(input, 0);
-	if (i == -1)
+	len = get_word_len(input);
+	if (len == -1)
 	{
 		data->exit_code = print_error(5, NULL, NULL);
 		return (NULL);
 	}
-	word = ft_substr(input, 0, i);
+	word = ft_substr(input, 0, len);
 	if (!word)
 	{
 		data->exit_code = print_error(6, NULL, NULL);
@@ -56,30 +66,23 @@ char	*extract_word(char *input, t_data *data)
 	return (word);
 }
 
-int	lexer(t_data *data, char *input)
+int	tokenize_word(char *word, t_data **data)
 {
-	int		i;
-	char	*word;
-	int		len;
+	t_token	**token_list;
+	int		token_len;
+	int		token_type;
+	t_token	*new_token;
 
-	i = 0;
-	if (!input)
-		return (0);
-	while (input[i])
+	token_list = &(*data)->token_list;
+	token_type = get_token_type(word);
+	token_len = get_token_type_len(word, token_type);
+	new_token = NULL;
+	new_token = create_token(token_type, word, token_len);
+	add_token_to_list(token_list, new_token);
+	if (!token_list || !new_token)
 	{
-		if (ft_isspace(input[i]))
-			i++;
-		else
-		{
-			word = extract_word(&input[i], data);
-			if (!word)
-				return (0);
-			len = tokenize(&data, word);
-			if (len == -1)
-				return (free(word), 0);
-			i += len;
-			free(word);
-		}
+		(*data)->exit_code = print_error(6, NULL, NULL);
+		return (-1);
 	}
-	return (1);
+	return (token_len);
 }

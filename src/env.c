@@ -6,11 +6,59 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 13:45:25 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/23 11:06:04 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 10:00:59 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+t_env	*get_env_raw(char *current_env_pair);
+t_env	*create_env_pair(char *raw, char *equal_pos);
+t_env	*create_env_node(char *raw, char *key, char *value, int show_in_env);
+void	add_env_node_to_list(t_env **env_list, t_env *new_env_pair);
+
+t_env	*get_env_raw(char *current_env_pair)
+{
+	t_env	*new_env_pair;
+	char	*raw;
+	char	*equal_pos;
+
+	raw = ft_strdup(current_env_pair);
+	if (!raw)
+		return (NULL);
+	equal_pos = ft_strchr(raw, '=');
+	new_env_pair = create_env_pair(raw, equal_pos);
+	if (!new_env_pair)
+		return (free(raw), NULL);
+	return (free(raw), new_env_pair);
+}
+
+t_env	*create_env_pair(char *raw, char *equal_pos)
+{
+	t_env	*new_env_pair;
+	char	*key;
+	char	*value;
+
+	if (!equal_pos)
+	{
+		key = ft_strdup(raw);
+		if (!key)
+			return (NULL);
+		value = NULL;
+		new_env_pair = create_env_node(raw, key, value, 0);
+	}
+	else
+	{
+		key = ft_substr(raw, 0, equal_pos - raw);
+		if (!key)
+			return (NULL);
+		value = get_env_value(equal_pos);
+		if (!value)
+			return (free(key), NULL);
+		new_env_pair = create_env_node(raw, key, value, 1);
+	}
+	return (free(key), free(value), new_env_pair);
+}
 
 t_env	*create_env_node(char *raw, char *key, char *value, int show_in_env)
 {
@@ -36,49 +84,6 @@ t_env	*create_env_node(char *raw, char *key, char *value, int show_in_env)
 	return (new_env_pair);
 }
 
-t_env	*create_env_pair(char *raw, char *equal_pos)
-{
-	t_env	*new_env_pair;
-	char	*key;
-	char	*value;
-
-	if (!equal_pos) // 'VAR'
-	{
-		key = ft_strdup(raw);
-		if (!key)
-			return (NULL);
-		value = NULL;
-		new_env_pair = create_env_node(raw, key, value, 0);
-	}
-	else // 'VAR=' or 'VAR=val'
-	{
-		key = ft_substr(raw, 0, equal_pos - raw);
-		if (!key)
-			return (NULL);
-		value = get_value(equal_pos);
-		if (!value)
-			return (free(key), NULL);
-		new_env_pair = create_env_node(raw, key, value, 1);
-	}
-	return (free(key), free(value), new_env_pair);
-}
-
-t_env	*get_env_pair(char *current_env_pair)
-{
-	t_env	*new_env_pair;
-	char	*raw;
-	char	*equal_pos;
-
-	raw = ft_strdup(current_env_pair);
-	if (!raw)
-		return (NULL);
-	equal_pos = ft_strchr(raw, '=');
-	new_env_pair = create_env_pair(raw, equal_pos);
-	if (!new_env_pair)
-		return (free(raw), NULL);
-	return (free(raw), new_env_pair);
-}
-
 void	add_env_node_to_list(t_env **env_list, t_env *new_env_pair)
 {
 	t_env	*last_pair;
@@ -100,7 +105,7 @@ void	add_env_node_to_list(t_env **env_list, t_env *new_env_pair)
 	}
 }
 
-int	create_env_list(t_data *data, char **envp)
+int	get_env_list(t_data *data, char **envp)
 {
 	t_env	*env_pair;
 	int		i;
@@ -109,14 +114,14 @@ int	create_env_list(t_data *data, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		env_pair = get_env_pair(envp[i]);
+		env_pair = get_env_raw(envp[i]);
 		if (!env_pair)
 			return (print_error(6, NULL, NULL), 0);
 		add_env_node_to_list(&data->env_list, env_pair);
 		i++;
 	}
 	if (!*envp)
-		if (!create_env_list2(data))
+		if (!create_env_list(data))
 			return (0);
 	if (!data->env_list)
 		return (0);

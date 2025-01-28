@@ -6,11 +6,14 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:46 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/22 15:16:24 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 09:52:33 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int		create_and_add_split_tokens(t_token **token, char *copy,
+			char **split_expanded);
 
 t_token	*create_token(int type, char *value, int len)
 {
@@ -27,28 +30,51 @@ t_token	*create_token(int type, char *value, int len)
 	return (new_token);
 }
 
-void	add_token_to_list(t_token **tokens, t_token *new_token)
+void	add_token_to_list(t_token **token_list, t_token *new_token)
 {
-	t_token	*last;
+	t_token	*last_token;
 
-	if (!tokens || !new_token)
+	if (!token_list || !new_token)
 		return ;
-	if (*tokens)
+	if (*token_list)
 	{
-		last = (*tokens);
-		while (last->next)
-			last = last->next;
-		last->next = new_token;
+		last_token = (*token_list);
+		while (last_token->next)
+			last_token = last_token->next;
+		last_token->next = new_token;
 		new_token->next = NULL;
 	}
 	else
 	{
 		new_token->next = NULL;
-		*tokens = new_token;
+		*token_list = new_token;
 	}
 }
 
-int	create_and_add_token(t_token **cur_token, char *copy, char **split)
+int	split_token(char *expanded, t_token **token, char *copy, char *tmp)
+{
+	char	**split_expanded;
+	int		i;
+	int		split_res;
+
+	split_expanded = ft_split(expanded, ' ');
+	if (!split_expanded)
+		return (print_error(6, NULL, NULL));
+	free(expanded);
+	(*token)->value = ft_strjoin_free_both((*token)->value, split_expanded[0]);
+	if (!(*token)->value)
+		return (print_error(6, NULL, NULL));
+	split_res = create_and_add_split_tokens(token, copy, split_expanded);
+	i = 0;
+	while (split_expanded[++i])
+		free(split_expanded[i]);
+	free(split_expanded);
+	free(tmp);
+	return (split_res);
+}
+
+int	create_and_add_split_tokens(t_token **token, char *copy,
+		char **split_expanded)
 {
 	int		i;
 	t_token	*next;
@@ -56,11 +82,12 @@ int	create_and_add_token(t_token **cur_token, char *copy, char **split)
 	t_token	*new_token;
 
 	i = 0;
-	next = (*cur_token)->next;
-	last = *cur_token;
-	while (split[++i])
+	next = (*token)->next;
+	last = *token;
+	while (split_expanded[++i])
 	{
-		new_token = create_token(ARG, split[i], ft_strlen(split[i]));
+		new_token = create_token(ARG, split_expanded[i],
+				ft_strlen(split_expanded[i]));
 		if (!new_token)
 			return (print_error(6, NULL, NULL));
 		last->next = new_token;
@@ -71,26 +98,4 @@ int	create_and_add_token(t_token **cur_token, char *copy, char **split)
 	if (!last->value)
 		return (print_error(6, NULL, NULL));
 	return (0);
-}
-
-int	split_token(char *expanded, t_token **cur_token, char *copy, char *tmp)
-{
-	char	**split;
-	int		i;
-	int		split_res;
-
-	split = ft_split(expanded, ' ');
-	if (!split)
-		return (print_error(6, NULL, NULL));
-	free(expanded);
-	(*cur_token)->value = ft_strjoin_free_both((*cur_token)->value, split[0]);
-	if (!(*cur_token)->value)
-		return (print_error(6, NULL, NULL));
-	split_res = create_and_add_token(cur_token, copy, split);
-	i = 0;
-	while (split[++i])
-		free(split[i]);
-	free(split);
-	free(tmp);
-	return (split_res);
 }

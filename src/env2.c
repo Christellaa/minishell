@@ -6,13 +6,13 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:58:42 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/23 11:05:49 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 09:37:46 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**get_raw(void)
+char	**create_raws(void)
 {
 	char	**raw;
 	int		i;
@@ -38,7 +38,7 @@ char	**get_raw(void)
 	return (raw);
 }
 
-char	**get_keys(void)
+char	**create_keys(void)
 {
 	char	**keys;
 	int		i;
@@ -64,7 +64,7 @@ char	**get_keys(void)
 	return (keys);
 }
 
-char	**get_values(void)
+char	**create_values(void)
 {
 	char	**values;
 	int		i;
@@ -90,7 +90,7 @@ char	**get_values(void)
 	return (values);
 }
 
-int	*get_exported(void)
+int	*create_exported(void)
 {
 	int	*exported;
 
@@ -104,7 +104,7 @@ int	*get_exported(void)
 	return (exported);
 }
 
-int	create_env_list2(t_data *data)
+int	create_env_list(t_data *data)
 {
 	t_env	*new_node;
 	char	**raw;
@@ -112,10 +112,10 @@ int	create_env_list2(t_data *data)
 	char	**values;
 	int		*exported;
 
-	raw = get_raw();
-	keys = get_keys();
-	values = get_values();
-	exported = get_exported();
+	raw = create_raws();
+	keys = create_keys();
+	values = create_values();
+	exported = create_exported();
 	if (!raw || !keys || !values || !exported)
 		return (print_error(6, NULL, NULL), 0);
 	while (*raw)

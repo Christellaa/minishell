@@ -6,26 +6,52 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:08:29 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/23 11:11:34 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 09:48:51 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	delete_token_chevron(t_token **list, t_token *current, t_token **next)
-{
-	t_token	*prev;
+int		validate_pipeline(t_token **token_list, t_data *data);
+int		is_order_valid(t_token **list, t_token *current, t_token **next);
+void	delete_token_chevron(t_token **list, t_token *current, t_token **next);
 
-	if (current == *list)
-		*list = *next;
-	else
+int	parse_input(t_data *data, char *input)
+{
+	if (!lex_input(input, data))
 	{
-		prev = get_prev_token(*list, current);
-		prev->next = *next;
+		free(input);
+		return (0);
 	}
-	*next = (*next)->next;
-	free(current->value);
-	free(current);
+	free(input);
+	replace_token_type(&data->token_list);
+	if (!validate_pipeline(&data->token_list, data))
+		return (0);
+	if (!expand_tokens(data) || !data->token_list)
+		return (0);
+	data->exit_code = 0;
+	return (1);
+}
+
+int	validate_pipeline(t_token **token_list, t_data *data)
+{
+	t_token	*current_token;
+	t_token	*next_token;
+	int		code;
+
+	current_token = *token_list;
+	while (current_token)
+	{
+		next_token = current_token->next;
+		code = is_order_valid(token_list, current_token, &next_token);
+		if (code != 0)
+		{
+			data->exit_code = code;
+			return (0);
+		}
+		current_token = next_token;
+	}
+	return (1);
 }
 
 int	is_order_valid(t_token **list, t_token *current, t_token **next)
@@ -51,40 +77,18 @@ int	is_order_valid(t_token **list, t_token *current, t_token **next)
 	return (0);
 }
 
-int	validate_pipeline(t_token **token_list, t_data *data)
+void	delete_token_chevron(t_token **list, t_token *current, t_token **next)
 {
-	t_token	*current;
-	t_token	*next;
-	int		code;
+	t_token	*prev;
 
-	current = *token_list;
-	while (current)
+	if (current == *list)
+		*list = *next;
+	else
 	{
-		next = current->next;
-		code = is_order_valid(token_list, current, &next);
-		if (code != 0)
-		{
-			data->exit_code = code;
-			return (0);
-		}
-		current = next;
+		prev = get_prev_token(*list, current);
+		prev->next = *next;
 	}
-	return (1);
-}
-
-int	parser(t_data *data, char *input)
-{
-	if (!lexer(data, input))
-	{
-		free(input);
-		return (0);
-	}
-	free(input);
-	replace_token_type(&data->token_list);
-	if (!validate_pipeline(&data->token_list, data))
-		return (0);
-	if (!expander(data) || !data->token_list)
-		return (0);
-	data->exit_code = 0;
-	return (1);
+	*next = (*next)->next;
+	free(current->value);
+	free(current);
 }

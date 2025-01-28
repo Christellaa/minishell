@@ -6,25 +6,47 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:21:59 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/22 15:50:34 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 10:15:30 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	can_split(t_token *token_list, t_token *cur_token, int to_split, char quote)
+char	*join_str_without_external_quotes(char *value, char quote);
+
+int	can_split_token(t_token *token_list, t_token *token, int to_split,
+		char quote)
 {
 	t_token	*prev;
-	t_token	*tmp;
+	t_token	*current_token;
 
 	prev = token_list;
-	tmp = cur_token;
-	if (token_list != cur_token)
-		prev = get_prev_token(token_list, tmp);
+	current_token = token;
+	if (token_list != token)
+		prev = get_prev_token(token_list, current_token);
 	if (to_split == 1 && quote == '\0' && prev->type != INFILE
 		&& prev->type != TRUNC && prev->type != APPEND)
 		return (1);
 	return (0);
+}
+
+int	remove_external_quotes(t_token **token, t_data *data)
+{
+	char	quote;
+	char	*token_value;
+	char	*new_value;
+
+	quote = '\0';
+	token_value = (*token)->value;
+	new_value = join_str_without_external_quotes(token_value, quote);
+	if (!new_value)
+	{
+		data->exit_code = print_error(6, NULL, NULL);
+		return (0);
+	}
+	free((*token)->value);
+	(*token)->value = new_value;
+	return (1);
 }
 
 char	*join_str_without_external_quotes(char *value, char quote)
@@ -53,23 +75,4 @@ char	*join_str_without_external_quotes(char *value, char quote)
 		value++;
 	}
 	return (new_value);
-}
-
-int	remove_external_quotes(t_token **token, t_data *data)
-{
-	char	quote;
-	char	*value;
-	char	*new_value;
-
-	quote = '\0';
-	value = (*token)->value;
-	new_value = join_str_without_external_quotes(value, quote);
-	if (!new_value)
-	{
-		data->exit_code = print_error(6, NULL, NULL);
-		return (0);
-	}
-	free((*token)->value);
-	(*token)->value = new_value;
-	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/27 21:09:10 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 10:16:54 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,83 +40,54 @@
 extern pid_t	g_signal;
 
 // cleanup.c
-void			free_env(t_env *pair);
-void			free_tokens(t_token *token);
-void			free_exec(t_exec *exec);
 int				print_error(int flag, char *error, char *option);
 void			cleanup(t_data *data, int type);
 // env.c
 t_env			*create_env_node(char *raw, char *key, char *value,
 					int show_in_env);
-t_env			*get_env_pair(char *current_env);
 void			add_env_node_to_list(t_env **env_list, t_env *new_env);
-int				create_env_list(t_data *data, char **envp);
+int				get_env_list(t_data *data, char **envp);
 // env2.c
-int				create_env_list2(t_data *data);
+int				create_env_list(t_data *data);
 // exec_list.c
-void			create_exec_node(t_exec **new_node);
-int				add_value_to_node(t_exec **node, char *value, int type,
-					t_data *data);
-void			add_node_to_list(t_exec **exec_list, t_exec *node);
-int				create_and_add_node_to_list(t_data *data, t_exec **new_node);
 int				create_exec_list(t_data *data);
 // expander.c
-char			*fetch_env_value(char *pos, t_data *data, int *to_split);
-char			*handle_expansion(char *pos, t_data *data, int *to_split,
-					char quote);
-char			*search_quote_and_join_until_dollar(char *pos, char **copy,
-					char *quote, t_token **token);
-int				expand_when_dollar(t_token **token, t_data *data, char quote);
-int				expander(t_data *data);
+int				expand_tokens(t_data *data);
 // helpers.c
-char			*get_value(char *equal_pos);
+char			*get_env_value(char *equal_pos);
 t_token			*get_prev_token(t_token *prev, t_token *current);
 char			has_quote(char quote, char current_char);
-int				get_word_len(char *word, int flag);
+int				get_word_len(char *word);
+int				stop_word_len_at_special_char(char *word, int len);
 char			*ft_strjoin_free_both(char *s1, char *s2);
 // lexer.c
-int				tokenize(t_data **data, char *word);
-char			*extract_word(char *input, t_data *data);
-int				lexer(t_data *data, char *input);
+int				lex_input(char *input, t_data *data);
 // parser.c
-void			delete_token_chevron(t_token **list, t_token *current,
-					t_token **next);
-int				is_order_valid(t_token **list, t_token *current,
-					t_token **next);
-int				validate_pipeline(t_token **token_list, t_data *data);
-int				parser(t_data *data, char *input);
+int				parse_input(t_data *data, char *input);
 // signals.c
-void			sigint_sigquit(int code);
 void			handle_signals(void);
+void			handle_child_signals(void);
 // token_list.c
 t_token			*create_token(int type, char *value, int len);
 void			add_token_to_list(t_token **tokens, t_token *new_token);
-int				create_and_add_token(t_token **cur_token, char *copy,
-					char **split);
-int				split_token(char *expanded, t_token **cur_token, char *copy,
+int				split_token(char *expanded, t_token **token, char *copy,
 					char *tmp);
 // utils_exec_list.c
-t_arg			*find_last_arg(t_arg *arg);
-t_files			*find_last_file(t_files *file);
 int				add_arg_to_node(t_exec **node, char *value);
 int				add_file_to_node(t_exec **node, char *value, int type);
 // utils_expander.c
-char			*init_copy(t_token **cur_token);
+char			*init_copy(t_token **token);
 char			*get_env_var(char *var_name, t_env *env);
 void			search_quote(char *quote, char *copy, int len);
-void			join_until_dollar(t_token **cur_token, char *copy, int len);
+void			join_until_dollar(t_token **token, char *copy, int len);
 // utils_expander2.c
-int				can_split(t_token *token_list, t_token *cur_token, int to_split,
-					char quote);
-char			*join_str_without_external_quotes(char *value, char quote);
+int				can_split_token(t_token *token_list, t_token *token,
+					int to_split, char quote);
 int				remove_external_quotes(t_token **token, t_data *data);
 // utils_lexer.c
-int				is_word(char *word);
-int				is_chevron(char *word);
 int				get_token_type(char *word);
-int				get_type_len(char *word, int type);
+int				get_token_type_len(char *word, int type);
 // utils_parser.c
-int				is_value_empty(char *value);
 void			delete_empty_tokens(t_token **token_list);
 void			replace_token_type(t_token **token_list);
 int				var_name_len(char *value);

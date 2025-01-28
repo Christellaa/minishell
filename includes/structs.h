@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 11:14:38 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/27 21:09:10 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 08:50:21 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_exec
 	t_arg *arg_list; // cmd, option, arg: echo, -n, hello
 	t_files *files;  // files
 	pid_t			pid;
-	int				skip;
+	// int				skip;
 	int				pipefd[2];
 	struct s_exec	*next;
 }					t_exec;

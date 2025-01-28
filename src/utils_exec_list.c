@@ -6,35 +6,14 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:50:39 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/27 21:09:10 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 10:16:11 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_arg	*find_last_arg(t_arg *arg)
-{
-	t_arg	*tmp;
-
-	tmp = arg;
-	if (!tmp)
-		return (NULL);
-	while (tmp->next)
-		tmp = tmp->next;
-	return (tmp);
-}
-
-t_files	*find_last_file(t_files *file)
-{
-	t_files	*tmp;
-
-	tmp = file;
-	if (!tmp)
-		return (NULL);
-	while (tmp->next)
-		tmp = tmp->next;
-	return (tmp);
-}
+t_arg	*find_last_arg(t_arg *arg);
+t_files	*find_last_file(t_files *file);
 
 int	add_arg_to_node(t_exec **node, char *value)
 {
@@ -58,6 +37,18 @@ int	add_arg_to_node(t_exec **node, char *value)
 		last_arg->next->next = NULL;
 	}
 	return (1);
+}
+
+t_arg	*find_last_arg(t_arg *arg)
+{
+	t_arg	*tmp;
+
+	tmp = arg;
+	if (!tmp)
+		return (NULL);
+	while (tmp->next)
+		tmp = tmp->next;
+	return (tmp);
 }
 
 int	add_file_to_node(t_exec **node, char *value, int type)
@@ -84,4 +75,16 @@ int	add_file_to_node(t_exec **node, char *value, int type)
 		last_file->next->next = NULL;
 	}
 	return (1);
+}
+
+t_files	*find_last_file(t_files *file)
+{
+	t_files	*tmp;
+
+	tmp = file;
+	if (!tmp)
+		return (NULL);
+	while (tmp->next)
+		tmp = tmp->next;
+	return (tmp);
 }
