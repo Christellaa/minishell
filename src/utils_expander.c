@@ -6,11 +6,13 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:55:32 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 10:49:23 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 12:19:16 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+char	*get_env_var(char *var_name, t_env *env);
 
 char	*init_copy(t_token **token)
 {
@@ -45,6 +47,27 @@ void	join_until_dollar(t_token **token, char *copy, int len)
 	(*token)->value = ft_strjoin_free_both((*token)->value, value);
 	if (!(*token)->value)
 		return (free(value));
+}
+
+char	*fetch_env_value(char *pos, t_data *data, int *to_split)
+{
+	char	*var_value;
+	char	*env_value;
+
+	var_value = ft_strndup(pos, var_name_len(pos));
+	if (!var_value)
+		return (print_error(0, NULL, NULL, data), NULL);
+	env_value = get_env_var(var_value, data->env_list);
+	free(var_value);
+	if (!env_value)
+		var_value = ft_strdup("");
+	else
+		var_value = ft_strdup(env_value);
+	if (!var_value)
+		return (print_error(0, NULL, NULL, data), NULL);
+	if (ft_strchr(var_value, ' '))
+		*to_split = 1;
+	return (var_value);
 }
 
 char	*get_env_var(char *var_name, t_env *env)

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:46 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 10:55:08 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 12:20:15 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 
 int		create_and_add_split_tokens(t_token **token, char *copy,
 			char **split_expanded);
+
+t_token	*get_prev_token(t_token *list, t_token *current)
+{
+	t_token	*prev;
+
+	prev = list;
+	while (prev && prev->next != current)
+		prev = prev->next;
+	return (prev);
+}
 
 t_token	*create_token(int type, char *value, int len)
 {

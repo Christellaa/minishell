@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 16:16:12 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 10:09:16 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 12:20:19 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,6 @@ char	*get_env_value(char *equal_pos)
 	if (!value)
 		return (NULL);
 	return (value);
-}
-
-t_token	*get_prev_token(t_token *list, t_token *current)
-{
-	t_token	*prev;
-
-	prev = list;
-	while (prev && prev->next != current)
-		prev = prev->next;
-	return (prev);
 }
 
 char	has_quote(char quote, char current_char)
