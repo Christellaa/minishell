@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 11:41:12 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 16:09:19 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ int	main(int ac, char **av, char **envp)
 		return (print_error(3, NULL, NULL, data));
 	if (!get_env_list(data, envp))
 		return (cleanup(data, 1), data->exit_code);
-	handle_signals();
 	while (1)
 	{
+		handle_signals();
 		input = readline("minishell$ ");
 		if (!input)
 			return (printf("exit\n"), free(input), cleanup(data, 1), 0);
@@ -63,7 +63,7 @@ void	process_input(t_data *data, char *input)
 	if (!create_exec_list(data))
 		return ;
 	test_it_2(data); // testing exec struct
-						// execute(data);
+	execute(data);
 }
 
 void	test_it(t_data *data)

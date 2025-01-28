@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 12:17:09 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 14:53:42 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,13 @@
 
 # include "../libft/libft.h"
 # include "structs.h"
+# include <errno.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdio.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
 # define SINGLE_QUOTE '\''
 # define DOUBLE_QUOTE '\"'
@@ -27,8 +30,6 @@
 // OR CHEVRON (= 'newline' if no CHEVRON follows, otherwise CHEVRON)
 # define CMD_ERR ": command not found"
 // abc -> abc: command...
-# define CMD_PATH_ERR ": No such file or directory"
-// /bin/usr/lss (inexistant) -> /bin/usr/lss: No...
 # define OPTION_ERR ": invalid option --"
 // ls -z -> ls: invalid option -- 'z'
 # define FILE_ERR ": No such file or directory"
@@ -95,4 +96,5 @@ void			delete_empty_tokens(t_token **token_list);
 void			replace_token_type(t_token **token_list);
 int				var_name_len(char *value);
 
+void			execute(t_data *data);
 #endif

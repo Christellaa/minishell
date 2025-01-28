@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:30:18 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/19 20:28:15 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 16:11:20 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ void	sigint_sigquit(int code)
 {
 	printf("\n");
 	clear_rl_line();
-	if (g_signal == 0)
-		rl_redisplay();
+	rl_redisplay();
 	g_signal = 128 + code;
 }
 
