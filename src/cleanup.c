@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:01:56 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 11:02:49 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 11:41:53 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,39 +19,42 @@ void	free_env(t_env *pair);
 
 int	print_error(int flag, char *error, char *option, t_data *data)
 {
-	data->exit_code = get_err_code(flag);
-	if (flag == 0) // 2
+	if (data)
+		data->exit_code = get_err_code(flag);
+	if (flag == 0) // 1
+		printf("%s\n", MALLOC_ERR);
+	else if (flag == 1) // 1
+		printf("%s%s\n", error, FILE_ERR);
+	else if (flag == 2) // 1
+		printf("%s%s\n", error, FILE_DENY);
+	else if (flag == 3) // 1
+		printf("%s\n", TOO_MANY_ARG);
+	else if (flag == 4) // 1; function errors
+		printf("%s error", error);
+	else if (flag == 5) // 2
 		printf("%s '%s'\n", SYNTAX_ERR, error);
-	else if (flag == 1) // 127
+	else if (flag == 6) // 2
+		printf("%s\n", QUOTE_ERR);
+	else if (flag == 7) // 2
+		printf("%s%s '%s'\n", error, OPTION_ERR, option);
+	else if (flag == 8) // 127
 		printf("%s%s\n", error, CMD_ERR);
 	else if (flag == 9) // 127
 		printf("%s%s\n", error, CMD_PATH_ERR);
-	else if (flag == 2) // 2
-		printf("%s%s '%s'\n", error, OPTION_ERR, option);
-	else if (flag == 3) // 1
-		printf("%s%s\n", error, FILE_ERR);
-	else if (flag == 4) // 1
-		printf("%s%s\n", error, FILE_DENY);
-	else if (flag == 5) // 2
-		printf("%s\n", QUOTE_ERR);
-	else if (flag == 6) // 1
-		printf("%s\n", MALLOC_ERR);
-	else if (flag == 7) // 1
-		printf("%s\n", TOO_MANY_ARG);
-	else if (flag == 8) // 1; function errors
-		printf("%s error", error);
-	return (data->exit_code);
+	if (data)
+		return (data->exit_code);
+	return (1);
 }
 
 int	get_err_code(int flag)
 {
 	int	code;
 
-	if (flag == 3 || flag == 4 || flag == 6 || flag == 7 || flag == 8)
+	if (flag >= 0 && flag <= 4)
 		code = 1;
-	else if (flag == 0 || flag == 2 || flag == 5)
+	else if (flag >= 5 && flag <= 7)
 		code = 2;
-	else if (flag == 1 || flag == 9)
+	else if (flag == 8 || flag == 9)
 		code = 127;
 	return (code);
 }

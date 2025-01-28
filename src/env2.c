@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:58:42 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 10:34:35 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 11:30:20 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ int	create_env_list(t_data *data)
 	values = create_values();
 	exported = create_exported();
 	if (!raw || !keys || !values || !exported)
-		return (print_error(6, NULL, NULL, data), 0);
+		return (print_error(0, NULL, NULL, data), 0);
 	while (*raw)
 	{
 		new_node = create_env_node(*raw, *keys, *values, *exported);
 		if (!new_node)
-			return (print_error(6, NULL, NULL, data), 0);
+			return (print_error(0, NULL, NULL, data), 0);
 		add_env_node_to_list(&data->env_list, new_node);
 		raw++;
 		keys++;

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 13:45:25 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 10:31:03 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 11:30:20 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	get_env_list(t_data *data, char **envp)
 	{
 		env_pair = get_env_raw(envp[i]);
 		if (!env_pair)
-			return (print_error(6, NULL, NULL, data), 0);
+			return (print_error(0, NULL, NULL, data), 0);
 		add_env_node_to_list(&data->env_list, env_pair);
 		i++;
 	}
