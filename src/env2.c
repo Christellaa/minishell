@@ -6,11 +6,44 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:58:42 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 09:37:46 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 10:34:35 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+char	**create_raws(void);
+char	**create_keys(void);
+char	**create_values(void);
+int		*create_exported(void);
+
+int	create_env_list(t_data *data)
+{
+	t_env	*new_node;
+	char	**raw;
+	char	**keys;
+	char	**values;
+	int		*exported;
+
+	raw = create_raws();
+	keys = create_keys();
+	values = create_values();
+	exported = create_exported();
+	if (!raw || !keys || !values || !exported)
+		return (print_error(6, NULL, NULL, data), 0);
+	while (*raw)
+	{
+		new_node = create_env_node(*raw, *keys, *values, *exported);
+		if (!new_node)
+			return (print_error(6, NULL, NULL, data), 0);
+		add_env_node_to_list(&data->env_list, new_node);
+		raw++;
+		keys++;
+		values++;
+		exported++;
+	}
+	return (1);
+}
 
 char	**create_raws(void)
 {
@@ -102,32 +135,4 @@ int	*create_exported(void)
 	exported[2] = 1;
 	exported[3] = 2;
 	return (exported);
-}
-
-int	create_env_list(t_data *data)
-{
-	t_env	*new_node;
-	char	**raw;
-	char	**keys;
-	char	**values;
-	int		*exported;
-
-	raw = create_raws();
-	keys = create_keys();
-	values = create_values();
-	exported = create_exported();
-	if (!raw || !keys || !values || !exported)
-		return (print_error(6, NULL, NULL), 0);
-	while (*raw)
-	{
-		new_node = create_env_node(*raw, *keys, *values, *exported);
-		if (!new_node)
-			return (print_error(6, NULL, NULL), 0);
-		add_env_node_to_list(&data->env_list, new_node);
-		raw++;
-		keys++;
-		values++;
-		exported++;
-	}
-	return (1);
 }

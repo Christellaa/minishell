@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 16:53:48 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 09:57:46 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 11:07:11 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,23 @@ char	*search_quote_and_join_until_dollar(char *pos, char **copy, char *quote,
 			t_token **token);
 char	*handle_expansion(char *pos, t_data *data, int *to_split, char quote);
 char	*fetch_env_value(char *pos, t_data *data, int *to_split);
+
+int	can_expand_token(t_token *prev_token, t_token *current_token, t_data *data,
+		char quote)
+{
+	int	code;
+
+	code = 0;
+	if (prev_token->type != HEREDOC)
+	{
+		code = expand_current_token(&current_token, data, quote);
+		if (code > 0)
+			return (0);
+		if (!(current_token)->value || code == -1)
+			return (print_error(6, NULL, NULL, data), 0);
+	}
+	return (1);
+}
 
 int	expand_tokens(t_data *data)
 {
@@ -31,14 +48,8 @@ int	expand_tokens(t_data *data)
 		quote = '\0';
 		if (prev_token != data->token_list)
 			prev_token = get_prev_token(prev_token, current_token);
-		if (prev_token->type != HEREDOC)
-		{
-			if (expand_current_token(&current_token, data, quote))
-			{
-				data->exit_code = 1;
-				return (0);
-			}
-		}
+		if (!can_expand_token(prev_token, current_token, data, quote))
+			return (0);
 		if (!remove_external_quotes(&current_token, data))
 			return (0);
 		current_token = current_token->next;
@@ -57,22 +68,22 @@ int	expand_current_token(t_token **token, t_data *data, char quote)
 
 	copy = init_copy(token);
 	if (!copy)
-		return (1);
+		return (print_error(6, NULL, NULL, data));
 	copy_tmp = copy;
 	while (ft_strchr(copy, '$'))
 	{
 		to_split = 0;
 		pos = search_quote_and_join_until_dollar(pos, &copy, &quote, token);
+		if (!pos)
+			return (print_error(6, NULL, NULL, data));
 		expanded = handle_expansion(pos + 1, data, &to_split, quote);
 		if (can_split_token(data->token_list, *token, to_split, quote))
 			return (split_token(expanded, token, copy, copy_tmp));
 		(*token)->value = ft_strjoin_free_both((*token)->value, expanded);
 		if (!(*token)->value)
-			return (free(copy_tmp), print_error(6, NULL, NULL));
+			return (free(copy_tmp), print_error(6, NULL, NULL, data));
 	}
 	(*token)->value = ft_strjoin_free_s1((*token)->value, copy, copy_tmp);
-	if (!(*token)->value)
-		return (print_error(6, NULL, NULL));
 	return (0);
 }
 
@@ -83,7 +94,7 @@ char	*search_quote_and_join_until_dollar(char *pos, char **copy, char *quote,
 	search_quote(quote, *copy, pos - *copy);
 	join_until_dollar(token, *copy, pos - *copy);
 	if (!(*token)->value)
-		return (print_error(6, NULL, NULL), NULL);
+		return (NULL);
 	*copy = pos + 1 + var_name_len((pos + 1));
 	return (pos);
 }
@@ -112,7 +123,7 @@ char	*handle_expansion(char *pos, t_data *data, int *to_split, char quote)
 	else
 		var_value = fetch_env_value(pos, data, to_split);
 	if (!var_value)
-		return (print_error(6, NULL, NULL), NULL);
+		return (print_error(6, NULL, NULL, data), NULL);
 	return (var_value);
 }
 
@@ -123,7 +134,7 @@ char	*fetch_env_value(char *pos, t_data *data, int *to_split)
 
 	var_value = ft_strndup(pos, var_name_len(pos));
 	if (!var_value)
-		return (print_error(6, NULL, NULL), NULL);
+		return (print_error(6, NULL, NULL, data), NULL);
 	env_value = get_env_var(var_value, data->env_list);
 	free(var_value);
 	if (!env_value)
@@ -131,7 +142,7 @@ char	*fetch_env_value(char *pos, t_data *data, int *to_split)
 	else
 		var_value = ft_strdup(env_value);
 	if (!var_value)
-		return (print_error(6, NULL, NULL), NULL);
+		return (print_error(6, NULL, NULL, data), NULL);
 	if (ft_strchr(var_value, ' '))
 		*to_split = 1;
 	return (var_value);

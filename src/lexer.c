@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:28:40 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 09:49:21 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 10:37:32 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,10 @@ char	*extract_word(char *input, t_data *data)
 		return (NULL);
 	len = get_word_len(input);
 	if (len == -1)
-	{
-		data->exit_code = print_error(5, NULL, NULL);
-		return (NULL);
-	}
+		return (print_error(5, NULL, NULL, data), NULL);
 	word = ft_substr(input, 0, len);
 	if (!word)
-	{
-		data->exit_code = print_error(6, NULL, NULL);
-		return (NULL);
-	}
+		return (print_error(6, NULL, NULL, data), NULL);
 	return (word);
 }
 
@@ -80,9 +74,6 @@ int	tokenize_word(char *word, t_data **data)
 	new_token = create_token(token_type, word, token_len);
 	add_token_to_list(token_list, new_token);
 	if (!token_list || !new_token)
-	{
-		(*data)->exit_code = print_error(6, NULL, NULL);
-		return (-1);
-	}
+		return (print_error(6, NULL, NULL, *data), -1);
 	return (token_len);
 }

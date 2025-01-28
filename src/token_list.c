@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:46 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 09:52:33 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 10:55:08 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ int	split_token(char *expanded, t_token **token, char *copy, char *tmp)
 
 	split_expanded = ft_split(expanded, ' ');
 	if (!split_expanded)
-		return (print_error(6, NULL, NULL));
+		return (-1);
 	free(expanded);
 	(*token)->value = ft_strjoin_free_both((*token)->value, split_expanded[0]);
 	if (!(*token)->value)
-		return (print_error(6, NULL, NULL));
+		return (-1);
 	split_res = create_and_add_split_tokens(token, copy, split_expanded);
 	i = 0;
 	while (split_expanded[++i])
@@ -89,13 +89,13 @@ int	create_and_add_split_tokens(t_token **token, char *copy,
 		new_token = create_token(ARG, split_expanded[i],
 				ft_strlen(split_expanded[i]));
 		if (!new_token)
-			return (print_error(6, NULL, NULL));
+			return (-1);
 		last->next = new_token;
 		last = new_token;
 	}
 	last->next = next;
 	last->value = ft_strjoin_free_s1(last->value, copy, NULL);
 	if (!last->value)
-		return (print_error(6, NULL, NULL));
+		return (-1);
 	return (0);
 }

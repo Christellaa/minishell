@@ -6,14 +6,15 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:08:29 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 09:48:51 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 11:02:27 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 int		validate_pipeline(t_token **token_list, t_data *data);
-int		is_order_valid(t_token **list, t_token *current, t_token **next);
+int		is_order_valid(t_token **list, t_token *current, t_token **next,
+			t_data *data);
 void	delete_token_chevron(t_token **list, t_token *current, t_token **next);
 
 int	parse_input(t_data *data, char *input)
@@ -29,7 +30,7 @@ int	parse_input(t_data *data, char *input)
 		return (0);
 	if (!expand_tokens(data) || !data->token_list)
 		return (0);
-	data->exit_code = 0;
+	data->exit_code = 0; // useful?
 	return (1);
 }
 
@@ -37,37 +38,33 @@ int	validate_pipeline(t_token **token_list, t_data *data)
 {
 	t_token	*current_token;
 	t_token	*next_token;
-	int		code;
 
 	current_token = *token_list;
 	while (current_token)
 	{
 		next_token = current_token->next;
-		code = is_order_valid(token_list, current_token, &next_token);
-		if (code != 0)
-		{
-			data->exit_code = code;
+		if (is_order_valid(token_list, current_token, &next_token, data))
 			return (0);
-		}
 		current_token = next_token;
 	}
 	return (1);
 }
 
-int	is_order_valid(t_token **list, t_token *current, t_token **next)
+int	is_order_valid(t_token **list, t_token *current, t_token **next,
+		t_data *data)
 {
 	if (current->type == PIPE)
 	{
 		if (current == *list || !*next || (*next && (*next)->type == PIPE))
-			return (print_error(0, "|", NULL));
+			return (print_error(0, "|", NULL, data));
 	}
 	else if (current->type == INFILE || current->type == HEREDOC
 		|| current->type == TRUNC || current->type == APPEND)
 	{
 		if (!*next)
-			return (print_error(0, "newline", NULL));
+			return (print_error(0, "newline", NULL, data));
 		else if (*next && (*next)->type != FILENAME)
-			return (print_error(0, (*next)->value, NULL));
+			return (print_error(0, (*next)->value, NULL, data));
 		else
 		{
 			(*next)->type = current->type;

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:55:32 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 09:59:28 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 10:49:23 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ char	*init_copy(t_token **token)
 
 	copy = ft_strdup((*token)->value);
 	if (!copy)
-		return (print_error(6, NULL, NULL), NULL);
+		return (NULL);
 	free((*token)->value);
 	(*token)->value = ft_strdup("");
 	if (!(*token)->value)
-		return (print_error(6, NULL, NULL), NULL);
+		return (NULL);
 	return (copy);
 }
 

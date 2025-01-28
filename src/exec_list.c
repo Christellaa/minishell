@@ -6,14 +6,14 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 16:50:17 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/28 10:06:38 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 10:53:40 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 int		create_and_add_node_to_list(t_data *data, t_exec **new_node);
-void	create_exec_node(t_exec **new_node);
+void	create_exec_node(t_exec **new_node, t_data *data);
 void	add_node_to_list(t_exec **exec_list, t_exec *node);
 int		add_value_to_node(t_exec **node, char *value, int type, t_data *data);
 
@@ -46,22 +46,19 @@ int	create_exec_list(t_data *data)
 
 int	create_and_add_node_to_list(t_data *data, t_exec **new_node)
 {
-	create_exec_node(new_node);
+	create_exec_node(new_node, data);
 	if (!new_node)
-	{
-		data->exit_code = 1;
 		return (0);
-	}
 	add_node_to_list(&(data->exec_list), *new_node);
 	return (1);
 }
 
-void	create_exec_node(t_exec **new_node)
+void	create_exec_node(t_exec **new_node, t_data *data)
 {
 	*new_node = malloc(sizeof(t_exec));
 	if (!new_node)
 	{
-		print_error(6, NULL, NULL);
+		print_error(6, NULL, NULL, data);
 		return ;
 	}
 	(*new_node)->arg_list = NULL;
@@ -95,19 +92,13 @@ int	add_value_to_node(t_exec **node, char *value, int type, t_data *data)
 	if (type == ARG)
 	{
 		if (!add_arg_to_node(node, value))
-		{
-			data->exit_code = 1;
-			return (0);
-		}
+			return (print_error(6, NULL, NULL, data), 0);
 	}
 	else if (type == FILENAME || type == INFILE || type == HEREDOC
 		|| type == TRUNC || type == APPEND)
 	{
 		if (!add_file_to_node(node, value, type))
-		{
-			data->exit_code = 1;
-			return (0);
-		}
+			return (print_error(6, NULL, NULL, data), 0);
 	}
 	return (1);
 }

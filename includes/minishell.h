@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 10:16:54 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/28 10:26:22 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@
 // OR CHEVRON (= 'newline' if no CHEVRON follows, otherwise CHEVRON)
 # define CMD_ERR ": command not found"
 // abc -> abc: command...
+# define CMD_PATH_ERR ": No such file or directory"
+// /bin/usr/lss (inexistant) -> /bin/usr/lss: No...
 # define OPTION_ERR ": invalid option --"
 // ls -z -> ls: invalid option -- 'z'
-# define FILE_ERR ": No such file or directory" // if file = 1, if cmd = 127
+# define FILE_ERR ": No such file or directory"
 // <a (inexistant) -> a: No...
 # define FILE_DENY ": Permission denied"
 // <a (no permission) -> a: Permission...
@@ -40,7 +42,7 @@
 extern pid_t	g_signal;
 
 // cleanup.c
-int				print_error(int flag, char *error, char *option);
+int				print_error(int flag, char *error, char *option, t_data *data);
 void			cleanup(t_data *data, int type);
 // env.c
 t_env			*create_env_node(char *raw, char *key, char *value,
