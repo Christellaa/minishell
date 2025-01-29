@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:29:37 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/28 16:11:13 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/01/29 16:29:40 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,17 @@ int	is_builtin(char *cmd)
 int	create_pipes(t_data *data, t_exec *head_exec_list)
 {
 	t_exec	*current_node;
+	int		pipes[2];
 
 	current_node = head_exec_list;
 	while (current_node)
 	{
-		if (pipe(current_node->pipefd) == -1)
+		if (!current_node->next)
+			return (1);
+		if (pipe(pipes) == -1)
 			return (print_error(4, "Pipe", NULL, data), 0);
+		current_node->next->pipefd[0] = pipes[0];
+		current_node->pipefd[1] = pipes[1];
 		current_node = current_node->next;
 	}
 	return (1);
@@ -56,17 +61,27 @@ char	**get_and_split_paths(t_env *env_list)
 		}
 		current_env = current_env->next;
 	}
-	path_value = ft_strdup("/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin");
+	/* get PATH:
+	- aller dans /etc (=dossier)
+	- trouver environment (=file)
+	- trouver PATH dans environment file
+	- copier pos ('=' + 2) jusqu'a len - 1 (pour ignorer les ")
+	=> pour remplacer ce qui y a just en-dessous
+	*/
+	path_value = ft_strdup("/usr/local/sbin:/usr/local/bin:");
 	if (!path_value)
 		return (NULL);
-	split_paths = ft_split(path_value, ':');
+	path_value = ft_strjoin(path_value, "/usr/sbin:/usr/bin:/sbin:/bin");
+	// check join failed
+	split_paths = ft_split(path_value, ':'); // check split failed
 	free(path_value);
 	return (split_paths);
 }
 
 int	is_absolute_path(char *cmd)
 {
-	if ((ft_strncmp(cmd, "/", 1) == 0) && access(cmd, F_OK | X_OK) == 0)
+	if (((ft_strncmp(cmd, "/", 1) == 0) || (ft_strncmp(cmd, "./", 2) == 0))
+		&& access(cmd, F_OK | X_OK) == 0)
 		return (1);
 	return (0);
 }
@@ -160,22 +175,40 @@ void	write_in_heredoc(const char *delimiter, int fd)
 		line_nb++;
 	}
 }
-
-int	open_file(t_files *current_file)
+char	*name_here_doc(char *value, int *i)
 {
-	int	fd;
+	char	*name;
+	char	*nb;
+
+	nb = ft_itoa(*i); // + check fail malloc
+	name = ft_strjoin(value, nb);
+	if (!name)
+	{
+		// print_error?
+		return (NULL);
+	}
+	(*i)++;
+	return (name);
+}
+
+int	open_file(t_files *current_file, int *i)
+{
+	int		fd;
+	char	*name;
 
 	if (current_file->type == INFILE)
 		fd = open(current_file->value, O_RDONLY);
 	else if (current_file->type == HEREDOC)
 	{
-		fd = open(".heredoc.tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		name = name_here_doc(current_file->value, i);
+		fd = open(name, O_RDONLY);
 		if (fd == -1)
+		{
+			// print_error?
 			return (-1);
-		write_in_heredoc(current_file->value, fd);
-		if (close(fd) == -1)
-			return (-2);
-		fd = open(".heredoc.tmp", O_RDONLY);
+		}
+		if (fd > 0)
+			unlink(name);
 	}
 	else if (current_file->type == TRUNC)
 		fd = open(current_file->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
@@ -203,10 +236,7 @@ int	dup2_and_close_current_file(t_files *current_file, t_data *data, int fd)
 		}
 	}
 	if (close(fd) == -1)
-	{
-		close(fd);
 		return (print_error(4, "Close", NULL, data), 0);
-	}
 	return (1);
 }
 
@@ -214,13 +244,17 @@ int	handle_files(t_data *data, t_exec *exec_node)
 {
 	t_files	*current_file;
 	int		fd;
+	int		i;
 
-	current_file = exec_node->files; // tmp ?
+	current_file = exec_node->files;
+	i = 0;
 	while (current_file)
 	{
-		fd = open_file(current_file);
-		if (fd == -1)
-			return (print_error(4, "Open", NULL, data), 0);
+		fd = open_file(current_file, &i);
+		if (fd == -1 && access(current_file->value, F_OK) == 0)
+			return (print_error(2, current_file->value, NULL, data), 0);
+		else if (fd == -1)
+			return (print_error(1, current_file->value, NULL, data), 0);
 		else if (fd == -2)
 			return (print_error(4, "Close", NULL, data), 0);
 		if (!dup2_and_close_current_file(current_file, data, fd))
@@ -247,6 +281,8 @@ int	handle_pipefd(t_data *data, t_exec *exec_node)
 
 int	handle_redirs(t_data *data, t_exec *exec_node)
 {
+	// if (!handle_heredoc(exec_node))
+	// 	return (0);
 	if (!handle_pipefd(data, exec_node))
 		return (0);
 	if (!handle_files(data, exec_node))
@@ -336,15 +372,15 @@ int	execute_child_process(t_exec *exec_node, t_data *data)
 	char	**env;
 
 	if (!handle_redirs(data, exec_node))
-		exit(data->exit_code);
+		exit(1);
 	if (!close_all_pipefds(data))
-		exit(data->exit_code);
+		exit(1);
 	args = convert_args_list_to_tab(exec_node->arg_list);
 	if (!args)
 	{
 		print_error(0, NULL, NULL, data);
 		cleanup(data, 1);
-		exit(data->exit_code);
+		exit(1);
 	}
 	env = convert_env_list_to_tab(data->env_list);
 	if (!env)
@@ -352,7 +388,7 @@ int	execute_child_process(t_exec *exec_node, t_data *data)
 		free(args);
 		print_error(0, NULL, NULL, data);
 		cleanup(data, 1);
-		exit(data->exit_code);
+		exit(1);
 	}
 	cmd_path = get_cmd_path(exec_node->arg_list->value, data);
 	if (!cmd_path || !*cmd_path)
@@ -369,15 +405,21 @@ int	execute_child_process(t_exec *exec_node, t_data *data)
 	}
 	if (execve(cmd_path, args, env) == -1)
 	{
-		data->exit_code = print_error(4, "Execve", NULL, data);
+		print_error(4, "Execve", NULL, data);
 		free(cmd_path);
 		free(args);
 		free(env);
 		cleanup(data, 1);
-		exit(data->exit_code);
+		exit(1);
 	}
 	return (1);
 }
+/*
+ls| <<h grep a => si fichier h already exist -> delimiter h devient character
+	envoyé dans le heredoc, ce qui termine l'ecriture du heredoc
+
+ls| <<h grep a => si fichier h exist pas -> ls output dans heredoc
+*/
 
 int	wait_all_pids(t_exec *head_exec_list)
 {
@@ -433,9 +475,10 @@ void	execute(t_data *data)
 		}
 		exec_node = exec_node->next;
 	}
-	data->exit_code = wait_all_pids(data->exec_list);
 	close_all_pipefds(data);
+	data->exit_code = wait_all_pids(data->exec_list);
 	return ;
 }
 
-/// AAA
+// ls|<<u <<r grep b => seulement le resultat de r s'affiche (OK)
+// ls|<<u grep a |<<r grep b => seulemet le res de r s'affiche (KO)

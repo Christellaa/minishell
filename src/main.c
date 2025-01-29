@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 16:09:19 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/01/29 16:27:41 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ int	main(int ac, char **av, char **envp)
 		return (print_error(3, NULL, NULL, data));
 	if (!get_env_list(data, envp))
 		return (cleanup(data, 1), data->exit_code);
+	handle_signals();
 	while (1)
 	{
-		handle_signals();
 		input = readline("minishell$ ");
 		if (!input)
 			return (printf("exit\n"), free(input), cleanup(data, 1), 0);
@@ -54,6 +54,40 @@ void	init_data(t_data *data)
 	data->env_list = NULL;
 	data->exit_code = 0;
 }
+int	handle_here_doc(t_exec *node)
+{
+	t_files	*file;
+	int		fd;
+	char	*name;
+	int		i;
+	t_exec	*node_tmp;
+
+	node_tmp = node;
+	while (node_tmp)
+	{
+		i = 0;
+		file = node_tmp->files;
+		while (file)
+		{
+			if (file->type == HEREDOC)
+			{
+				name = name_here_doc(file->value, &i); // + check fail
+				fd = open(name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+				if (fd == -1)
+					return (0); // print_error?
+				write_in_heredoc(file->value, fd);
+				if (close(fd) == -1)
+				{ // print_error?
+					unlink(name);
+					return (0);
+				}
+			}
+			file = file->next;
+		}
+		node_tmp = node_tmp->next;
+	}
+	return (1);
+}
 
 void	process_input(t_data *data, char *input)
 {
@@ -63,6 +97,8 @@ void	process_input(t_data *data, char *input)
 	if (!create_exec_list(data))
 		return ;
 	test_it_2(data); // testing exec struct
+	if (!handle_here_doc(data->exec_list))
+		return ;
 	execute(data);
 }
 
@@ -146,22 +182,5 @@ exec
 dup2(save_out, STDOUT);
 close(save_out);
 
-si plusieurs nodes ou pas builtin:
-1. pipe(pipefd) pour chaque node sauf le dernier où pipefd[0] = pipefd[1] = -1
-2. loop through nodes
-- fork
-- handle pipe_fds
--- STDIN will be current_fd[0] -> if there's a prev node
--- STDOUT will be current_fd[1] -> if there's a next node
-- handle files:
--- loop through files
---- open file
----- if heredoc -> open WRITE, nommer, ecrire dedans, close et open READ
---- dup2 file with stdin or stdout
---- close file
--- close all fds
-- handle path
-- execve
-3. waitpid
 */
-// ls > a > b > c | wc - l
+//

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:08:29 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 12:14:45 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/29 15:40:47 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int	parse_input(t_data *data, char *input)
 		return (0);
 	if (!expand_tokens(data) || !data->token_list)
 		return (0);
-	data->exit_code = 0; // useful until execute()
+	data->exit_code = 0; // check if still useful with execute()
+	g_signal = 0;
 	return (1);
 }
 

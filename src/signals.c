@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:30:18 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 16:11:20 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/01/29 14:31:38 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,15 @@ void	handle_signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
+void	sigint_sigquit_child(int code)
+{
+	printf("\n");
+	clear_rl_line();
+	g_signal = 128 + code;
+}
+
 void	handle_child_signals(void)
 {
-	signal(SIGINT, sigint_sigquit);
-	signal(SIGQUIT, sigint_sigquit);
+	signal(SIGINT, sigint_sigquit_child);
+	signal(SIGQUIT, sigint_sigquit_child);
 }
