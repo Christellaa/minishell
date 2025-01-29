@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:29:37 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/29 16:29:40 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/29 16:30:17 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -414,12 +414,6 @@ int	execute_child_process(t_exec *exec_node, t_data *data)
 	}
 	return (1);
 }
-/*
-ls| <<h grep a => si fichier h already exist -> delimiter h devient character
-	envoyé dans le heredoc, ce qui termine l'ecriture du heredoc
-
-ls| <<h grep a => si fichier h exist pas -> ls output dans heredoc
-*/
 
 int	wait_all_pids(t_exec *head_exec_list)
 {
@@ -481,4 +475,4 @@ void	execute(t_data *data)
 }
 
 // ls|<<u <<r grep b => seulement le resultat de r s'affiche (OK)
-// ls|<<u grep a |<<r grep b => seulemet le res de r s'affiche (KO)
+// ls|<<u grep a |<<r grep b => seulemet le res de r s'affiche (OK)
