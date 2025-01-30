@@ -25,17 +25,21 @@ SRC := $(addsuffix .c, $(addprefix $(SRC_DIR)/env/, $(ENV))) \
 OBJS := $(SRC:$(SRC_DIR)/%.c=$(OBJS_DIR)/%.o)
 # create obj subdirs
 OBJS_SUBDIRS := $(sort $(dir $(OBJS)))
-$(OBJS_SUBDIRS):
-	@mkdir -p $@
 # compiler
 CC := gcc
 CFLAGS := -Wall -Wextra -Werror
 
-all: $(OBJS_SUBDIRS) $(LIBFT) $(NAME)
+all: $(OBJS) $(LIBFT) $(NAME)
 
 $(NAME): $(OBJS) $(INC)
 	@echo "Building $(NAME)"
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) -lreadline
+
+$(OBJS_DIR):
+	@mkdir -p $@
+
+$(OBJS_SUBDIRS): $(OBJS_DIR)
+	@mkdir -p $@
 
 $(OBJS_DIR)/%.o : $(SRC_DIR)/%.c | $(OBJS_SUBDIRS)
 	@echo "Compiling $<"
