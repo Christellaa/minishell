@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 16:50:17 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/30 09:30:16 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:39:09 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	create_exec_node(t_exec **new_node, t_data *data)
 	*new_node = malloc(sizeof(t_exec));
 	if (!new_node)
 	{
-		print_error(0, NULL, NULL, data);
+		print_error(0, NULL, data);
 		return ;
 	}
 	(*new_node)->arg_list = NULL;
@@ -92,13 +92,13 @@ int	add_value_to_node(t_exec **node, char *value, int type, t_data *data)
 	if (type == ARG)
 	{
 		if (!add_arg_to_node(node, value))
-			return (print_error(0, NULL, NULL, data), 0);
+			return (print_error(0, NULL, data), 0);
 	}
 	else if (type == FILENAME || type == INFILE || type == HEREDOC
 		|| type == TRUNC || type == APPEND)
 	{
 		if (!add_file_to_node(node, value, type))
-			return (print_error(0, NULL, NULL, data), 0);
+			return (print_error(0, NULL, data), 0);
 	}
 	return (1);
 }

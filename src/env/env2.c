@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:58:42 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/30 09:29:48 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:37:42 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ int	create_env_list(t_data *data)
 	values = create_values();
 	exported = create_exported();
 	if (!raw || !keys || !values || !exported)
-		return (print_error(0, NULL, NULL, data), 0);
+		return (print_error(0, NULL, data), 0);
 	while (*raw)
 	{
 		new_node = create_env_node(*raw, *keys, *values, *exported);
 		if (!new_node)
-			return (print_error(0, NULL, NULL, data), 0);
+			return (print_error(0, NULL, data), 0);
 		add_env_node_to_list(&data->env_list, new_node);
 		raw++;
 		keys++;

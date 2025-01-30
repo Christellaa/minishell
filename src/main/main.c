@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/30 09:34:28 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:38:59 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ int	main(int ac, char **av, char **envp)
 	g_signal = 0;
 	data = malloc(sizeof(t_data));
 	if (!data)
-		return (print_error(0, NULL, NULL, data));
+		return (print_error(0, NULL, data));
 	data = ft_memset(data, 0, sizeof(data));
 	init_data(data);
 	if (ac != 1)
-		return (print_error(3, NULL, NULL, data));
+		return (print_error(3, NULL, data));
 	if (!get_env_list(data, envp))
 		return (cleanup(data, 1), data->exit_code);
 	while (1)
@@ -54,40 +54,6 @@ void	init_data(t_data *data)
 	data->env_list = NULL;
 	data->exit_code = 0;
 }
-int	handle_here_doc(t_exec *node)
-{
-	t_files	*file;
-	int		fd;
-	char	*name;
-	int		i;
-	t_exec	*node_tmp;
-
-	node_tmp = node;
-	while (node_tmp)
-	{
-		i = 0;
-		file = node_tmp->files;
-		while (file)
-		{
-			if (file->type == HEREDOC)
-			{
-				name = name_here_doc(file->value, &i); // + check fail
-				fd = open(name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-				if (fd == -1)
-					return (0); // print_error?
-				write_in_heredoc(file->value, fd);
-				if (close(fd) == -1)
-				{ // print_error?
-					unlink(name);
-					return (0);
-				}
-			}
-			file = file->next;
-		}
-		node_tmp = node_tmp->next;
-	}
-	return (1);
-}
 
 void	process_input(t_data *data, char *input)
 {
@@ -97,7 +63,7 @@ void	process_input(t_data *data, char *input)
 	if (!create_exec_list(data))
 		return ;
 	test_it_2(data); // testing exec struct
-	if (!handle_here_doc(data->exec_list))
+	if (!handle_here_doc(data, data->exec_list))
 		return ;
 	execute(data);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 08:03:37 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/17 11:40:35 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 16:07:50 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "ft_dprintf/ft_dprintf.h"
 # include "ft_printf/ft_printf.h"
+# include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <stdint.h>
@@ -77,6 +78,7 @@ void				ft_putnbr_fd(int n, int fd);
 char				**ft_split(char const *s, char c);
 int					ft_atoi(const char *nptr);
 char				*ft_itoa(int n);
+long long			ft_strtoll(const char *nptr, char **endptr, int base);
 
 t_list				*ft_lstnew(void *content);
 void				ft_lstadd_front(t_list **lst, t_list *new);

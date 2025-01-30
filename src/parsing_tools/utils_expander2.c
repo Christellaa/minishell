@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_expander2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:21:59 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/30 09:30:48 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:39:51 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	remove_external_quotes(t_token **token, t_data *data)
 	new_value = join_str_without_external_quotes(token_value, quote);
 	if (!new_value)
 	{
-		data->exit_code = print_error(0, NULL, NULL, data);
+		data->exit_code = print_error(0, NULL, data);
 		return (0);
 	}
 	free((*token)->value);

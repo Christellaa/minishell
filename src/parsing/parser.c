@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:08:29 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/30 09:30:22 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:39:40 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,15 @@ int	is_order_valid(t_token **list, t_token *current, t_token **next,
 	if (current->type == PIPE)
 	{
 		if (current == *list || !*next || (*next && (*next)->type == PIPE))
-			return (print_error(5, "|", NULL, data));
+			return (print_error(5, "|", data));
 	}
 	else if (current->type == INFILE || current->type == HEREDOC
 		|| current->type == TRUNC || current->type == APPEND)
 	{
 		if (!*next)
-			return (print_error(5, "newline", NULL, data));
+			return (print_error(5, "newline", data));
 		else if (*next && (*next)->type != FILENAME)
-			return (print_error(5, (*next)->value, NULL, data));
+			return (print_error(5, (*next)->value, data));
 		else
 		{
 			(*next)->type = current->type;

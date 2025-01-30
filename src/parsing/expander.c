@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 16:53:48 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/30 09:30:18 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:39:23 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	can_expand_token(t_token *prev_token, t_token *current_token, t_data *data,
 		if (code > 0)
 			return (0);
 		if (!(current_token)->value || code == -1)
-			return (print_error(0, NULL, NULL, data), 0);
+			return (print_error(0, NULL, data), 0);
 	}
 	return (1);
 }
@@ -70,20 +70,20 @@ int	expand_current_token(t_token **token, t_data *data, char quote)
 
 	copy = init_copy(token);
 	if (!copy)
-		return (print_error(0, NULL, NULL, data));
+		return (print_error(0, NULL, data));
 	copy_tmp = copy;
 	while (ft_strchr(copy, '$'))
 	{
 		to_split = 0;
 		pos = search_quote_and_join_until_dollar(pos, &copy, &quote, token);
 		if (!pos)
-			return (print_error(0, NULL, NULL, data));
+			return (print_error(0, NULL, data));
 		expanded = handle_expansion(pos + 1, data, &to_split, quote);
 		if (can_split_token(data->token_list, *token, to_split, quote))
 			return (split_token(expanded, token, copy, copy_tmp));
 		(*token)->value = ft_strjoin_free_both((*token)->value, expanded);
 		if (!(*token)->value)
-			return (free(copy_tmp), print_error(0, NULL, NULL, data));
+			return (free(copy_tmp), print_error(0, NULL, data));
 	}
 	(*token)->value = ft_strjoin_free_s1((*token)->value, copy, copy_tmp);
 	return (0);
@@ -122,6 +122,6 @@ char	*handle_expansion(char *pos, t_data *data, int *to_split, char quote)
 	else
 		var_value = fetch_env_value(pos, data, to_split);
 	if (!var_value)
-		return (print_error(0, NULL, NULL, data), NULL);
+		return (print_error(0, NULL, data), NULL);
 	return (var_value);
 }

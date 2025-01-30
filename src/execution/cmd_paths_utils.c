@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_paths_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 18:07:04 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/30 09:36:37 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:37:48 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ char	**get_and_split_paths(t_env *env_list)
 			if (!path_value)
 				return (NULL);
 			split_paths = ft_split(path_value, ':');
-			// if (!split_paths)
-			// 	return (NULL);
+			if (!split_paths)
+				return (NULL);
 			free(path_value);
 			return (split_paths);
 		}
@@ -45,12 +45,11 @@ char	**get_and_split_paths(t_env *env_list)
 	if (!path_value)
 		return (NULL);
 	path_value = ft_strjoin(path_value, "/usr/sbin:/usr/bin:/sbin:/bin");
-	// if (!path_value)
-	// 	return (NULL);
-	// check join failed
-	split_paths = ft_split(path_value, ':'); // check split failed
-	// if (!split_paths)
-	// 	return (NULL);
+	if (!path_value)
+		return (NULL);
+	split_paths = ft_split(path_value, ':');
+	if (!split_paths)
+		return (NULL);
 	free(path_value);
 	return (split_paths);
 }
@@ -74,11 +73,11 @@ char	*get_relative_path(char *cmd, t_data *data, char **split_paths)
 	{
 		path_with_slash = ft_strjoin(split_paths[i], "/");
 		if (!path_with_slash)
-			return (print_error(0, NULL, NULL, data), NULL);
+			return (print_error(0, NULL, data), NULL);
 		final_path = ft_strjoin(path_with_slash, cmd);
 		free(path_with_slash);
 		if (!final_path)
-			return (print_error(0, NULL, NULL, data), NULL);
+			return (print_error(0, NULL, data), NULL);
 		if (access(final_path, F_OK | X_OK) == 0)
 			return (final_path);
 		free(final_path);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 18:17:58 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/30 09:30:03 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:38:37 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,65 @@ char	*name_here_doc(char *value, int *i)
 	char	*name;
 	char	*nb;
 
-	nb = ft_itoa(*i); // + check fail malloc
+	nb = ft_itoa(*i);
+	if (!nb)
+		return (NULL);
 	name = ft_strjoin(value, nb);
 	if (!name)
 	{
-		// print_error?
+		free(nb);
 		return (NULL);
 	}
 	(*i)++;
 	return (name);
+}
+
+int	write_mode_here_doc(t_files *file, int *i, t_data *data)
+{
+	char	*name;
+	int		fd;
+
+	if (file->type == HEREDOC)
+	{
+		name = name_here_doc(file->value, i);
+		if (!name)
+			return (print_error(0, NULL, data), 0);
+		fd = open(name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		if (fd == -1)
+		{
+			if (fd == -1 && access(file->value, F_OK) == 0)
+				return (print_error(2, file->value, data), 0);
+			else if (fd == -1)
+				return (print_error(1, file->value, data), 0);
+		}
+		write_in_heredoc(file->value, fd);
+		if (close(fd) == -1)
+		{
+			unlink(name);
+			return (print_error(4, "Close", data), 0);
+		}
+	}
+	return (1);
+}
+
+int	handle_here_doc(t_data *data, t_exec *node)
+{
+	t_files *file;
+	int i;
+	t_exec *node_tmp;
+
+	node_tmp = node;
+	while (node_tmp)
+	{
+		i = 0;
+		file = node_tmp->files;
+		while (file)
+		{
+			if (!write_mode_here_doc(file, &i, data))
+				return (0);
+			file = file->next;
+		}
+		node_tmp = node_tmp->next;
+	}
+	return (1);
 }

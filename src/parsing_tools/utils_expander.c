@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_expander.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:55:32 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/30 09:30:46 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:39:44 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*fetch_env_value(char *pos, t_data *data, int *to_split)
 
 	var_value = ft_strndup(pos, var_name_len(pos));
 	if (!var_value)
-		return (print_error(0, NULL, NULL, data), NULL);
+		return (print_error(0, NULL, data), NULL);
 	env_value = get_env_var(var_value, data->env_list);
 	free(var_value);
 	if (!env_value)
@@ -64,7 +64,7 @@ char	*fetch_env_value(char *pos, t_data *data, int *to_split)
 	else
 		var_value = ft_strdup(env_value);
 	if (!var_value)
-		return (print_error(0, NULL, NULL, data), NULL);
+		return (print_error(0, NULL, data), NULL);
 	if (ft_strchr(var_value, ' '))
 		*to_split = 1;
 	return (var_value);

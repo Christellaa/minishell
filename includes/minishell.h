@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/30 09:32:15 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 15:34:18 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../libft/libft.h"
 # include "structs.h"
 # include <errno.h>
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
@@ -43,7 +44,7 @@
 extern pid_t	g_signal;
 
 // error.c
-int				print_error(int flag, char *error, char *option, t_data *data);
+int				print_error(int flag, char *error, t_data *data);
 // cleanup.c
 void			cleanup(t_data *data, int type);
 // env.c
@@ -111,11 +112,17 @@ int				close_all_pipefds(t_data *data);
 int				wait_all_pids(t_exec *head_exec_list);
 void			execute(t_data *data);
 // hdl_redirs_utils.c
-char			*name_here_doc(char *value, int *i);
-void			write_in_heredoc(const char *delimiter, int fd);
 int				handle_redirs(t_data *data, t_exec *exec_node);
+int				handle_files(t_data *data, t_exec *exec_node);
 // heredoc_utils.c
-void			write_in_heredoc(const char *delimiter, int fd);
 char			*name_here_doc(char *value, int *i);
+void			write_in_heredoc(const char *delimiter, int fd);
+int				handle_here_doc(t_data *data, t_exec *node);
+int				write_mode_here_doc(t_files *file, int *i, t_data *data);
+// builtin.c
+int				execute_builtin(int builtin, t_data *data, t_exec *exec_node);
+void			check_builtin(t_data *data, t_exec *exec_node);
+// ft_exit.c
+void			ft_exit(t_data *data, t_exec *exec_node);
 
 #endif

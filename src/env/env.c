@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 13:45:25 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/30 09:29:44 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:37:31 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	get_env_list(t_data *data, char **envp)
 	{
 		env_pair = get_env_raw(envp[i]);
 		if (!env_pair)
-			return (print_error(0, NULL, NULL, data), 0);
+			return (print_error(0, NULL, data), 0);
 		add_env_node_to_list(&data->env_list, env_pair);
 		i++;
 	}
