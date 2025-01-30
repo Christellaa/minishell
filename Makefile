@@ -9,7 +9,7 @@ SRC_DIR := src
 OBJS_DIR := obj
 
 ENV := env env2
-EXECUTION := cmd_paths_utils execute_child_process execute hdl_redirs_utils \
+EXECUTION := cmd_paths_utils child_process execution redirs_utils \
 			heredoc_utils
 MAIN := cleanup error main signals
 PARSING := exec_list expander lexer parser
