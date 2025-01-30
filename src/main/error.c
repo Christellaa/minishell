@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:16:12 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/29 11:52:47 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:30:09 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int	get_err_code(int flag);
 

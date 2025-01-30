@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:46 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 12:20:15 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:30:38 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int		create_and_add_split_tokens(t_token **token, char *copy,
 			char **split_expanded);

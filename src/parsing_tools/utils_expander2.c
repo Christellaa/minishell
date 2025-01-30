@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:21:59 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 11:30:20 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:30:48 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 char	*join_str_without_external_quotes(char *value, char quote);
 

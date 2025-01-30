@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:29:37 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/29 17:53:25 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:36:42 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int	is_builtin(char *cmd)
 {
@@ -62,7 +62,6 @@ int	close_all_pipefds(t_data *data)
 	}
 	return (1);
 }
-
 
 int	wait_all_pids(t_exec *head_exec_list)
 {

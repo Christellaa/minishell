@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_paths_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 18:07:04 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/29 18:22:03 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:36:37 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 char	**get_and_split_paths(t_env *env_list)
 {
@@ -50,7 +50,7 @@ char	**get_and_split_paths(t_env *env_list)
 	// check join failed
 	split_paths = ft_split(path_value, ':'); // check split failed
 	// if (!split_paths)
-			// 	return (NULL);
+	// 	return (NULL);
 	free(path_value);
 	return (split_paths);
 }

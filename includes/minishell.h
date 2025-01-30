@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylini <cylini@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/30 00:16:25 by cylini           ###   ########.fr       */
+/*   Updated: 2025/01/30 09:32:15 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,25 +96,26 @@ void			delete_empty_tokens(t_token **token_list);
 void			replace_token_type(t_token **token_list);
 int				var_name_len(char *value);
 // cmd_paths_utils.c
-char		**get_and_split_paths(t_env *env_list);
-int			is_absolute_path(char *cmd);
-char		*get_relative_path(char *cmd, t_data *data, char **split_paths);
+char			**get_and_split_paths(t_env *env_list);
+int				is_absolute_path(char *cmd);
+char			*get_relative_path(char *cmd, t_data *data, char **split_paths);
 // execute_child_process.c
-char		**convert_args_list_to_tab(t_arg *arg_list);
-char		**convert_env_list_to_tab(t_env *env_list);
-char		*get_cmd_path(char *cmd, t_data *data);
-int			execute_child_process(t_exec *exec_node, t_data *data);
+char			**convert_args_list_to_tab(t_arg *arg_list);
+char			**convert_env_list_to_tab(t_env *env_list);
+char			*get_cmd_path(char *cmd, t_data *data);
+int				execute_child_process(t_exec *exec_node, t_data *data);
 // execute.c
-int			is_builtin(char *cmd);
-int			create_pipes(t_data *data, t_exec *head_exec_list);
-int			close_all_pipefds(t_data *data);
-int			wait_all_pids(t_exec *head_exec_list);
-void		execute(t_data *data);
+int				is_builtin(char *cmd);
+int				create_pipes(t_data *data, t_exec *head_exec_list);
+int				close_all_pipefds(t_data *data);
+int				wait_all_pids(t_exec *head_exec_list);
+void			execute(t_data *data);
 // hdl_redirs_utils.c
-char		*name_here_doc(char *value, int *i);
-void		write_in_heredoc(const char *delimiter, int fd);
+char			*name_here_doc(char *value, int *i);
+void			write_in_heredoc(const char *delimiter, int fd);
+int				handle_redirs(t_data *data, t_exec *exec_node);
 // heredoc_utils.c
-void		write_in_heredoc(const char *delimiter, int fd);
-char		*name_here_doc(char *value, int *i);
+void			write_in_heredoc(const char *delimiter, int fd);
+char			*name_here_doc(char *value, int *i);
 
 #endif

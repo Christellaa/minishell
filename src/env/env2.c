@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:58:42 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 11:30:20 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:29:48 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 char	**create_raws(void);
 char	**create_keys(void);

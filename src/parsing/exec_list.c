@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 16:50:17 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/28 11:30:20 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:30:16 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int		create_and_add_node_to_list(t_data *data, t_exec **new_node);
 void	create_exec_node(t_exec **new_node, t_data *data);

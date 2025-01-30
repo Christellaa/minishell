@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/29 16:27:41 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:34:28 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	init_data(t_data *data);
 void	process_input(t_data *data, char *input);
@@ -35,9 +35,9 @@ int	main(int ac, char **av, char **envp)
 		return (print_error(3, NULL, NULL, data));
 	if (!get_env_list(data, envp))
 		return (cleanup(data, 1), data->exit_code);
-	handle_signals();
 	while (1)
 	{
+		handle_signals();
 		input = readline("minishell$ ");
 		if (!input)
 			return (printf("exit\n"), free(input), cleanup(data, 1), 0);

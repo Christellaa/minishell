@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:30:18 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/29 14:31:38 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:30:13 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	clear_rl_line(void)
 {

@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 16:53:48 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/29 09:37:47 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:30:18 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int		expand_current_token(t_token **token, t_data *data, char quote);
 int		can_expand_token(t_token *prev_token, t_token *current_token,

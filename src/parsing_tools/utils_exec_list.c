@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:50:39 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/29 16:27:50 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:30:40 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 t_arg	*find_last_arg(t_arg *arg);
 t_files	*find_last_file(t_files *file);

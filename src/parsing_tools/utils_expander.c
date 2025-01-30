@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:55:32 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 12:19:16 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:30:46 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 char	*get_env_var(char *var_name, t_env *env);
 

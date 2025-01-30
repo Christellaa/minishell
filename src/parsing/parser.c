@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:08:29 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/29 15:40:47 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:30:22 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int		validate_pipeline(t_token **token_list, t_data *data);
 int		is_order_valid(t_token **list, t_token *current, t_token **next,

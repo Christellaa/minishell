@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   hdl_redirs_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 17:50:47 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/29 18:30:53 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:33:05 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 /* t_exec	*get_prev_node(t_exec *list, t_exec *current)
 {
@@ -20,9 +20,8 @@
 	while (tmp_list && tmp_list->next != current)
 		tmp_list = tmp_list->next;
 	return (tmp_list);
-} */
-
-
+}
+*/
 
 int	open_file(t_files *current_file, int *i)
 {
@@ -122,4 +121,3 @@ int	handle_redirs(t_data *data, t_exec *exec_node)
 		return (0);
 	return (1);
 }
-

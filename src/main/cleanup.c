@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:01:56 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 12:16:31 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:30:07 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	free_tokens(t_token *token);
 void	free_exec(t_exec *exec);

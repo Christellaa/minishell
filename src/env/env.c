@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 13:45:25 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 11:30:20 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:29:44 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 t_env	*get_env_raw(char *current_env_pair);
 t_env	*create_env_pair(char *raw, char *equal_pos);
