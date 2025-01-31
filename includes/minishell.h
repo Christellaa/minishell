@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cylini <cylini@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/30 15:34:18 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/01/31 21:52:55 by cylini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,8 @@ int				write_mode_here_doc(t_files *file, int *i, t_data *data);
 // builtin.c
 int				execute_builtin(int builtin, t_data *data, t_exec *exec_node);
 void			check_builtin(t_data *data, t_exec *exec_node);
-// ft_exit.c
+// // ft_exit.c
 void			ft_exit(t_data *data, t_exec *exec_node);
+int				ft_cd(t_data *data, t_exec *exec_node);
 
 #endif

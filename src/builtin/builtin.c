@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cylini <cylini@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 13:49:37 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/30 16:26:36 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/01/31 21:52:32 by cylini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,11 @@ void	check_builtin(t_data *data, t_exec *exec_node)
 }
 int	execute_builtin(int builtin, t_data *data, t_exec *exec_node)
 {
+	(void)builtin;
 	// if (builtin == 1)
 	// 	ft_echo(data, exec_node);
-	// else if (builtin == 2)
-	// 	ft_cd(data, exec_node);
+	/* else if (builtin == 2); */
+		ft_cd(data, exec_node);
 	// else if (builtin == 3)
 	// 	ft_pwd(data, exec_node);
 	// else if (builtin == 4)
@@ -47,7 +48,7 @@ int	execute_builtin(int builtin, t_data *data, t_exec *exec_node)
 	// 	ft_unset(data, exec_node);
 	// else if (builtin == 6)
 	// 	ft_env(data, exec_node);
-	/* else */ if (builtin == 7)
-		ft_exit(data, exec_node);
+	/* else if (builtin == 7)*/
+		// ft_exit(data, exec_node);
 	return (data->exit_code);
 }

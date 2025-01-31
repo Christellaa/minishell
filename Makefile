@@ -15,7 +15,7 @@ MAIN := cleanup error main signals
 PARSING := exec_list expander lexer parser
 PARSING_TOOLS := helpers token_list utils_exec_list utils_expander \
 				utils_expander2 utils_lexer utils_parser
-BUILTIN := builtin exit #echo cd pwd export unset env
+BUILTIN := builtin exit cd #echo cd pwd export unset env
 SRC := $(addsuffix .c, $(addprefix $(SRC_DIR)/env/, $(ENV))) \
 		$(addsuffix .c, $(addprefix $(SRC_DIR)/execution/, $(EXECUTION))) \
 		$(addsuffix .c, $(addprefix $(SRC_DIR)/main/, $(MAIN))) \
