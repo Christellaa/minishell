@@ -6,7 +6,7 @@
 /*   By: cylini <cylini@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/31 21:52:55 by cylini           ###   ########.fr       */
+/*   Updated: 2025/02/02 00:17:18 by cylini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,5 +125,6 @@ void			check_builtin(t_data *data, t_exec *exec_node);
 // // ft_exit.c
 void			ft_exit(t_data *data, t_exec *exec_node);
 int				ft_cd(t_data *data, t_exec *exec_node);
+int				ft_pwd(void);
 
 #endif
