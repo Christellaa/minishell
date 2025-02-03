@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 09:50:15 by cde-sous          #+#    #+#             */
-/*   Updated: 2024/05/21 10:42:15 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:58:29 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,23 @@
 
 #include "../libft.h"
 
+// 999 is MAX_SHLVL
 int	ft_atoi(const char *nptr)
 {
 	int	i;
-	int	sign;
 	int	res;
 
 	i = 0;
-	sign = 1;
 	res = 0;
 	while ((nptr[i] >= '\t' && nptr[i] <= '\r') || nptr[i] == ' ')
 		i++;
-	if (nptr[i] == '+' || nptr[i] == '-')
-	{
-		if (nptr[i] == '-')
-			sign *= -1;
-		i++;
-	}
 	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
-		res = res * 10 + nptr[i] - '0';
-		i++;
+		res = res * 10 + nptr[i++] - '0';
+		if (res > 999)
+			return (999);
 	}
-	return (sign * res);
+	if (nptr[i])
+		return (0);
+	return (res);
 }

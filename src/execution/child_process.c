@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 17:45:23 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/30 17:23:00 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:44:39 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	execute_child_process(t_exec *exec_node, t_data *data)
 	cmd_path = get_cmd_path(exec_node->arg_list->value, data);
 	if (!cmd_path || !*cmd_path)
 	{
-		cleanup(data, 1);
+		cleanup(data, 2);
 		if (cmd_path && !*cmd_path)
 		{
 			free(cmd_path);
@@ -116,7 +116,7 @@ int	execute_child_process(t_exec *exec_node, t_data *data)
 	if (!handle_redirs(data, exec_node) || !close_all_pipefds(data))
 	{
 		free(cmd_path);
-		cleanup(data, 1);
+		cleanup(data, 2);
 		exit(1);
 	}
 	args = convert_args_list_to_tab(exec_node->arg_list);
@@ -129,7 +129,7 @@ int	execute_child_process(t_exec *exec_node, t_data *data)
 			free(args);
 		if (env)
 			free(env);
-		cleanup(data, 1);
+		cleanup(data, 2);
 		exit(1);
 	}
 	if (execve(cmd_path, args, env) == -1)
@@ -138,7 +138,7 @@ int	execute_child_process(t_exec *exec_node, t_data *data)
 		free(cmd_path);
 		free(args);
 		free(env);
-		cleanup(data, 1);
+		cleanup(data, 2);
 		exit(1);
 	}
 	return (1);

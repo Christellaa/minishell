@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/31 16:31:59 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:45:26 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int ac, char **av, char **envp)
 	data = ft_memset(data, 0, sizeof(data));
 	init_data(data);
 	if (ac != 1)
-		return (print_error(3, NULL, data));
+		return (print_error(3, NULL, data)); // shouldn't free data?
 	if (!get_env_list(data, envp))
 		return (cleanup(data, 1), data->exit_code);
 	while (1)
@@ -125,13 +125,6 @@ QUESTIONS:
 */
 
 /*
-for export built-in:
-- assignment key can only be alphanumeric + underscore
-- if there's no '=' -> it will show in export() but not in env()
-- if show_in_env = 2 -> it will show in env() but not in export()
-- export() reorders the env (uppercase then lowercase)
-	+ show value inside double quotes
-
 for execution:
 -> signals don't copy to child process
 -> STDIN and STDOUT must be dup before dup2 when exec is in main process,

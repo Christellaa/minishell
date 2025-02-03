@@ -6,7 +6,7 @@
 /*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/03 12:42:06 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/02/03 19:49:07 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,16 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
+# define IN_ENV 0b01
+# define IN_EXPORT 0b10
+
 # define SINGLE_QUOTE '\''
 # define DOUBLE_QUOTE '\"'
+
+# define MAX_FD 1024
+# define MAX_SHLVL 999
+# define FIRST_RUN_FILE "/tmp/minishell_first_run"
+
 # define SYNTAX_ERR "Syntax error near unexpected token"
 // ; -> ...token ';' OR | (first or not followed) OR ||
 // OR CHEVRON (= 'newline' if no CHEVRON follows, otherwise CHEVRON)
@@ -50,11 +58,14 @@ void			cleanup(t_data *data, int type);
 // env.c
 t_env			*get_env_raw(char *current_env_pair);
 t_env			*create_env_node(char *raw, char *key, char *value,
-					int show_in_env);
+					int is_exported);
 void			add_env_node_to_list(t_env **env_list, t_env *new_env);
 int				get_env_list(t_data *data, char **envp);
 // env2.c
 int				create_env_list(t_data *data);
+// shlvl.c
+int				update_shlvl(t_env *env_list, t_data *data);
+void			handle_exit_shlvl(void);
 // exec_list.c
 int				create_exec_list(t_data *data);
 // expander.c
@@ -125,10 +136,12 @@ int				execute_builtin(int builtin, t_data *data, t_exec *exec_node);
 void			check_builtin(t_data *data, t_exec *exec_node);
 // ft_exit.c
 void			ft_exit(t_data *data, t_exec *exec_node);
-void				ft_cd(t_data *data, t_exec *exec_node);
-void				ft_pwd(void);
+// ft_cd.c
+void			ft_cd(t_data *data, t_exec *exec_node);
+// ft_pwd.c
+void			ft_pwd(void);
 // ft_env.c
-void			ft_env(t_data *data);
+void			ft_env(t_data *data, t_exec *exec_node);
 // ft_export.c
 void			ft_export(t_data *data, t_exec *exec_node);
 // ft_export_utils.c
@@ -136,5 +149,6 @@ t_env			*insertion_sort(t_env *sorted_list, t_env *new_node);
 int				is_key_valid(char *value, t_data *data);
 // ft_unset.c
 void			ft_unset(t_data *data, t_exec *exec_node);
+
 
 #endif

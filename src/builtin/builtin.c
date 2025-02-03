@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/03 10:25:44 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/03 19:19:16 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	execute_builtin(int builtin, t_data *data, t_exec *exec_node)
 	else if (builtin == 5)
 		ft_unset(data, exec_node);
 	else if (builtin == 6)
-		ft_env(data);
+		ft_env(data, exec_node);
 	else if (builtin == 7)
 		ft_exit(data, exec_node);
 	return (data->exit_code);

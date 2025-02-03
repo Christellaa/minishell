@@ -6,18 +6,16 @@
 /*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 11:46:02 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/03 12:42:25 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/02/03 19:48:54 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "../../includes/minishell.h"
 
 void	ft_pwd(void)
 {
 	char	*pwd;
-
+	
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{
