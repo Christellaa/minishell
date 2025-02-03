@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/03 10:01:45 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/03 10:47:41 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,5 +134,7 @@ void			ft_export(t_data *data, t_exec *exec_node);
 // ft_export_utils.c
 t_env			*insertion_sort(t_env *sorted_list, t_env *new_node);
 int				is_key_valid(char *value, t_data *data);
+// ft_unset.c
+void			ft_unset(t_data *data, t_exec *exec_node);
 
 #endif
