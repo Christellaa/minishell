@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:04:41 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/02 18:33:46 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/03 11:06:30 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ void	print_export_list(t_env *ordered_list)
 	{
 		if (ordered_list->show_in_env < 2)
 		{
-			printf("export %s=", ordered_list->key);
+			printf("export %s", ordered_list->key);
 			if (ordered_list->value)
-				printf("\"%s\"\n", ordered_list->value);
+				printf("=\"%s\"\n", ordered_list->value);
 			else
-				printf("\"\"\n");
+				printf("\n");
 		}
 		ordered_list = ordered_list->next;
 	}
