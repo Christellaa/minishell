@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/02 18:34:17 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/03 10:01:45 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,8 @@ int				execute_builtin(int builtin, t_data *data, t_exec *exec_node);
 void			check_builtin(t_data *data, t_exec *exec_node);
 // ft_exit.c
 void			ft_exit(t_data *data, t_exec *exec_node);
+int				ft_cd(t_data *data, t_exec *exec_node);
+int				ft_pwd(void);
 // ft_env.c
 void			ft_env(t_data *data);
 // ft_export.c
