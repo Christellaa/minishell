@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylini <cylini@student.42.fr>              +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 23:51:04 by cylini            #+#    #+#             */
-/*   Updated: 2025/01/31 23:18:36 by cylini           ###   ########.fr       */
+/*   Updated: 2025/02/03 17:58:25 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	check_cd_args(t_exec *exec_node)
+/* int	check_cd_args(t_exec *exec_node)
 {
 	t_arg	*args;
 
@@ -26,6 +26,8 @@ int	check_cd_args(t_exec *exec_node)
 		exec_node->arg_list->value);
 	return (0);
 }
+*/
+
 int	update_pwd(t_data *data, char *old_pwd_value)
 {
 	char	*current_cwd;
@@ -55,7 +57,53 @@ int	update_pwd(t_data *data, char *old_pwd_value)
 	return (1);
 }
 
-int	ft_cd(t_data *data, t_exec *exec_node)
+int	check_cd_args(t_data *data, t_arg *args)
+{
+	if (!args || args->next)
+	{
+		data->exit_code = 1;
+		if (!args)
+		{
+			ft_dprintf(STDERR_FILENO, "cd: not enough argument\n");
+			return (1);
+		}
+		ft_dprintf(STDERR_FILENO, "%s: too many arguments\n", args->value);
+		return (2);
+	}
+	return (0);
+}
+
+void	ft_cd(t_data *data, t_exec *exec_node)
+{
+	char	*current_path;
+	t_arg	*args;
+
+	args = exec_node->arg_list->next;
+	if (check_cd_args(data, args))
+		return ;
+	if (!(current_path = getcwd(NULL, 0)))
+	{
+		print_error(4, "Getcwd", data);
+		return ;
+	}
+	if (chdir(args->value) == -1)
+	{
+		if (errno == EACCES)
+			ft_dprintf(STDERR_FILENO, "cd: %s: Permission denied\n", args->value);
+		else
+			ft_dprintf(STDERR_FILENO, "cd: %s: No such file or directory\n",
+				args->value);
+		free(current_path);
+		data->exit_code = 1;
+		return ;
+	}
+	update_pwd(data, current_path);
+	free(current_path);
+}
+
+// perror("getcwd");
+// data->exit_code = 1;
+/* void	ft_cd(t_data *data, t_exec *exec_node)
 {
 	char	*current_path;
 	int		arg_nb;
@@ -68,7 +116,7 @@ int	ft_cd(t_data *data, t_exec *exec_node)
 	if (arg_nb == 0)
 	{
 		data->exit_code = 1;
-		return (0);
+		return ;
 	}
 	current_path = getcwd(NULL, 0);
 	if (!current_path)
@@ -83,13 +131,12 @@ int	ft_cd(t_data *data, t_exec *exec_node)
 		perror("cd");
 		free(current_path);
 		data->exit_code = 1;
-		return (0);
+		return ;
 	}
 	update_pwd(data, current_path);
 	free(current_path);
-	return (1);
-}
-
+	return ;
+} */
 /* home = data->env_list;
 if (arg_nb == 1 || ft_strcmp(args->value, "--") && (home && home->value))
 {
