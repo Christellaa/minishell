@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/30 15:34:18 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/02/02 18:34:17 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int				print_error(int flag, char *error, t_data *data);
 // cleanup.c
 void			cleanup(t_data *data, int type);
 // env.c
+t_env			*get_env_raw(char *current_env_pair);
 t_env			*create_env_node(char *raw, char *key, char *value,
 					int show_in_env);
 void			add_env_node_to_list(t_env **env_list, t_env *new_env);
@@ -124,5 +125,12 @@ int				execute_builtin(int builtin, t_data *data, t_exec *exec_node);
 void			check_builtin(t_data *data, t_exec *exec_node);
 // ft_exit.c
 void			ft_exit(t_data *data, t_exec *exec_node);
+// ft_env.c
+void			ft_env(t_data *data);
+// ft_export.c
+void			ft_export(t_data *data, t_exec *exec_node);
+// ft_export_utils.c
+t_env			*insertion_sort(t_env *sorted_list, t_env *new_node);
+int				is_key_valid(char *value, t_data *data);
 
 #endif

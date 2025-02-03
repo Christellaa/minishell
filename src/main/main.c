@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/30 13:38:59 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/01/31 16:31:59 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ TODO:
 - augmenter shlvl a chaque ouverture de ./minishell
 => implement a way to persist the env (save to a file?)
 - _ = dernier arg d'un node solo (cmd incluse)
+- gerer redir files pour builtins (dup pour save STDIN et STDOUT)
+- gerer get path from its folder when no env
 */
 
 /*
@@ -129,12 +131,6 @@ for export built-in:
 - if show_in_env = 2 -> it will show in env() but not in export()
 - export() reorders the env (uppercase then lowercase)
 	+ show value inside double quotes
-
-for signals:
-inside child processes:
--> ctrl+d does nothing
--> ctrl+c stop process => 130
--> ctrl+\ stop process (core dumped) => 131
 
 for execution:
 -> signals don't copy to child process

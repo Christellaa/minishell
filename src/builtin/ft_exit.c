@@ -1,16 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:02:09 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/30 16:22:07 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/01/31 15:57:54 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int		check_exit_args(t_exec *exec_node);
+int		get_exit_number(t_exec *exec_node);
+int		is_number(char *exit_number);
+
+void	ft_exit(t_data *data, t_exec *exec_node)
+{
+	int	exit_nb;
+
+	if (!check_exit_args(exec_node))
+	{
+		data->exit_code = 1;
+		return ;
+	}
+	exit_nb = get_exit_number(exec_node);
+	if (exit_nb == -1)
+		return ;
+	cleanup(data, 1);
+	exit(exit_nb);
+}
 
 int	check_exit_args(t_exec *exec_node)
 {
@@ -22,25 +42,6 @@ int	check_exit_args(t_exec *exec_node)
 		return (1);
 	ft_dprintf(STDERR_FILENO, "%s: too many arguments\n",
 		exec_node->arg_list->value);
-	return (0);
-}
-
-int	is_number(char *exit_number)
-{
-	char	*nb;
-
-	nb = ft_strdup(exit_number);
-	if (*nb == '-' || *nb == '+' || ft_isdigit(*nb))
-	{
-		nb++;
-		while (*nb)
-		{
-			if (!ft_isdigit(*nb))
-				return (0);
-			nb++;
-		}
-		return (1);
-	}
 	return (0);
 }
 
@@ -71,18 +72,21 @@ int	get_exit_number(t_exec *exec_node)
 	return (code);
 }
 
-void	ft_exit(t_data *data, t_exec *exec_node)
+int	is_number(char *exit_number)
 {
-	int	exit_nb;
+	char	*nb;
 
-	if (!check_exit_args(exec_node))
+	nb = ft_strdup(exit_number);
+	if (*nb == '-' || *nb == '+' || ft_isdigit(*nb))
 	{
-		data->exit_code = 1;
-		return ;
+		nb++;
+		while (*nb)
+		{
+			if (!ft_isdigit(*nb))
+				return (0);
+			nb++;
+		}
+		return (1);
 	}
-	exit_nb = get_exit_number(exec_node);
-	if (exit_nb == -1)
-		return ;
-	cleanup(data, 1);
-	exit(exit_nb);
+	return (0);
 }
