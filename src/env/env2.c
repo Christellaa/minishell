@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:58:42 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/30 13:37:42 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/02/03 12:42:08 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,21 @@ int	create_env_list(t_data *data)
 	char	**keys;
 	char	**values;
 	int		*exported;
+	int		i;
 
+	i = -1;
 	raw = create_raws();
 	keys = create_keys();
 	values = create_values();
 	exported = create_exported();
 	if (!raw || !keys || !values || !exported)
 		return (print_error(0, NULL, data), 0);
-	while (*raw)
+	while (raw[++i])
 	{
-		new_node = create_env_node(*raw, *keys, *values, *exported);
+		new_node = create_env_node(raw[i], keys[i], values[i], exported[i]);
 		if (!new_node)
 			return (print_error(0, NULL, data), 0);
 		add_env_node_to_list(&data->env_list, new_node);
-		raw++;
-		keys++;
-		values++;
-		exported++;
 	}
 	return (1);
 }
@@ -54,7 +52,7 @@ char	**create_raws(void)
 	if (!raw)
 		return (NULL);
 	raw[0] = ft_strdup("OLDPWD");
-	raw[1] = ft_strdup("PWD=getcwd_to_do");
+	raw[1] = ft_strjoin("PWD=", getcwd(NULL, 0));
 	raw[2] = ft_strdup("SHLVL=1");
 	raw[3] = ft_strdup("_=/usr/bin/env");
 	i = -1;
@@ -106,7 +104,7 @@ char	**create_values(void)
 	if (!values)
 		return (NULL);
 	values[0] = NULL;
-	values[1] = ft_strdup("getcwd_to_do");
+	values[1] = getcwd(NULL, 0);
 	values[2] = ft_strdup("1");
 	values[3] = ft_strdup("./minishell");
 	i = 0;
@@ -130,9 +128,9 @@ int	*create_exported(void)
 	exported = malloc(4 * sizeof(int));
 	if (!exported)
 		return (NULL);
-	exported[0] = 0;
-	exported[1] = 1;
-	exported[2] = 1;
-	exported[3] = 2;
+	exported[0] = IN_EXPORT;
+	exported[1] = IN_ENV | IN_EXPORT;
+	exported[2] = IN_ENV | IN_EXPORT;
+	exported[3] = IN_ENV;
 	return (exported);
 }

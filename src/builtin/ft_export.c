@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:04:41 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/03 11:06:30 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/03 12:44:46 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_env	*order_export_list(t_env *list)
 	current = list;
 	while (current)
 	{
-		new_node = get_env_raw(ft_strdup(current->raw));
+		new_node = get_env_raw(current->raw);
 		sorted_list = insertion_sort(sorted_list, new_node);
 		current = current->next;
 	}
@@ -55,7 +55,7 @@ void	print_export_list(t_env *ordered_list)
 {
 	while (ordered_list)
 	{
-		if (ordered_list->show_in_env < 2)
+		if (ordered_list->is_exported & IN_EXPORT)
 		{
 			printf("export %s", ordered_list->key);
 			if (ordered_list->value)
@@ -114,7 +114,7 @@ int	replace_existing_env_pair(t_env *new_node, t_env **list)
 				current_env->value = NULL;
 			else
 				current_env->value = new_node->value;
-			current_env->show_in_env = new_node->show_in_env;
+			current_env->is_exported = new_node->is_exported;
 			return (1);
 		}
 		current_env = current_env->next;

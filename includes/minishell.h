@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/03 10:47:41 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/03 11:47:18 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,12 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
+# define IN_ENV 0b01
+# define IN_EXPORT 0b10
+
 # define SINGLE_QUOTE '\''
 # define DOUBLE_QUOTE '\"'
+
 # define SYNTAX_ERR "Syntax error near unexpected token"
 // ; -> ...token ';' OR | (first or not followed) OR ||
 // OR CHEVRON (= 'newline' if no CHEVRON follows, otherwise CHEVRON)
@@ -50,7 +54,7 @@ void			cleanup(t_data *data, int type);
 // env.c
 t_env			*get_env_raw(char *current_env_pair);
 t_env			*create_env_node(char *raw, char *key, char *value,
-					int show_in_env);
+					int is_exported);
 void			add_env_node_to_list(t_env **env_list, t_env *new_env);
 int				get_env_list(t_data *data, char **envp);
 // env2.c

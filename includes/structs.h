@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 11:14:38 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/28 08:50:21 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/03 12:54:54 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ typedef struct s_exec
 
 typedef struct s_env
 {
-	char *raw;       // USER=cde-sous
-	char *key;       // USER
-	char *value;     // cde-sous
-	int show_in_env; // if exported, then give to child processes
+	char *raw;   // USER=cde-sous
+	char *key;   // USER
+	char *value; // cde-sous
+	int				is_exported;
 	struct s_env	*next;
 }					t_env;
 
