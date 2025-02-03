@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/03 12:33:44 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:45:26 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int ac, char **av, char **envp)
 	data = ft_memset(data, 0, sizeof(data));
 	init_data(data);
 	if (ac != 1)
-		return (print_error(3, NULL, data));
+		return (print_error(3, NULL, data)); // shouldn't free data?
 	if (!get_env_list(data, envp))
 		return (cleanup(data, 1), data->exit_code);
 	while (1)

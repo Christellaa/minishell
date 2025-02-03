@@ -8,7 +8,7 @@ LIBFT := $(LIBFT_DIR)/libft.a
 SRC_DIR := src
 OBJS_DIR := obj
 
-ENV := env env2
+ENV := env env2 shlvl
 EXECUTION := cmd_paths_utils child_process execution redirs_utils \
 			heredoc_utils
 MAIN := cleanup error main signals

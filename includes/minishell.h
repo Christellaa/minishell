@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/03 11:47:18 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/03 18:05:15 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@
 
 # define SINGLE_QUOTE '\''
 # define DOUBLE_QUOTE '\"'
+
+# define MAX_FD 1024
+# define MAX_SHLVL 999
+# define FIRST_RUN_FILE "/tmp/minishell_first_run"
 
 # define SYNTAX_ERR "Syntax error near unexpected token"
 // ; -> ...token ';' OR | (first or not followed) OR ||
@@ -59,6 +63,9 @@ void			add_env_node_to_list(t_env **env_list, t_env *new_env);
 int				get_env_list(t_data *data, char **envp);
 // env2.c
 int				create_env_list(t_data *data);
+// shlvl.c
+int				update_shlvl(t_env *env_list, t_data *data);
+void			handle_exit_shlvl(void);
 // exec_list.c
 int				create_exec_list(t_data *data);
 // expander.c
@@ -132,7 +139,7 @@ void			ft_exit(t_data *data, t_exec *exec_node);
 int				ft_cd(t_data *data, t_exec *exec_node);
 int				ft_pwd(void);
 // ft_env.c
-void			ft_env(t_data *data);
+void			ft_env(t_data *data, t_exec *exec_node);
 // ft_export.c
 void			ft_export(t_data *data, t_exec *exec_node);
 // ft_export_utils.c

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 13:45:25 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/03 12:38:25 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/03 16:20:41 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	get_env_list(t_data *data, char **envp)
 	if (!*envp)
 		if (!create_env_list(data))
 			return (0);
+	if (!update_shlvl(data->env_list, data))
+		return (0);
 	if (!data->env_list)
 		return (0);
 	return (1);
@@ -123,23 +125,3 @@ void	add_env_node_to_list(t_env **env_list, t_env *new_env_pair)
 		new_env_pair->next = NULL;
 	}
 }
-
-// void	update_shlvl(t_env *env_list)
-// {
-// 	t_env	*tmp;
-// 	int		value;
-
-// 	tmp = env_list;
-// 	while (tmp)
-// 	{
-// 		if (ft_strcmp(tmp->key, "SHLVL") == 0)
-// 		{
-// 			value = ft_atoi(ft_strdup(tmp->value));
-// 			free(tmp->value);
-// 			value++;
-// 			tmp->value = ft_itoa(value);
-// 			return ;
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// }
