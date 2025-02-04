@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 11:14:38 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/03 12:54:54 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/04 09:09:51 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@
 
 typedef enum s_token_type
 {
-	INFILE = 0, // <
-	HEREDOC,    // <<
-	TRUNC,      // >
-	APPEND,     // >>
-	FILENAME,   // "infile" "Makefile" "outfile"
-	PIPE,       // |
-	ARG,        // cmd, option, arg
-	WORD        // stops at PIPE, CHEVRON, or space
+	INFILE = 0,
+	HEREDOC,
+	TRUNC,
+	APPEND,
+	FILENAME,
+	PIPE,
+	ARG,
+	WORD
 }					t_token_type;
 
 typedef struct s_token
@@ -42,26 +42,25 @@ typedef struct s_arg
 
 typedef struct s_files
 {
-	char *value;       // file.txt, >
-	t_token_type type; // filename, trunc
+	char			*value;
+	t_token_type	type;
 	struct s_files	*next;
 }					t_files;
 
 typedef struct s_exec
 {
-	t_arg *arg_list; // cmd, option, arg: echo, -n, hello
-	t_files *files;  // files
+	t_arg			*arg_list;
+	t_files			*files;
 	pid_t			pid;
-	// int				skip;
 	int				pipefd[2];
 	struct s_exec	*next;
 }					t_exec;
 
 typedef struct s_env
 {
-	char *raw;   // USER=cde-sous
-	char *key;   // USER
-	char *value; // cde-sous
+	char			*raw;
+	char			*key;
+	char			*value;
 	int				is_exported;
 	struct s_env	*next;
 }					t_env;
@@ -71,7 +70,7 @@ typedef struct s_data
 	t_token			*token_list;
 	t_exec			*exec_list;
 	int				exit_code;
-	t_env *env_list; // environment & export list
+	t_env			*env_list;
 }					t_data;
 
 #endif

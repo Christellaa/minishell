@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 17:45:23 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/03 17:44:39 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/04 11:41:31 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,16 @@ char	**convert_env_list_to_tab(t_env *env_list)
 	env_tab[i] = NULL;
 	return (env_tab);
 }
-char	*get_cmd_path(char *cmd, t_data *data)
+char	*get_cmd_path(t_arg *arg_list, t_data *data)
 {
 	char	*final_path;
 	char	**split_paths;
 	int		i;
+	char	*cmd;
 
+	if (!arg_list)
+		return (NULL);
+	cmd = arg_list->value;
 	split_paths = get_and_split_paths(data->env_list);
 	if (!split_paths)
 		return (print_error(0, NULL, data), NULL);
@@ -102,8 +106,14 @@ int	execute_child_process(t_exec *exec_node, t_data *data)
 	char	**env;
 
 	check_builtin(data, exec_node);
-	cmd_path = get_cmd_path(exec_node->arg_list->value, data);
-	if (!cmd_path || !*cmd_path)
+	if (!handle_redirs(data, exec_node))
+	{
+		close_all_pipefds(data);
+		cleanup(data, 2);
+		exit(1);
+	}
+	cmd_path = get_cmd_path(exec_node->arg_list, data);
+	if (!cmd_path || !*cmd_path || !close_all_pipefds(data))
 	{
 		cleanup(data, 2);
 		if (cmd_path && !*cmd_path)
@@ -112,12 +122,6 @@ int	execute_child_process(t_exec *exec_node, t_data *data)
 			exit(126);
 		}
 		exit(127);
-	}
-	if (!handle_redirs(data, exec_node) || !close_all_pipefds(data))
-	{
-		free(cmd_path);
-		cleanup(data, 2);
-		exit(1);
 	}
 	args = convert_args_list_to_tab(exec_node->arg_list);
 	env = convert_env_list_to_tab(data->env_list);

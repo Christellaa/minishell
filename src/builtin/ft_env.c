@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:56:32 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/03 14:04:06 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/04 11:55:38 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_env(t_data *data, t_exec *exec_node)
 	args = args->next;
 	if (args)
 	{
-		ft_dprintf(STDERR_FILENO, "Too many arguments\n");
+		ft_dprintf(STDERR_FILENO, "%s%s\n", args->value, FILE_ERR);
 		return ;
 	}
 	while (current_env)

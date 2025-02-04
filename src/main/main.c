@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/03 17:45:26 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/04 14:33:08 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int	main(int ac, char **av, char **envp)
 	data = ft_memset(data, 0, sizeof(data));
 	init_data(data);
 	if (ac != 1)
-		return (print_error(3, NULL, data)); // shouldn't free data?
+		return (print_error(3, NULL, data), cleanup(data, 1), 1);
 	if (!get_env_list(data, envp))
-		return (cleanup(data, 1), data->exit_code);
+		return (cleanup(data, 1), 1);
 	while (1)
 	{
 		handle_signals();
@@ -111,31 +111,10 @@ void	test_it_2(t_data *data)
 
 /*
 TODO:
-- augmenter shlvl a chaque ouverture de ./minishell
-=> implement a way to persist the env (save to a file?)
-- _ = dernier arg d'un node solo (cmd incluse)
-- gerer redir files pour builtins (dup pour save STDIN et STDOUT)
+- finir builtin cd
 - gerer get path from its folder when no env
+- gerer MAX_FD opur les redirs files
+- faire builtin echo
+- normer
+- faire les tests finaux
 */
-
-/*
-QUESTIONS:
-- what's the FD_MAX allowed?
-- what's the SHLVL_MAX allowed?
-*/
-
-/*
-for execution:
--> signals don't copy to child process
--> STDIN and STDOUT must be dup before dup2 when exec is in main process,
-	then dup2 modified with original ones before closing modified ones
-eg:
-save_out = dup(STDOUT);
-fd = open(WRITE);
-dup2(fd, STDOUT);
-exec
-dup2(save_out, STDOUT);
-close(save_out);
-
-*/
-//

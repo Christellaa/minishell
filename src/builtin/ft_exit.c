@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:02:09 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/03 10:04:20 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/04 14:28:03 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,13 @@ void	ft_exit(t_data *data, t_exec *exec_node)
 {
 	int	exit_nb;
 
+	printf("exit\n");
 	if (!check_exit_args(exec_node))
 	{
 		data->exit_code = 1;
 		return ;
 	}
 	exit_nb = get_exit_number(exec_node);
-	if (exit_nb == -1)
-		return ;
 	cleanup(data, 1);
 	exit(exit_nb);
 }
@@ -59,14 +58,14 @@ int	get_exit_number(t_exec *exec_node)
 	{
 		ft_dprintf(STDERR_FILENO, "exit: %s: numeric argument required\n",
 			arg->value);
-		return (-1);
+		return (2);
 	}
 	code = ft_strtoll(arg->value, &endptr, 10);
 	if (errno == ERANGE)
 	{
 		ft_dprintf(STDERR_FILENO, "exit: %s: numeric argument required\n",
 			arg->value);
-		return (-1);
+		return (2);
 	}
 	code = code % 256;
 	return (code);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 11:46:02 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/03 19:48:54 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/02/04 13:53:54 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_pwd(void)
 {
 	char	*pwd;
-	
+
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{

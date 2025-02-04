@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/03 19:49:07 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/02/04 11:40:03 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,9 @@
 # define FIRST_RUN_FILE "/tmp/minishell_first_run"
 
 # define SYNTAX_ERR "Syntax error near unexpected token"
-// ; -> ...token ';' OR | (first or not followed) OR ||
-// OR CHEVRON (= 'newline' if no CHEVRON follows, otherwise CHEVRON)
 # define CMD_ERR ": command not found"
-// abc -> abc: command...
-# define OPTION_ERR ": invalid option --"
-// ls -z -> ls: invalid option -- 'z'
 # define FILE_ERR ": No such file or directory"
-// <a (inexistant) -> a: No...
 # define FILE_DENY ": Permission denied"
-// <a (no permission) -> a: Permission...
 # define QUOTE_ERR "Unclosed quote"
 # define MALLOC_ERR "Malloc error"
 # define TOO_MANY_ARG "Too many arguments. It should be [./minishell]"
@@ -66,6 +59,11 @@ int				create_env_list(t_data *data);
 // shlvl.c
 int				update_shlvl(t_env *env_list, t_data *data);
 void			handle_exit_shlvl(void);
+// shlvl_utils.c
+int				get_shlvl_number(char *shlvl_value);
+int				replace_shlvl_number(int value_nb, t_env *current_env,
+					t_data *data);
+int				get_buffer_count(int fd);
 // exec_list.c
 int				create_exec_list(t_data *data);
 // expander.c
@@ -115,10 +113,10 @@ char			*get_relative_path(char *cmd, t_data *data, char **split_paths);
 // execute_child_process.c
 char			**convert_args_list_to_tab(t_arg *arg_list);
 char			**convert_env_list_to_tab(t_env *env_list);
-char			*get_cmd_path(char *cmd, t_data *data);
+char			*get_cmd_path(t_arg *arg_list, t_data *data);
 int				execute_child_process(t_exec *exec_node, t_data *data);
 // execute.c
-int				is_builtin(char *cmd);
+int				is_builtin(t_exec *exec_node);
 int				create_pipes(t_data *data, t_exec *head_exec_list);
 int				close_all_pipefds(t_data *data);
 int				wait_all_pids(t_exec *head_exec_list);
@@ -149,6 +147,5 @@ t_env			*insertion_sort(t_env *sorted_list, t_env *new_node);
 int				is_key_valid(char *value, t_data *data);
 // ft_unset.c
 void			ft_unset(t_data *data, t_exec *exec_node);
-
 
 #endif

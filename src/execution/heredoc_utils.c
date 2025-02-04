@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 18:17:58 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/30 13:38:37 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/02/04 14:11:47 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,8 @@ int	write_mode_here_doc(t_files *file, int *i, t_data *data)
 			return (print_error(0, NULL, data), 0);
 		fd = open(name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd == -1)
-		{
-			if (fd == -1 && access(file->value, F_OK) == 0)
-				return (print_error(2, file->value, data), 0);
-			else if (fd == -1)
-				return (print_error(1, file->value, data), 0);
-		}
+			if (fd == -1)
+				return (perror(file->value), 0);
 		write_in_heredoc(file->value, fd);
 		if (close(fd) == -1)
 		{

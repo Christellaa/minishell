@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 16:50:17 by carzhang          #+#    #+#             */
-/*   Updated: 2025/01/30 13:39:09 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/02/04 13:24:11 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	create_exec_node(t_exec **new_node, t_data *data)
 	(*new_node)->arg_list = NULL;
 	(*new_node)->files = NULL;
 	(*new_node)->pid = -1;
-	// (*new_node)->skip = 0;
 	(*new_node)->pipefd[0] = -1;
 	(*new_node)->pipefd[1] = -1;
 	(*new_node)->next = NULL;

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 09:50:15 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/03 17:58:29 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/04 09:21:16 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@ int	ft_atoi(const char *nptr)
 		i++;
 	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
-		res = res * 10 + nptr[i++] - '0';
+		res = res * 10 + nptr[i] - '0';
 		if (res > 999)
-			return (999);
+			return (998);
+		i++;
 	}
 	if (nptr[i])
 		return (0);

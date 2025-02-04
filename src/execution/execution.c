@@ -3,17 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylini <cylini@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:29:37 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/01 21:48:21 by cylini           ###   ########.fr       */
+/*   Updated: 2025/02/04 13:52:56 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	is_builtin(char *cmd)
+int	is_builtin(t_exec *exec_node)
 {
+	char	*cmd;
+
+	if (!exec_node->arg_list)
+		return (0);
+	cmd = exec_node->arg_list->value;
 	if (ft_strcmp(cmd, "echo") == 0)
 		return (1);
 	else if (ft_strcmp(cmd, "cd") == 0)
@@ -60,12 +65,18 @@ int	close_all_pipefds(t_data *data)
 		if (current_node->pipefd[0] != -1)
 		{
 			if (close(current_node->pipefd[0]) == -1)
+			{
+				current_node->pipefd[0] = -1;
 				return (print_error(4, "Close", data), 0);
+			}
 		}
 		if (current_node->pipefd[1] != -1)
 		{
 			if (close(current_node->pipefd[1]) == -1)
+			{
+				current_node->pipefd[1] = -1;
 				return (print_error(4, "Close", data), 0);
+			}
 		}
 		current_node = current_node->next;
 	}
@@ -97,16 +108,47 @@ int	wait_all_pids(t_exec *head_exec_list)
 	return (exit_code);
 }
 
+int	save_stds_and_execute_builtin(t_data *data, t_exec *exec_node)
+{
+	int	save_in;
+	int	save_out;
+
+	save_in = dup(STDIN_FILENO);
+	save_out = dup(STDOUT_FILENO);
+	if (save_in == -1 || save_out == -1)
+		return (print_error(4, "Dup", data), 1);
+	if (!handle_files(data, exec_node))
+	{
+		close(save_in);
+		close(save_out);
+		return (1);
+	}
+	data->exit_code = execute_builtin(is_builtin(exec_node), data, exec_node);
+	if (dup2(save_in, STDIN_FILENO) == -1)
+	{
+		close(save_in);
+		close(save_out);
+		return (perror("Dup2"), 1);
+	}
+	if (dup2(save_out, STDOUT_FILENO) == -1)
+	{
+		close(save_in);
+		close(save_out);
+		return (perror("Dup2"), 1);
+	}
+	close(save_in);
+	close(save_out);
+	return (data->exit_code);
+}
+
 void	execute(t_data *data)
 {
 	t_exec	*exec_node;
 
 	exec_node = data->exec_list;
-	if (is_builtin(exec_node->arg_list->value) && !exec_node->next
-		&& handle_files(data, exec_node))
+	if (is_builtin(exec_node) && !exec_node->next)
 	{
-		execute_builtin(is_builtin(exec_node->arg_list->value), data,
-			exec_node);
+		data->exit_code = save_stds_and_execute_builtin(data, exec_node);
 		return ;
 	}
 	if (!create_pipes(data, exec_node))
@@ -121,7 +163,7 @@ void	execute(t_data *data)
 			return ;
 		}
 		if (!exec_node->pid)
-			data->exit_code = execute_child_process(exec_node, data);
+			execute_child_process(exec_node, data);
 		exec_node = exec_node->next;
 	}
 	close_all_pipefds(data);

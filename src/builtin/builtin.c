@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/03 19:19:16 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/02/04 13:13:56 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,23 @@ int		execute_builtin(int builtin, t_data *data, t_exec *exec_node);
 void	check_builtin(t_data *data, t_exec *exec_node)
 {
 	int	builtin;
-	int	save_in;
-	int	save_out;
 
-	save_in = dup(STDIN_FILENO);
-	save_out = dup(STDOUT_FILENO);
-	builtin = is_builtin(exec_node->arg_list->value);
+	builtin = is_builtin(exec_node);
 	if (builtin)
 	{
 		if (!handle_redirs(data, exec_node))
 		{
-			cleanup(data, 1);
+			cleanup(data, 2);
 			exit(1);
 		}
-		dup2(save_in, STDIN_FILENO);
-		dup2(save_out, STDOUT_FILENO);
-		if (!execute_builtin(builtin, data, exec_node))
+		builtin = execute_builtin(builtin, data, exec_node);
+		close_all_pipefds(data);
+		cleanup(data, 2);
+		if (!builtin)
 			exit(0);
 		else
 			exit(1);
 	}
-	close(save_in);
-	close(save_out);
 	return ;
 }
 
