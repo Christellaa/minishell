@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shlvl_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 10:16:11 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/04 13:12:50 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/04 15:16:55 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	get_buffer_count(int fd)
 	count = 0;
 	bytes_read = read(fd, buffer, sizeof(buffer) - 1);
 	close(fd);
-	if (bytes_read <= 0)
+	if (bytes_read < 0)
 		return (perror(FIRST_RUN_FILE), -1);
 	buffer[bytes_read] = '\0';
 	count = ft_atoi(buffer);
