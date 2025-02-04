@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cylini <cylini@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 23:51:04 by cylini            #+#    #+#             */
-/*   Updated: 2025/02/04 16:41:35 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/02/04 22:51:51 by cylini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
 
 int		replace_existing_env_pair(t_env *new_node, t_env **list);
 
@@ -36,7 +35,6 @@ int	update_pwd(t_data *data, char *old_pwd_value)
 	char	*current_cwd;
 	char	*pwd_path;
 	char	*old_pwd_path;
-
 
 	current_cwd = getcwd(NULL, 0);
 	if (current_cwd)
@@ -81,7 +79,8 @@ void	ft_cd(t_data *data, t_exec *exec_node)
 	args = exec_node->arg_list->next;
 	if (check_cd_args(data, args))
 		return ;
-	if (!(current_path = getcwd(NULL, 0)))
+	current_path = getcwd(NULL, 0);
+	if (!current_path)
 	{
 		print_error(4, "Getcwd", data);
 		return ;
