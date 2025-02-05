@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 17:45:23 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/05 15:11:46 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/05 18:05:06 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,17 @@ char	**convert_env_list_to_tab(t_env *env_list)
 	return (env_tab);
 }
 
+char	*no_such_file_or_directory(char *cmd, t_data *data)
+{
+	if (ft_strncmp(cmd, "./", 2) == 0 && access(cmd, F_OK) == 0)
+		return (print_error(7, cmd, data), ft_strdup(""));
+	else if (ft_strncmp(cmd, "/", 1) == 0 || ft_strncmp(cmd, "./", 2) == 0)
+		print_error(1, cmd, data);
+	else
+		print_error(8, cmd, data);
+	return (NULL);
+}
+
 char	*get_cmd_path(t_arg *arg_list, t_data *data)
 {
 	char	*final_path;
@@ -91,15 +102,16 @@ char	*get_cmd_path(t_arg *arg_list, t_data *data)
 	while (split_paths[i])
 		free(split_paths[i++]);
 	free(split_paths);
-	if (ft_strncmp(cmd, "./", 2) == 0 && access(cmd, F_OK) == 0)
+	no_such_file_or_directory(cmd, data);
+	return (NULL);
+}
+	/* if (ft_strncmp(cmd, "./", 2) == 0 && access(cmd, F_OK) == 0)
 		return (ft_dprintf(STDERR_FILENO, "%s%s\n", cmd, FILE_DENY),
 			ft_strdup(""));
 	else if (ft_strncmp(cmd, "/", 1) == 0 || ft_strncmp(cmd, "./", 2) == 0)
 		ft_dprintf(STDERR_FILENO, "%s%s\n", cmd, FILE_ERR);
 	else
-		ft_dprintf(STDERR_FILENO, "%s%s\n", cmd, CMD_ERR);
-	return (NULL);
-}
+		ft_dprintf(STDERR_FILENO, "%s%s\n", cmd, CMD_ERR); */
 
 void	convert_and_check(char *cmd_path, t_data *data, t_exec *exec_node)
 {
