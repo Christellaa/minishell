@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 18:17:58 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/04 14:11:47 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/05 17:15:25 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,9 @@ int	write_mode_here_doc(t_files *file, int *i, t_data *data)
 
 int	handle_here_doc(t_data *data, t_exec *node)
 {
-	t_files *file;
-	int i;
-	t_exec *node_tmp;
+	t_files	*file;
+	int		i;
+	t_exec	*node_tmp;
 
 	node_tmp = node;
 	while (node_tmp)

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/04 14:33:08 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/05 17:23:24 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,6 @@ void	test_it_2(t_data *data)
 
 /*
 TODO:
-- finir builtin cd
-- gerer get path from its folder when no env
-- gerer MAX_FD opur les redirs files
 - faire builtin echo
 - normer
 - faire les tests finaux
