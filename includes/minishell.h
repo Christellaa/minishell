@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/04 14:57:52 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/05 15:45:47 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ extern pid_t	g_signal;
 int				print_error(int flag, char *error, t_data *data);
 // cleanup.c
 void			cleanup(t_data *data, int type);
+void			free_env(t_env *pair);
+
 // env.c
 t_env			*get_env_raw(char *current_env_pair);
 t_env			*create_env_node(char *raw, char *key, char *value,
@@ -131,10 +133,12 @@ void			write_in_heredoc(const char *delimiter, int fd);
 int				handle_here_doc(t_data *data, t_exec *node);
 int				write_mode_here_doc(t_files *file, int *i, t_data *data);
 // builtin.c
-int				execute_builtin(int builtin, t_data *data, t_exec *exec_node);
+int				execute_builtin(int builtin, t_data *data, t_exec *exec_node,
+					int save_in, int save_out);
 void			check_builtin(t_data *data, t_exec *exec_node);
 // ft_exit.c
-void			ft_exit(t_data *data, t_exec *exec_node);
+void			ft_exit(t_data *data, t_exec *exec_node, int save_in,
+					int save_out);
 // ft_cd.c
 void			ft_cd(t_data *data, t_exec *exec_node);
 // ft_pwd.c

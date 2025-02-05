@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 17:45:23 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/04 17:16:46 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/02/05 15:11:46 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,15 +92,16 @@ char	*get_cmd_path(t_arg *arg_list, t_data *data)
 		free(split_paths[i++]);
 	free(split_paths);
 	if (ft_strncmp(cmd, "./", 2) == 0 && access(cmd, F_OK) == 0)
-		return (print_error(7, cmd, data), ft_strdup(""));
+		return (ft_dprintf(STDERR_FILENO, "%s%s\n", cmd, FILE_DENY),
+			ft_strdup(""));
 	else if (ft_strncmp(cmd, "/", 1) == 0 || ft_strncmp(cmd, "./", 2) == 0)
-		print_error(1, cmd, data);
+		ft_dprintf(STDERR_FILENO, "%s%s\n", cmd, FILE_ERR);
 	else
-		print_error(8, cmd, data);
+		ft_dprintf(STDERR_FILENO, "%s%s\n", cmd, CMD_ERR);
 	return (NULL);
 }
 
-void convert_and_check(char *cmd_path, t_data *data, t_exec *exec_node)
+void	convert_and_check(char *cmd_path, t_data *data, t_exec *exec_node)
 {
 	char	**args;
 	char	**env;
@@ -175,5 +176,5 @@ int	execute_child_process(t_exec *exec_node, t_data *data)
 		free(env);
 		cleanup(data, 2);
 		exit(1);
-	} 
+	}
  */

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:29:37 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/04 13:52:56 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/05 13:53:54 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,14 +123,10 @@ int	save_stds_and_execute_builtin(t_data *data, t_exec *exec_node)
 		close(save_out);
 		return (1);
 	}
-	data->exit_code = execute_builtin(is_builtin(exec_node), data, exec_node);
-	if (dup2(save_in, STDIN_FILENO) == -1)
-	{
-		close(save_in);
-		close(save_out);
-		return (perror("Dup2"), 1);
-	}
-	if (dup2(save_out, STDOUT_FILENO) == -1)
+	data->exit_code = execute_builtin(is_builtin(exec_node), data, exec_node,
+			save_in, save_out);
+	if (dup2(save_in, STDIN_FILENO) == -1 || dup2(save_out, STDOUT_FILENO) ==
+		-1)
 	{
 		close(save_in);
 		close(save_out);
@@ -170,6 +166,3 @@ void	execute(t_data *data)
 	data->exit_code = wait_all_pids(data->exec_list);
 	return ;
 }
-
-// ls|<<u <<r grep b => seulement le resultat de r s'affiche (OK)
-// ls|<<u grep a |<<r grep b => seulemet le res de r s'affiche (OK)

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:04:41 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/03 12:44:46 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/05 15:45:31 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	ft_export(t_data *data, t_exec *exec_node)
 	{
 		ordered_list = order_export_list(data->env_list);
 		print_export_list(ordered_list);
+		free_env(ordered_list);
 		return ;
 	}
 	export_each_arg(exec_node, data);

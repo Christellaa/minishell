@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:02:09 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/04 14:28:03 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/05 15:01:12 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int		check_exit_args(t_exec *exec_node);
 int		get_exit_number(t_exec *exec_node);
 int		is_number(char *exit_number);
 
-void	ft_exit(t_data *data, t_exec *exec_node)
+void	ft_exit(t_data *data, t_exec *exec_node, int save_in, int save_out)
 {
 	int	exit_nb;
 
@@ -27,7 +27,15 @@ void	ft_exit(t_data *data, t_exec *exec_node)
 		return ;
 	}
 	exit_nb = get_exit_number(exec_node);
-	cleanup(data, 1);
+	if (save_in != -1)
+		close(save_in);
+	if (save_out != -1)
+		close(save_out);
+	close_all_pipefds(data);
+	if (data->exec_list->next)
+		cleanup(data, 2);
+	else
+		cleanup(data, 1);
 	exit(exit_nb);
 }
 
