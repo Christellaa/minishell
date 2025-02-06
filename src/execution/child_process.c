@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 17:45:23 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/06 16:37:59 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 17:52:48 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,11 @@ char	*get_cmd_path(t_arg *arg_list, t_data *data)
 
 char	*no_such_file_or_directory(char *cmd, t_data *data)
 {
+	struct stat	path_stat;
+
+	if (stat(cmd, &path_stat) != -1 && S_ISDIR(path_stat.st_mode))
+		return (ft_dprintf(STDERR_FILENO, "%s: is a directory\n", cmd),
+			ft_strdup(""));
 	if (ft_strncmp(cmd, "./", 2) == 0 && access(cmd, F_OK) == 0)
 		return (print_error(7, cmd, data), ft_strdup(""));
 	else if (ft_strncmp(cmd, "/", 1) == 0 || ft_strncmp(cmd, "./", 2) == 0)

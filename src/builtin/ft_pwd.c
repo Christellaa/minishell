@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 11:46:02 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/06 14:04:06 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 18:26:58 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_pwd(t_data *data, t_exec *exec_node)
 		arg = exec_node->arg_list->next;
 		if (arg->value[0] == '-')
 		{
-			ft_dprintf(STDERR_FILENO, "%s: invalid option\n", arg->value);
+			ft_dprintf(STDERR_FILENO, "pwd: %s: invalid option\n", arg->value);
 			data->exit_code = 2;
 			free(pwd);
 			return ;

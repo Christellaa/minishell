@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:04:41 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 14:53:36 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 18:54:20 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,10 @@ void	export_each_arg(t_exec *exec_node, t_data *data)
 	while (args)
 	{
 		if (!is_key_valid(args->value, data))
-			return ;
+		{
+			args = args->next;
+			continue ;
+		}
 		new_env_pair = get_env_raw(args->value);
 		if (!new_env_pair)
 			return (print_error(0, NULL, data));

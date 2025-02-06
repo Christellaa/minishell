@@ -5,7 +5,9 @@ LIBFT_DIR := libft
 SRC_DIR := src
 OBJS_DIR := obj
 
-INC := $(INC_DIR)/minishell.h $(INC_DIR)/structs.h
+INC := $(INC_DIR)/minishell.h $(INC_DIR)/structs.h $(SRC_DIR)/builtin/builtin.h \
+		$(SRC_DIR)/env/env.h $(SRC_DIR)/execution/execution.h \
+		$(SRC_DIR)/parsing/parsing.h $(SRC_DIR)/parsing_tools/parsing_tools.h
 LIBFT := $(LIBFT_DIR)/libft.a
 
 ENV := env env2 shlvl shlvl_utils

@@ -6,12 +6,13 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:07:27 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 13:20:45 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 20:37:18 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
+int		is_option(char *arg_value, t_data *data);
 void	remove_env_var(t_env **env_list, char *arg_value);
 
 void	ft_unset(t_data *data, t_exec *exec_node)
@@ -23,9 +24,22 @@ void	ft_unset(t_data *data, t_exec *exec_node)
 		return ;
 	while (args)
 	{
+		if (is_option(args->value, data))
+			return ;
 		remove_env_var(&data->env_list, args->value);
 		args = args->next;
 	}
+}
+
+int	is_option(char *arg_value, t_data *data)
+{
+	if (arg_value[0] == '-')
+	{
+		ft_dprintf(STDERR_FILENO, "unset: %s: invalid option\n", arg_value);
+		data->exit_code = 2;
+		return (1);
+	}
+	return (0);
 }
 
 void	remove_env_var(t_env **env_list, char *arg_value)

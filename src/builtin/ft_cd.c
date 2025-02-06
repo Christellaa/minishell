@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 23:51:04 by cylini            #+#    #+#             */
-/*   Updated: 2025/02/06 14:53:08 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 20:36:25 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "builtin.h"
 
 int		check_cd_args(t_data *data, t_arg *args);
+int		check_chdir(char *arg_value, t_data *data, t_exec *exec_node);
 void	update_pwd(t_data *data, char *old_pwd_value);
 void	replace_and_add_current_pwd(char *current_pwd, t_data *data);
 
@@ -32,13 +33,8 @@ void	ft_cd(t_data *data, t_exec *exec_node)
 		data->exit_code = 1;
 		return ;
 	}
-	if (chdir(args->value) == -1)
-	{
-		perror("cd");
-		free(current_path);
-		data->exit_code = 1;
-		return ;
-	}
+	if (!check_chdir(args->value, data, exec_node))
+		return (free(current_path));
 	update_pwd(data, current_path);
 	free(current_path);
 }
@@ -55,6 +51,26 @@ int	check_cd_args(t_data *data, t_arg *args)
 		return (1);
 	}
 	return (0);
+}
+
+int	check_chdir(char *arg_value, t_data *data, t_exec *exec_node)
+{
+	if (chdir(arg_value) == -1)
+	{
+		if (arg_value[0] == '-')
+		{
+			ft_dprintf(STDERR_FILENO, "cd: %s: invalid option\n", arg_value);
+			data->exit_code = 2;
+		}
+		else
+		{
+			ft_dprintf(STDERR_FILENO, "%s: '%s'%s\n",
+				exec_node->arg_list->value, arg_value, FILE_ERR);
+			data->exit_code = 1;
+		}
+		return (0);
+	}
+	return (1);
 }
 
 void	update_pwd(t_data *data, char *old_pwd_value)

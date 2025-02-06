@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 18:07:04 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/06 14:44:56 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 17:47:53 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,17 +86,24 @@ char	*get_path_from_its_file(void)
 
 int	is_absolute_path(char *cmd)
 {
+	struct stat	path_stat;
+
 	if (((ft_strncmp(cmd, "/", 1) == 0) || (ft_strncmp(cmd, "./", 2) == 0))
 		&& access(cmd, F_OK | X_OK) == 0)
+	{
+		if (stat(cmd, &path_stat) != -1 && S_ISDIR(path_stat.st_mode))
+			return (0);
 		return (1);
+	}
 	return (0);
 }
 
 char	*get_relative_path(char *cmd, t_data *data, char **split_paths)
 {
-	int		i;
-	char	*path_with_slash;
-	char	*final_path;
+	int			i;
+	char		*path_with_slash;
+	char		*final_path;
+	struct stat	path_stat;
 
 	i = -1;
 	while (split_paths[++i])
@@ -108,7 +115,8 @@ char	*get_relative_path(char *cmd, t_data *data, char **split_paths)
 		free(path_with_slash);
 		if (!final_path)
 			return (print_error(0, NULL, data), NULL);
-		if (access(final_path, F_OK | X_OK) == 0)
+		if (access(final_path, F_OK | X_OK) == 0 && (stat(cmd, &path_stat) == -1
+				|| !S_ISDIR(path_stat.st_mode)))
 			return (final_path);
 		free(final_path);
 	}
