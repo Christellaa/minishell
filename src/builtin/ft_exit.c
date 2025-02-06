@@ -6,11 +6,12 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:02:09 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/06 11:35:59 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 12:51:02 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../execution/execution.h"
+#include "builtin.h"
 
 int		check_exit_args(t_exec *exec_node);
 int		get_exit_number(t_exec *exec_node);

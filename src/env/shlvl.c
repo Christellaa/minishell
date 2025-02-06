@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 16:01:36 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/04 14:17:08 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 12:14:33 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "env.h"
 
 int		is_first_run(void);
 

@@ -6,11 +6,14 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/05 17:23:24 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:42:49 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include "../env/env.h"
+#include "../execution/execution.h"
+#include "../parsing/parsing.h"
 
 void	init_data(t_data *data);
 void	process_input(t_data *data, char *input);
@@ -37,7 +40,7 @@ int	main(int ac, char **av, char **envp)
 		return (cleanup(data, 1), 1);
 	while (1)
 	{
-		handle_signals();
+		handle_parent_signals();
 		input = readline("minishell$ ");
 		if (!input)
 			return (printf("exit\n"), free(input), cleanup(data, 1), 0);
@@ -111,7 +114,7 @@ void	test_it_2(t_data *data)
 
 /*
 TODO:
-- faire builtin echo
+- modifier print_error
 - normer
 - faire les tests finaux
 */

@@ -6,11 +6,12 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:01:56 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/03 17:43:07 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:15:34 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include "../env/env.h"
 
 void	free_tokens(t_token *token);
 void	free_exec(t_exec *exec);
@@ -26,16 +27,10 @@ void	cleanup(t_data *data, int type)
 		if (data->exec_list)
 			free_exec(data->exec_list);
 		data->exec_list = NULL;
-		if (type == 1) // for parent process
+		if (type == 1 || type == 2)
 		{
-			handle_exit_shlvl();
-			if (data->env_list)
-				free_env(data->env_list);
-			free(data);
-			rl_clear_history();
-		}
-		else if (type == 2) // for child process
-		{
+			if (type == 1)
+				handle_exit_shlvl();
 			if (data->env_list)
 				free_env(data->env_list);
 			free(data);

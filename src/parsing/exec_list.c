@@ -6,11 +6,12 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 16:50:17 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/04 13:24:11 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:03:08 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../parsing_tools/parsing_tools.h"
+#include "parsing.h"
 
 int		create_and_add_node_to_list(t_data *data, t_exec **new_node);
 void	create_exec_node(t_exec **new_node, t_data *data);

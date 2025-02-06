@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils_expander2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:21:59 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/30 13:39:51 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/02/06 12:58:07 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "parsing_tools.h"
 
 char	*join_str_without_external_quotes(char *value, char quote);
 

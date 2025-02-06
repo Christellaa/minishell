@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 18:30:32 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/02 18:31:11 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:37:38 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "builtin.h"
 
 t_env	*insertion_sort(t_env *sorted_list, t_env *new_node)
 {

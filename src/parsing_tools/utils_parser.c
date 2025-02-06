@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:24:28 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/30 09:30:54 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 12:58:07 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "parsing_tools.h"
 
 int		is_token_value_empty(char *value);
 

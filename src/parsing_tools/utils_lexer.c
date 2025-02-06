@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:28:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/05 17:47:15 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 12:58:07 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "parsing_tools.h"
 
 int	get_token_type(char *word);
 int	is_word(char *word);

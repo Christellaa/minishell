@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:16:12 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/30 13:37:11 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:47:09 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 int	get_err_code(int flag);
 
 int	print_error(int flag, char *error, t_data *data)
+// modify to ft_dprintf with arg STDERR
+// does it really need to return int instead of void?
 {
 	if (data)
 		data->exit_code = get_err_code(flag);

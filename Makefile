@@ -1,12 +1,12 @@
 NAME := minishell
 
 INC_DIR := includes
-INC := $(INC_DIR)/minishell.h $(INC_DIR)/structs.h
 LIBFT_DIR := libft
-LIBFT := $(LIBFT_DIR)/libft.a
-
 SRC_DIR := src
 OBJS_DIR := obj
+
+INC := $(INC_DIR)/minishell.h $(INC_DIR)/structs.h
+LIBFT := $(LIBFT_DIR)/libft.a
 
 ENV := env env2 shlvl shlvl_utils
 EXECUTION := cmd_paths_utils child_process execution redirs_utils \

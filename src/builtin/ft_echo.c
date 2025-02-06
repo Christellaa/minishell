@@ -6,28 +6,13 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 11:09:26 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 11:43:28 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:23:45 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "builtin.h"
 
-int	is_newline(char *arg_value)
-{
-	int	i;
-
-	i = 0;
-	if (arg_value[i] != '-')
-		return (0);
-	i++;
-	while (arg_value[i])
-	{
-		if (arg_value[i] != 'n')
-			return (0);
-		i++;
-	}
-	return (1);
-}
+int		is_newline(char *arg_value);
 
 void	ft_echo(t_data *data, t_exec *exec_node)
 {
@@ -53,4 +38,21 @@ void	ft_echo(t_data *data, t_exec *exec_node)
 	}
 	if (has_newline)
 		printf("\n");
+}
+
+int	is_newline(char *arg_value)
+{
+	int	i;
+
+	i = 0;
+	if (arg_value[i] != '-')
+		return (0);
+	i++;
+	while (arg_value[i])
+	{
+		if (arg_value[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
 }

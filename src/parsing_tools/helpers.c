@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 16:16:12 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/01/30 09:30:34 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 12:58:07 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "parsing_tools.h"
 
 char	*get_env_value(char *equal_pos)
 {

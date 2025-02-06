@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   shlvl_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 10:16:11 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/04 15:16:55 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:04:16 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "env.h"
 
 int	get_shlvl_number(char *shlvl_value)
 {

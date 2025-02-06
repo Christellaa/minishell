@@ -6,11 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:56:32 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 11:35:49 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:28:36 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "builtin.h"
 
 void	ft_env(t_data *data, t_exec *exec_node)
 {
@@ -22,6 +22,7 @@ void	ft_env(t_data *data, t_exec *exec_node)
 	if (args)
 	{
 		ft_dprintf(STDERR_FILENO, "%s%s\n", args->value, FILE_ERR);
+		data->exit_code = 127;
 		return ;
 	}
 	while (current_env)

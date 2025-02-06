@@ -6,11 +6,12 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:04:41 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 11:36:21 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:37:36 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../env/env.h"
+#include "builtin.h"
 
 t_env	*order_export_list(t_env *list);
 void	print_export_list(t_env *ordered_list);
@@ -26,6 +27,11 @@ void	ft_export(t_data *data, t_exec *exec_node)
 	if (!args)
 	{
 		ordered_list = order_export_list(data->env_list);
+		if (!ordered_list)
+		{
+			data->exit_code = 1;
+			return ;
+		}
 		print_export_list(ordered_list);
 		free_env(ordered_list);
 		return ;
@@ -45,6 +51,8 @@ t_env	*order_export_list(t_env *list)
 	while (current)
 	{
 		new_node = get_env_raw(current->raw);
+		if (!new_node)
+			return (ft_dprintf(STDERR_FILENO, "%s\n", MALLOC_ERR), NULL);
 		sorted_list = insertion_sort(sorted_list, new_node);
 		current = current->next;
 	}
@@ -81,13 +89,12 @@ void	export_each_arg(t_exec *exec_node, t_data *data)
 		new_env_pair = get_env_raw(args->value);
 		if (!new_env_pair)
 		{
-			ft_dprintf(STDERR_FILENO, "Malloc error\n");
+			ft_dprintf(STDERR_FILENO, "%s\n", MALLOC_ERR);
 			data->exit_code = 1;
 			return ;
 		}
-		if (replace_existing_env_pair(new_env_pair, &data->env_list))
-			return ;
-		add_env_node_to_list(&data->env_list, new_env_pair);
+		if (!replace_existing_env_pair(new_env_pair, &data->env_list))
+			add_env_node_to_list(&data->env_list, new_env_pair);
 		args = args->next;
 	}
 	return ;

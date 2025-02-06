@@ -6,11 +6,12 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/06 11:08:34 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:59:46 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../execution/execution.h"
+#include "builtin.h"
 
 int		execute_builtin(int builtin, t_data *data, t_exec *exec_node,
 			int save_in, int save_out);
@@ -46,7 +47,7 @@ int	execute_builtin(int builtin, t_data *data, t_exec *exec_node, int save_in,
 	else if (builtin == 2)
 		ft_cd(data, exec_node);
 	else if (builtin == 3)
-		ft_pwd();
+		ft_pwd(data, exec_node);
 	else if (builtin == 4)
 		ft_export(data, exec_node);
 	else if (builtin == 5)
