@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:24:28 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 12:58:07 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 16:19:32 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,11 @@ int	var_name_len(char *value)
 	len = 0;
 	if (value[len] == '?')
 		return (1);
+	if (ft_isdigit(value[len]))
+		return (1);
 	while (value[len])
 	{
-		if (ft_isspace(value[len]) || value[len] == SINGLE_QUOTE
-			|| value[len] == DOUBLE_QUOTE || value[len] == '$')
+		if (value[len] != '_' && !ft_isalnum(value[len]))
 			break ;
 		len++;
 	}

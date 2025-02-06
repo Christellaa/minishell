@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 11:56:15 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 13:59:34 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 15:30:18 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,6 @@ int		is_key_valid(char *value, t_data *data);
 // ft_unset.c
 void	ft_unset(t_data *data, t_exec *exec_node);
 // ft_echo.c
-void	ft_echo(t_data *data, t_exec *exec_node);
+void	ft_echo(t_exec *exec_node);
 
 #endif

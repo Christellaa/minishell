@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 18:17:58 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/06 13:52:43 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 14:49:22 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ int	write_mode_here_doc(t_files *file, int *i, t_data *data)
 			return (print_error(0, NULL, data), 0);
 		fd = open(name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd == -1)
-			if (fd == -1)
-				return (perror(file->value), 0);
+			return (print_error(4, "Open", data), 0);
 		write_in_heredoc(file->value, fd);
 		if (close(fd) == -1)
 		{

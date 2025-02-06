@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:29:37 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/06 13:47:46 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 14:59:31 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "execution.h"
 
 int		is_builtin(t_exec *exec_node);
-int		save_stds_and_execute_builtin(t_data *data, t_exec *exec_node);
+void	save_stds_and_execute_builtin(t_data *data, t_exec *exec_node);
 int		create_pipes(t_data *data, t_exec *head_exec_list);
 int		close_all_pipefds(t_data *data);
 int		wait_all_pids(t_exec *head_exec_list);
@@ -25,10 +25,7 @@ void	execute(t_data *data)
 
 	exec_node = data->exec_list;
 	if (is_builtin(exec_node) && !exec_node->next)
-	{
-		data->exit_code = save_stds_and_execute_builtin(data, exec_node);
-		return ;
-	}
+		return (save_stds_and_execute_builtin(data, exec_node));
 	if (!create_pipes(data, exec_node))
 		return ;
 	while (exec_node)
@@ -36,17 +33,13 @@ void	execute(t_data *data)
 		handle_child_signals();
 		exec_node->pid = fork();
 		if (exec_node->pid == -1)
-		{
-			print_error(4, "Fork", data);
-			return ;
-		}
+			return (print_error(4, "Fork", data));
 		if (!exec_node->pid)
 			execute_child_process(exec_node, data);
 		exec_node = exec_node->next;
 	}
 	close_all_pipefds(data);
 	data->exit_code = wait_all_pids(data->exec_list);
-	return ;
 }
 
 int	is_builtin(t_exec *exec_node)
@@ -73,7 +66,7 @@ int	is_builtin(t_exec *exec_node)
 	return (0);
 }
 
-int	save_stds_and_execute_builtin(t_data *data, t_exec *exec_node)
+void	save_stds_and_execute_builtin(t_data *data, t_exec *exec_node)
 {
 	int	save_in;
 	int	save_out;
@@ -81,25 +74,24 @@ int	save_stds_and_execute_builtin(t_data *data, t_exec *exec_node)
 	save_in = dup(STDIN_FILENO);
 	save_out = dup(STDOUT_FILENO);
 	if (save_in == -1 || save_out == -1)
-		return (print_error(4, "Dup", data), 1);
+		return (print_error(4, "Dup", data));
 	if (!handle_files(data, exec_node))
 	{
 		close(save_in);
 		close(save_out);
-		return (1);
+		data->exit_code = 1;
+		return ;
 	}
-	data->exit_code = execute_builtin(is_builtin(exec_node), data, exec_node,
-			save_in, save_out);
+	execute_builtin(is_builtin(exec_node), data, exec_node, save_in, save_out);
 	if (dup2(save_in, STDIN_FILENO) == -1 || dup2(save_out, STDOUT_FILENO) ==
 		-1)
 	{
 		close(save_in);
 		close(save_out);
-		return (perror("Dup2"), 1);
+		return (print_error(4, "Dup", data));
 	}
 	close(save_in);
 	close(save_out);
-	return (data->exit_code);
 }
 
 int	create_pipes(t_data *data, t_exec *head_exec_list)

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 13:42:49 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 14:12:28 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int ac, char **av, char **envp)
 	g_signal = 0;
 	data = malloc(sizeof(t_data));
 	if (!data)
-		return (print_error(0, NULL, data));
+		return (print_error(0, NULL, data), 1);
 	data = ft_memset(data, 0, sizeof(data));
 	init_data(data);
 	if (ac != 1)

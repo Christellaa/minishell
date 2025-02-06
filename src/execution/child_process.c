@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 17:45:23 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/06 13:49:59 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 16:37:59 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "execution.h"
 
 char	*get_cmd_path(t_arg *arg_list, t_data *data);
-char	*no_such_file_or_directory(char *cmd);
+char	*no_such_file_or_directory(char *cmd, t_data *data);
 char	**convert_args_list_to_tab(t_arg *arg_list);
 char	**convert_env_list_to_tab(t_env *env_list);
 void	convert_and_check(char *cmd_path, t_data *data, t_exec *exec_node);
@@ -70,18 +70,17 @@ char	*get_cmd_path(t_arg *arg_list, t_data *data)
 	while (split_paths[i])
 		free(split_paths[i++]);
 	free(split_paths);
-	return (no_such_file_or_directory(cmd));
+	return (no_such_file_or_directory(cmd, data));
 }
 
-char	*no_such_file_or_directory(char *cmd)
+char	*no_such_file_or_directory(char *cmd, t_data *data)
 {
 	if (ft_strncmp(cmd, "./", 2) == 0 && access(cmd, F_OK) == 0)
-		return (ft_dprintf(STDERR_FILENO, "%s%s\n", cmd, FILE_DENY),
-			ft_strdup(""));
+		return (print_error(7, cmd, data), ft_strdup(""));
 	else if (ft_strncmp(cmd, "/", 1) == 0 || ft_strncmp(cmd, "./", 2) == 0)
-		ft_dprintf(STDERR_FILENO, "%s%s\n", cmd, FILE_ERR);
+		print_error(9, cmd, data);
 	else
-		ft_dprintf(STDERR_FILENO, "%s%s\n", cmd, CMD_ERR);
+		print_error(8, cmd, data);
 	return (NULL);
 }
 

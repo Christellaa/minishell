@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:56:32 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 13:28:36 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 14:53:20 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,7 @@ void	ft_env(t_data *data, t_exec *exec_node)
 	current_env = data->env_list;
 	args = exec_node->arg_list->next;
 	if (args)
-	{
-		ft_dprintf(STDERR_FILENO, "%s%s\n", args->value, FILE_ERR);
-		data->exit_code = 127;
-		return ;
-	}
+		return (print_error(9, args->value, data));
 	while (current_env)
 	{
 		if (!(current_env->is_exported & IN_EXPORT)

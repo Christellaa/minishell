@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/06 13:59:46 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 15:30:09 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	execute_builtin(int builtin, t_data *data, t_exec *exec_node, int save_in,
 		int save_out)
 {
 	if (builtin == 1)
-		ft_echo(data, exec_node);
+		ft_echo(exec_node);
 	else if (builtin == 2)
 		ft_cd(data, exec_node);
 	else if (builtin == 3)

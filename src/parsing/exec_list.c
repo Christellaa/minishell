@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 16:50:17 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/06 13:03:08 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 15:00:46 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,7 @@ void	create_exec_node(t_exec **new_node, t_data *data)
 {
 	*new_node = malloc(sizeof(t_exec));
 	if (!new_node)
-	{
-		print_error(0, NULL, data);
-		return ;
-	}
+		return (print_error(0, NULL, data));
 	(*new_node)->arg_list = NULL;
 	(*new_node)->files = NULL;
 	(*new_node)->pid = -1;

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 23:51:04 by cylini            #+#    #+#             */
-/*   Updated: 2025/02/06 13:44:51 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 14:53:08 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include "builtin.h"
 
 int		check_cd_args(t_data *data, t_arg *args);
-int		update_pwd(t_data *data, char *old_pwd_value);
-int		replace_and_add_current_pwd(char *current_pwd, t_data *data);
+void	update_pwd(t_data *data, char *old_pwd_value);
+void	replace_and_add_current_pwd(char *current_pwd, t_data *data);
 
 void	ft_cd(t_data *data, t_exec *exec_node)
 {
@@ -34,10 +34,7 @@ void	ft_cd(t_data *data, t_exec *exec_node)
 	}
 	if (chdir(args->value) == -1)
 	{
-		if (errno == EACCES)
-			ft_dprintf(STDERR_FILENO, "cd: %s: %s\n", args->value, FILE_DENY);
-		else
-			ft_dprintf(STDERR_FILENO, "cd: %s: %s\n", args->value, FILE_ERR);
+		perror("cd");
 		free(current_path);
 		data->exit_code = 1;
 		return ;
@@ -54,13 +51,13 @@ int	check_cd_args(t_data *data, t_arg *args)
 		if (!args)
 			ft_dprintf(STDERR_FILENO, "cd: not enough argument\n");
 		else
-			ft_dprintf(STDERR_FILENO, "%s: too many arguments\n", args->value);
+			ft_dprintf(STDERR_FILENO, "cd: too many arguments\n");
 		return (1);
 	}
 	return (0);
 }
 
-int	update_pwd(t_data *data, char *old_pwd_value)
+void	update_pwd(t_data *data, char *old_pwd_value)
 {
 	char	*current_cwd;
 	char	*pwd_path;
@@ -71,32 +68,26 @@ int	update_pwd(t_data *data, char *old_pwd_value)
 	{
 		pwd_path = ft_strjoin("PWD=", current_cwd);
 		if (!pwd_path)
-			return (free(current_cwd), print_error(0, NULL, data), 0);
+			return (free(current_cwd), print_error(0, NULL, data));
 		replace_and_add_current_pwd(pwd_path, data);
 	}
 	if (old_pwd_value)
 	{
 		old_pwd_path = ft_strjoin("OLDPWD=", old_pwd_value);
 		if (!old_pwd_path)
-			return (free(current_cwd), print_error(0, NULL, data), 0);
+			return (free(current_cwd), print_error(0, NULL, data));
 		replace_and_add_current_pwd(old_pwd_path, data);
 	}
 	free(current_cwd);
-	return (1);
 }
 
-int	replace_and_add_current_pwd(char *current_pwd, t_data *data)
+void	replace_and_add_current_pwd(char *current_pwd, t_data *data)
 {
 	t_env	*new_env_pair;
 
 	new_env_pair = get_env_raw(current_pwd);
 	if (!new_env_pair)
-	{
-		ft_dprintf(STDERR_FILENO, "Malloc error\n");
-		data->exit_code = 1;
-		return (1);
-	}
+		return (print_error(0, NULL, data));
 	if (!replace_existing_env_pair(new_env_pair, &data->env_list))
 		add_env_node_to_list(&data->env_list, new_env_pair);
-	return (0);
 }

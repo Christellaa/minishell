@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:21:59 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 12:58:07 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 14:36:55 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,7 @@ int	remove_external_quotes(t_token **token, t_data *data)
 	token_value = (*token)->value;
 	new_value = join_str_without_external_quotes(token_value, quote);
 	if (!new_value)
-	{
-		data->exit_code = print_error(0, NULL, data);
-		return (0);
-	}
+		return (print_error(0, NULL, data), 0);
 	free((*token)->value);
 	(*token)->value = new_value;
 	return (1);
