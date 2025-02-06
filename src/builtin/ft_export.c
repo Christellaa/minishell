@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:04:41 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/05 15:45:31 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 11:36:21 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ void	ft_export(t_data *data, t_exec *exec_node)
 	t_arg	*args;
 	t_env	*ordered_list;
 
-	args = exec_node->arg_list;
-	args = args->next;
+	args = exec_node->arg_list->next;
 	if (!args)
 	{
 		ordered_list = order_export_list(data->env_list);

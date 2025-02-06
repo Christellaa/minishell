@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:02:09 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/05 15:01:12 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 11:35:59 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ int	get_exit_number(t_exec *exec_node)
 	long long	code;
 	char		*endptr;
 
-	arg = exec_node->arg_list;
-	arg = arg->next;
+	arg = exec_node->arg_list->next;
 	if (!arg)
 		return (0);
 	if (!is_number(arg->value))

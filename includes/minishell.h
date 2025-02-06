@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:37:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/05 15:45:47 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 11:10:41 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,5 +152,7 @@ t_env			*insertion_sort(t_env *sorted_list, t_env *new_node);
 int				is_key_valid(char *value, t_data *data);
 // ft_unset.c
 void			ft_unset(t_data *data, t_exec *exec_node);
+// ft_echo.c
+void			ft_echo(t_data *data, t_exec *exec_node);
 
 #endif

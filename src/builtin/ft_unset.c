@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:07:27 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/05 15:52:38 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/06 11:36:34 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ void	ft_unset(t_data *data, t_exec *exec_node)
 {
 	t_arg	*args;
 
-	args = exec_node->arg_list;
-	args = args->next;
+	args = exec_node->arg_list->next;
 	if (!args)
 		return ;
 	while (args)
