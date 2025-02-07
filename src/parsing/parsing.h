@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 12:51:38 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/07 21:35:44 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/07 22:18:47 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 
 # include "../../includes/minishell.h"
 
-// exec_list.c
+// exec_list
 int	create_exec_list(t_data *data);
-// expander.c
+// expander
 int	expand_tokens_and_handle_quotes(t_data *data);
-// lexer.c
+// lexer
 int	lex_input(char *input, t_data *data);
-// parser.c
+// parser
 int	parse_input(t_data *data, char *input);
 
 #endif
