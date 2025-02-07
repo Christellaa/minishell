@@ -6,12 +6,11 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:28:40 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 13:03:43 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/07 22:08:52 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parsing_tools/parsing_tools.h"
-#include "parsing.h"
 
 char	*extract_word(char *input, t_data *data);
 int		tokenize_word(char *word, t_data **data);
@@ -72,7 +71,7 @@ int	tokenize_word(char *word, t_data **data)
 	token_type = get_token_type(word);
 	token_len = get_token_type_len(word, token_type);
 	new_token = NULL;
-	new_token = create_token(token_type, word, token_len);
+	new_token = create_token(token_type, word, token_len, '\0');
 	add_token_to_list(token_list, new_token);
 	if (!token_list || !new_token)
 		return (print_error(0, NULL, *data), -1);

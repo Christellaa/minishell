@@ -6,14 +6,13 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 18:17:58 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/06 14:49:22 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/07 21:50:52 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
 int		write_mode_here_doc(t_files *file, int *i, t_data *data);
-char	*name_here_doc(char *value, int *i);
 void	write_in_heredoc(const char *delimiter, int fd);
 
 int	handle_here_doc(t_data *data, t_exec *node)

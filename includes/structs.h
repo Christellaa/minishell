@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 11:14:38 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 13:09:01 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/07 13:37:37 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_token
 {
 	t_token_type	type;
 	char			*value;
+	char quote; // if word has double, single or no quote
 	struct s_token	*next;
 }					t_token;
 

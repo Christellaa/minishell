@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 11:56:15 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 15:30:18 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/07 22:04:37 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 # include "../../includes/minishell.h"
 
 // builtin.c
+int		is_builtin(t_exec *exec_node);
+void	check_builtin(t_data *data, t_exec *exec_node);
 int		execute_builtin(int builtin, t_data *data, t_exec *exec_node,
 			int save_in, int save_out);
-void	check_builtin(t_data *data, t_exec *exec_node);
 // ft_exit.c
 void	ft_exit(t_data *data, t_exec *exec_node, int save_in, int save_out);
 // ft_cd.c

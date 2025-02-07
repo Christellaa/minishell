@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/06 15:30:09 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/07 22:05:59 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,30 @@
 
 int		execute_builtin(int builtin, t_data *data, t_exec *exec_node,
 			int save_in, int save_out);
+
+int	is_builtin(t_exec *exec_node)
+{
+	char	*cmd;
+
+	if (!exec_node->arg_list)
+		return (0);
+	cmd = exec_node->arg_list->value;
+	if (ft_strcmp(cmd, "echo") == 0)
+		return (1);
+	else if (ft_strcmp(cmd, "cd") == 0)
+		return (2);
+	else if (ft_strcmp(cmd, "pwd") == 0)
+		return (3);
+	else if (ft_strcmp(cmd, "export") == 0)
+		return (4);
+	else if (ft_strcmp(cmd, "unset") == 0)
+		return (5);
+	else if (ft_strcmp(cmd, "env") == 0)
+		return (6);
+	else if (ft_strcmp(cmd, "exit") == 0)
+		return (7);
+	return (0);
+}
 
 void	check_builtin(t_data *data, t_exec *exec_node)
 {

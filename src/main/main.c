@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 14:12:28 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/07 22:15:08 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	test_it_2(t_data *data)
 
 /*
 TODO:
-- modifier print_error
 - normer
-- faire les tests finaux
+- check tous les data.exit_code
+- faire les tests finaux avec et sans redirs files
 */

@@ -6,26 +6,13 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:46 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 12:58:07 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/07 22:09:22 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing_tools.h"
 
-int		create_and_add_split_tokens(t_token **token, char *copy,
-			char **split_expanded);
-
-t_token	*get_prev_token(t_token *list, t_token *current)
-{
-	t_token	*prev;
-
-	prev = list;
-	while (prev && prev->next != current)
-		prev = prev->next;
-	return (prev);
-}
-
-t_token	*create_token(int type, char *value, int len)
+t_token	*create_token(int type, char *value, int len, char quote)
 {
 	t_token	*new_token;
 
@@ -36,6 +23,7 @@ t_token	*create_token(int type, char *value, int len)
 	new_token->value = ft_strndup(value, len);
 	if (!new_token->value)
 		return (free(new_token), NULL);
+	new_token->quote = quote;
 	new_token->next = NULL;
 	return (new_token);
 }
@@ -61,51 +49,74 @@ void	add_token_to_list(t_token **token_list, t_token *new_token)
 	}
 }
 
-int	split_token(char *expanded, t_token **token, char *copy, char *tmp)
+void	replace_token_type(t_token **token_list)
 {
-	char	**split_expanded;
-	int		i;
-	int		split_res;
+	t_token	*current_token;
+	t_token	*prev_token;
 
-	split_expanded = ft_split(expanded, ' ');
-	if (!split_expanded)
-		return (-1);
-	free(expanded);
-	(*token)->value = ft_strjoin_free_both((*token)->value, split_expanded[0]);
-	if (!(*token)->value)
-		return (-1);
-	split_res = create_and_add_split_tokens(token, copy, split_expanded);
-	i = 0;
-	while (split_expanded[++i])
-		free(split_expanded[i]);
-	free(split_expanded);
-	free(tmp);
-	return (split_res);
+	current_token = *token_list;
+	while (current_token)
+	{
+		if (current_token->type == WORD)
+		{
+			if (*token_list == current_token)
+				current_token->type = ARG;
+			else
+			{
+				prev_token = get_prev_token(*token_list, current_token);
+				if (prev_token->type == INFILE || prev_token->type == HEREDOC
+					|| prev_token->type == TRUNC || prev_token->type == APPEND)
+					current_token->type = FILENAME;
+				else
+					current_token->type = ARG;
+			}
+		}
+		current_token = current_token->next;
+	}
 }
 
-int	create_and_add_split_tokens(t_token **token, char *copy,
-		char **split_expanded)
+char	*combine_tokens(t_token *token_list)
 {
-	int		i;
-	t_token	*next;
-	t_token	*last;
-	t_token	*new_token;
+	char	*value;
 
-	i = 0;
-	next = (*token)->next;
-	last = *token;
-	while (split_expanded[++i])
+	value = ft_strdup("");
+	if (!value)
+		return (NULL);
+	while (token_list)
 	{
-		new_token = create_token(ARG, split_expanded[i],
-				ft_strlen(split_expanded[i]));
-		if (!new_token)
-			return (-1);
-		last->next = new_token;
-		last = new_token;
+		if (token_list->value)
+		{
+			value = ft_strjoin_free_s1(value, token_list->value);
+			if (!value)
+				return (NULL);
+		}
+		token_list = token_list->next;
 	}
-	last->next = next;
-	last->value = ft_strjoin_free_s1(last->value, copy, NULL);
-	if (!last->value)
-		return (-1);
-	return (0);
+	return (value);
+}
+
+void	remove_empty_tokens(t_token **token_list)
+{
+	t_token	*token;
+	t_token	*prev;
+	t_token	*next;
+
+	token = *token_list;
+	prev = NULL;
+	while (token)
+	{
+		next = token->next;
+		if (!token->value || token->value[0] == '\0')
+		{
+			if (token == *token_list)
+				*token_list = next;
+			else
+				prev->next = token->next;
+			free(token->value);
+			free(token);
+		}
+		else
+			prev = token;
+		token = next;
+	}
 }

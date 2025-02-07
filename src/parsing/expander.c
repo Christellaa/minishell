@@ -6,123 +6,122 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 16:53:48 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 15:35:16 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/07 22:08:37 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parsing_tools/parsing_tools.h"
-#include "parsing.h"
 
-int		expand_current_token(t_token **token, t_data *data, char quote);
-int		can_expand_token(t_token *prev_token, t_token *current_token,
-			t_data *data, char quote);
-char	*search_quote_and_join_until_dollar(char *pos, char **copy, char *quote,
-			t_token **token);
-char	*handle_expansion(char *pos, t_data *data, int *to_split, char quote);
-char	*fetch_env_value(char *pos, t_data *data, int *to_split);
+t_token	*quotes_to_tokens(char *token_value, t_token *prev, t_data *data);
+t_token	*process_token(char *value, int *i, t_token *prev);
+void	expand_tokens(t_token *token_list, t_data *data);
+void	expand_single_token(t_token *token, t_data *data);
 
-int	expand_tokens(t_data *data)
+int	expand_tokens_and_handle_quotes(t_data *data)
 {
 	t_token	*current_token;
 	t_token	*prev_token;
-	char	quote;
+	t_token	*token_list;
 
 	current_token = data->token_list;
-	prev_token = data->token_list;
+	prev_token = NULL;
 	while (current_token)
 	{
-		quote = '\0';
-		if (prev_token != data->token_list)
-			prev_token = get_prev_token(prev_token, current_token);
-		if (!can_expand_token(prev_token, current_token, data, quote))
-			return (0);
-		if (!remove_external_quotes(&current_token, data))
-			return (0);
+		if (prev_token && prev_token->type == HEREDOC)
+		{
+			current_token = current_token->next;
+			continue ;
+		}
+		token_list = quotes_to_tokens(current_token->value, prev_token, data);
+		expand_tokens(token_list, data);
+		if (current_token->value)
+			free(current_token->value);
+		current_token->value = combine_tokens(token_list);
+		free_tokens(token_list);
 		current_token = current_token->next;
 	}
-	delete_empty_tokens(&data->token_list);
+	remove_empty_tokens(&data->token_list);
 	return (1);
 }
 
-int	can_expand_token(t_token *prev_token, t_token *current_token, t_data *data,
-		char quote)
+t_token	*quotes_to_tokens(char *token_value, t_token *prev, t_data *data)
 {
-	int	code;
+	t_token	*token_list;
+	t_token	*new_token;
+	int		i;
 
-	code = 0;
-	if (prev_token->type != HEREDOC)
+	token_list = NULL;
+	i = 0;
+	while (token_value[i])
 	{
-		code = expand_current_token(&current_token, data, quote);
-		if (code > 0)
-			return (0);
-		if (!(current_token)->value || code == -1)
-			return (print_error(0, NULL, data), 0);
+		new_token = process_token(&(token_value[i]), &i, prev);
+		if (!new_token)
+			print_error(0, NULL, data);
+		add_token_to_list(&token_list, new_token);
 	}
-	return (1);
+	return (token_list);
 }
 
-int	expand_current_token(t_token **token, t_data *data, char quote)
+t_token	*process_token(char *value, int *i, t_token *prev)
 {
-	char	*copy;
-	char	*copy_tmp;
-	char	*pos;
-	char	*expanded;
-	int		to_split;
+	t_token	*new_token;
+	int		len;
+	int		type;
 
-	copy = init_copy(token);
-	if (!copy)
-		return (print_error(0, NULL, data), 1);
-	copy_tmp = copy;
-	while (ft_strchr(copy, '$'))
+	if (prev && (prev->type == INFILE || prev->type == HEREDOC
+			|| prev->type == TRUNC || prev->type == APPEND))
+		type = FILENAME;
+	else
+		type = ARG;
+	if (value[0] == SINGLE_QUOTE || value[0] == DOUBLE_QUOTE)
 	{
-		to_split = 0;
-		pos = search_quote_and_join_until_dollar(pos, &copy, &quote, token);
-		if (!pos)
-			return (print_error(0, NULL, data), 1);
-		expanded = handle_expansion(pos + 1, data, &to_split, quote);
-		if (can_split_token(data->token_list, *token, to_split, quote))
-			return (split_token(expanded, token, copy, copy_tmp));
-		(*token)->value = ft_strjoin_free_both((*token)->value, expanded);
-		if (!(*token)->value)
-			return (free(copy_tmp), print_error(0, NULL, data), 1);
-	}
-	(*token)->value = ft_strjoin_free_s1((*token)->value, copy, copy_tmp);
-	return (0);
-}
-
-char	*search_quote_and_join_until_dollar(char *pos, char **copy, char *quote,
-		t_token **token)
-{
-	pos = ft_strchr(*copy, '$');
-	search_quote(quote, *copy, pos - *copy);
-	join_until_dollar(token, *copy, pos - *copy);
-	if (!(*token)->value)
-		return (NULL);
-	*copy = pos + 1 + var_name_len((pos + 1));
-	return (pos);
-}
-
-char	*handle_expansion(char *pos, t_data *data, int *to_split, char quote)
-{
-	char	*var_value;
-
-	if (*pos < 0)
-		return (NULL);
-	if (quote == SINGLE_QUOTE)
-		var_value = ft_strndup(pos - 1, var_name_len(pos) + 1);
-	else if (*pos == '$' || ft_isspace(*pos) || *pos == '\0')
-		var_value = ft_strdup("$");
-	else if (*pos == SINGLE_QUOTE || *pos == DOUBLE_QUOTE)
-		return (NULL);
-	else if (*pos == '?')
-	{
-		if (g_signal != 0)
-			data->exit_code = g_signal;
-		var_value = ft_itoa(data->exit_code);
+		len = get_quoted_len(value, value[0]);
+		if (!len)
+			new_token = create_token(type, "\0", len, value[0]);
+		else
+			new_token = create_token(type, &value[1], len, value[0]);
+		*i += len + 2;
 	}
 	else
-		var_value = fetch_env_value(pos, data, to_split);
-	if (!var_value)
-		return (print_error(0, NULL, data), NULL);
-	return (var_value);
+	{
+		len = get_len_until_quote(value);
+		new_token = create_token(type, value, len, '\0');
+		*i += len;
+	}
+	return (new_token);
+}
+
+void	expand_tokens(t_token *token_list, t_data *data)
+{
+	while (token_list)
+	{
+		if (token_list->quote == '\0' || token_list->quote == DOUBLE_QUOTE)
+			expand_single_token(token_list, data);
+		token_list = token_list->next;
+	}
+}
+
+void	expand_single_token(t_token *token, t_data *data)
+{
+	char	*dollar_pos;
+	char	*current;
+	char	*expanded;
+
+	while (token->value)
+	{
+		dollar_pos = ft_strchr(token->value, '$');
+		if (!dollar_pos)
+			break ;
+		if (!ft_strcmp(dollar_pos, "$"))
+			break ;
+		current = token->value;
+		expanded = handle_var_expansion(token->value, dollar_pos, data);
+		if (expanded && *expanded == '\0')
+		{
+			free(expanded);
+			expanded = NULL;
+		}
+		token->value = expanded;
+		free(current);
+	}
 }

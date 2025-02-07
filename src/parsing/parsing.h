@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 12:51:38 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 13:07:15 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/07 21:35:44 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 // exec_list.c
 int	create_exec_list(t_data *data);
 // expander.c
-int	expand_tokens(t_data *data);
+int	expand_tokens_and_handle_quotes(t_data *data);
 // lexer.c
 int	lex_input(char *input, t_data *data);
 // parser.c

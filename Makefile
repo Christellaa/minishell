@@ -10,14 +10,15 @@ INC := $(INC_DIR)/minishell.h $(INC_DIR)/structs.h $(SRC_DIR)/builtin/builtin.h 
 		$(SRC_DIR)/parsing/parsing.h $(SRC_DIR)/parsing_tools/parsing_tools.h
 LIBFT := $(LIBFT_DIR)/libft.a
 
-ENV := env env2 shlvl shlvl_utils
+ENV := env env2 env_utils shlvl shlvl_utils
 EXECUTION := cmd_paths_utils child_process execution redirs_utils \
 			heredoc_utils
 MAIN := cleanup error main signals
 PARSING := exec_list expander lexer parser
-PARSING_TOOLS := helpers token_list utils_exec_list utils_expander \
-				utils_expander2 utils_lexer utils_parser
-BUILTIN := builtin ft_exit ft_cd ft_pwd ft_env ft_export ft_export_utils ft_unset ft_echo
+PARSING_TOOLS := utils_lexer utils_lexer_types token_list utils_exec_list \
+				utils_expander_lens utils_expansion pid 
+BUILTIN := builtin ft_exit ft_cd ft_pwd ft_env ft_export ft_export_utils \
+			ft_unset ft_echo
 SRC := $(addsuffix .c, $(addprefix $(SRC_DIR)/env/, $(ENV))) \
 		$(addsuffix .c, $(addprefix $(SRC_DIR)/execution/, $(EXECUTION))) \
 		$(addsuffix .c, $(addprefix $(SRC_DIR)/main/, $(MAIN))) \

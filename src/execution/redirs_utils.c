@@ -6,14 +6,13 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 17:50:47 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/06 13:54:03 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/07 22:05:36 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
 int	handle_pipefd(t_data *data, t_exec *exec_node);
-int	handle_files(t_data *data, t_exec *exec_node);
 int	open_file(t_files *current_file, int *here_doc_nb);
 int	dup2_and_close_current_file(t_files *current_file, t_data *data, int fd);
 

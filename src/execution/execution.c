@@ -6,17 +6,15 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:29:37 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/06 14:59:31 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/07 22:07:14 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../builtin/builtin.h"
 #include "execution.h"
 
-int		is_builtin(t_exec *exec_node);
 void	save_stds_and_execute_builtin(t_data *data, t_exec *exec_node);
 int		create_pipes(t_data *data, t_exec *head_exec_list);
-int		close_all_pipefds(t_data *data);
 int		wait_all_pids(t_exec *head_exec_list);
 
 void	execute(t_data *data)
@@ -40,30 +38,6 @@ void	execute(t_data *data)
 	}
 	close_all_pipefds(data);
 	data->exit_code = wait_all_pids(data->exec_list);
-}
-
-int	is_builtin(t_exec *exec_node)
-{
-	char	*cmd;
-
-	if (!exec_node->arg_list)
-		return (0);
-	cmd = exec_node->arg_list->value;
-	if (ft_strcmp(cmd, "echo") == 0)
-		return (1);
-	else if (ft_strcmp(cmd, "cd") == 0)
-		return (2);
-	else if (ft_strcmp(cmd, "pwd") == 0)
-		return (3);
-	else if (ft_strcmp(cmd, "export") == 0)
-		return (4);
-	else if (ft_strcmp(cmd, "unset") == 0)
-		return (5);
-	else if (ft_strcmp(cmd, "env") == 0)
-		return (6);
-	else if (ft_strcmp(cmd, "exit") == 0)
-		return (7);
-	return (0);
 }
 
 void	save_stds_and_execute_builtin(t_data *data, t_exec *exec_node)

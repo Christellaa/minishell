@@ -5,76 +5,72 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/11 16:28:23 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 12:58:07 by cde-sous         ###   ########.fr       */
+/*   Created: 2025/01/06 16:16:12 by cde-sous          #+#    #+#             */
+/*   Updated: 2025/02/07 21:41:23 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing_tools.h"
 
-int	get_token_type(char *word);
-int	is_word(char *word);
-int	is_chevron(char *word);
+char	has_quote(char quote, char current_char);
 
-int	get_token_type(char *word)
+int	get_word_len(char *word)
 {
-	int	type;
+	int		len;
+	char	quote;
 
-	type = is_word(word);
-	if (type != -1)
-		return (type);
-	type = is_chevron(word);
-	if (type != -1)
-		return (type);
-	if (word[0] == '|')
-		return (PIPE);
-	return (-1);
-}
-
-int	is_word(char *word)
-{
-	int	word_len;
-
-	word_len = get_word_len(word);
-	word_len = stop_word_len_at_special_char(word, word_len);
-	if (word_len > 0)
-		return (WORD);
-	else
+	len = 0;
+	quote = '\0';
+	while (word[len])
+	{
+		quote = has_quote(quote, word[len]);
+		if (quote == '\0' && ft_isspace(word[len]))
+			break ;
+		len++;
+	}
+	if (quote != '\0')
 		return (-1);
+	return (len);
 }
 
-int	is_chevron(char *word)
+int	stop_word_len_at_special_char(char *word, int len)
 {
-	if (word[0] == '<' && word[1] == '>')
-		return (APPEND);
-	else if (word[0] == '<' && word[1] != '<')
-		return (INFILE);
-	else if (word[0] == '<' && word[1] == '<')
-		return (HEREDOC);
-	else if (word[0] == '>' && word[1] != '>')
-		return (TRUNC);
-	else if (word[0] == '>' && word[1] == '>')
-		return (APPEND);
-	return (-1);
+	int		new_len;
+	char	quote;
+
+	new_len = 0;
+	quote = '\0';
+	while (new_len < len)
+	{
+		quote = has_quote(quote, word[new_len]);
+		if (quote == '\0' && (ft_isspace(word[new_len]) || word[new_len] == '<'
+				|| word[new_len] == '>' || word[new_len] == '|'))
+			break ;
+		new_len++;
+	}
+	if (quote != '\0')
+		return (-1);
+	return (new_len);
 }
 
-int	get_token_type_len(char *word, int type)
+char	has_quote(char quote, char current_char)
 {
-	int	word_len;
+	if (current_char == SINGLE_QUOTE || current_char == DOUBLE_QUOTE)
+	{
+		if (quote == '\0')
+			quote = current_char;
+		else if (quote == current_char)
+			quote = '\0';
+	}
+	return (quote);
+}
 
-	word_len = 0;
-	if (type == INFILE || type == TRUNC || type == PIPE)
-	{
-		word_len = 1;
-		if (type == TRUNC && word[1] == '>')
-			word_len = 2;
-	}
-	else if (type == HEREDOC || type == APPEND)
-		word_len = 2;
-	else if (type == WORD)
-	{
-		word_len = get_word_len(word);
-		word_len = stop_word_len_at_special_char(word, word_len);
-	}
-	return (word_len);
+t_token	*get_prev_token(t_token *list, t_token *current)
+{
+	t_token	*prev;
+
+	prev = list;
+	while (prev && prev->next != current)
+		prev = prev->next;
+	return (prev);
 }
