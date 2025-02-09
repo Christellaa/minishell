@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 21:25:16 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/07 22:14:18 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/09 13:55:32 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,23 @@ void	add_env_node_to_list(t_env **env_list, t_env *new_env_pair)
 		(*env_list) = new_env_pair;
 		new_env_pair->next = NULL;
 	}
+}
+
+char	**check_array(char **array, int start, int end)
+{
+	int	i;
+
+	i = start;
+	while (i < end)
+	{
+		if (!array[i])
+		{
+			while (--i >= 0)
+				free(array[i]);
+			free(array);
+			return (NULL);
+		}
+		i++;
+	}
+	return (array);
 }
