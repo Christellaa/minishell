@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:29:37 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/07 22:07:14 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/09 15:06:00 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,30 +42,27 @@ void	execute(t_data *data)
 
 void	save_stds_and_execute_builtin(t_data *data, t_exec *exec_node)
 {
-	int	save_in;
-	int	save_out;
+	int	std_in;
+	int	std_out;
 
-	save_in = dup(STDIN_FILENO);
-	save_out = dup(STDOUT_FILENO);
-	if (save_in == -1 || save_out == -1)
+	std_in = dup(STDIN_FILENO);
+	std_out = dup(STDOUT_FILENO);
+	if (std_in == -1 || std_out == -1)
 		return (print_error(4, "Dup", data));
 	if (!handle_files(data, exec_node))
 	{
-		close(save_in);
-		close(save_out);
+		close(std_in);
+		close(std_out);
 		data->exit_code = 1;
 		return ;
 	}
-	execute_builtin(is_builtin(exec_node), data, exec_node, save_in, save_out);
-	if (dup2(save_in, STDIN_FILENO) == -1 || dup2(save_out, STDOUT_FILENO) ==
-		-1)
-	{
-		close(save_in);
-		close(save_out);
-		return (print_error(4, "Dup", data));
-	}
-	close(save_in);
-	close(save_out);
+	if (is_builtin(exec_node) == 7)
+		ft_exit(data, exec_node, std_in, std_out);
+	execute_builtin(is_builtin(exec_node), data, exec_node);
+	if (dup2(std_in, STDIN_FILENO) == -1 || dup2(std_out, STDOUT_FILENO) == -1)
+		print_error(4, "Dup", data);
+	close(std_in);
+	close(std_out);
 }
 
 int	create_pipes(t_data *data, t_exec *head_exec_list)

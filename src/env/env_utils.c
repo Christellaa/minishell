@@ -6,15 +6,16 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 21:25:16 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/09 13:55:32 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/09 19:19:08 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 
 char	*get_env_value(char *equal_pos);
+t_env	*create_env_pair_by_type(char *raw, char *key, char *value, int type);
 
-t_env	*create_env_pair(char *raw, char *equal_pos)
+t_env	*create_env_pair(char *raw, char *equal_pos, int type)
 {
 	t_env	*new_env_pair;
 	char	*key;
@@ -35,11 +36,21 @@ t_env	*create_env_pair(char *raw, char *equal_pos)
 		value = get_env_value(equal_pos);
 		if (!value)
 			return (free(key), NULL);
-		if (ft_strcmp(key, "_") == 0)
-			new_env_pair = create_env_node(raw, key, value, IN_ENV);
-		else
-			new_env_pair = create_env_node(raw, key, value, IN_ENV | IN_EXPORT);
+		new_env_pair = create_env_pair_by_type(raw, key, value, type);
 	}
+	return (new_env_pair);
+}
+
+t_env	*create_env_pair_by_type(char *raw, char *key, char *value, int type)
+{
+	t_env	*new_env_pair;
+
+	if (ft_strcmp(key, "_") == 0)
+		new_env_pair = create_env_node(raw, key, value, IN_ENV);
+	else if (type == 0)
+		new_env_pair = create_env_node(raw, key, value, 0);
+	else
+		new_env_pair = create_env_node(raw, key, value, IN_ENV | IN_EXPORT);
 	return (new_env_pair);
 }
 
@@ -54,62 +65,4 @@ char	*get_env_value(char *equal_pos)
 	if (!value)
 		return (NULL);
 	return (value);
-}
-
-t_env	*create_env_node(char *raw, char *key, char *value, int is_exported)
-{
-	t_env	*new_env_pair;
-
-	new_env_pair = malloc(sizeof(t_env));
-	if (!new_env_pair)
-		return (NULL);
-	new_env_pair->raw = raw;
-	new_env_pair->key = key;
-	if (!value)
-		new_env_pair->value = NULL;
-	else
-		new_env_pair->value = value;
-	new_env_pair->is_exported = is_exported;
-	new_env_pair->next = NULL;
-	return (new_env_pair);
-}
-
-void	add_env_node_to_list(t_env **env_list, t_env *new_env_pair)
-{
-	t_env	*last_pair;
-
-	if (!env_list || !new_env_pair)
-		return ;
-	if (*env_list)
-	{
-		last_pair = (*env_list);
-		while (last_pair->next)
-			last_pair = last_pair->next;
-		last_pair->next = new_env_pair;
-		new_env_pair->next = NULL;
-	}
-	else
-	{
-		(*env_list) = new_env_pair;
-		new_env_pair->next = NULL;
-	}
-}
-
-char	**check_array(char **array, int start, int end)
-{
-	int	i;
-
-	i = start;
-	while (i < end)
-	{
-		if (!array[i])
-		{
-			while (--i >= 0)
-				free(array[i]);
-			free(array);
-			return (NULL);
-		}
-		i++;
-	}
-	return (array);
 }

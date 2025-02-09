@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 16:53:48 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/07 22:08:37 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/09 16:41:14 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,14 @@ int	expand_tokens_and_handle_quotes(t_data *data)
 	prev_token = NULL;
 	while (current_token)
 	{
-		if (prev_token && prev_token->type == HEREDOC)
-		{
-			current_token = current_token->next;
-			continue ;
-		}
 		token_list = quotes_to_tokens(current_token->value, prev_token, data);
-		expand_tokens(token_list, data);
+		if (!prev_token || prev_token->type != HEREDOC)
+			expand_tokens(token_list, data);
 		if (current_token->value)
 			free(current_token->value);
 		current_token->value = combine_tokens(token_list);
 		free_tokens(token_list);
+		prev_token = current_token;
 		current_token = current_token->next;
 	}
 	remove_empty_tokens(&data->token_list);
@@ -115,7 +112,7 @@ void	expand_single_token(t_token *token, t_data *data)
 		if (!ft_strcmp(dollar_pos, "$"))
 			break ;
 		current = token->value;
-		expanded = handle_var_expansion(token->value, dollar_pos, data);
+		expanded = handle_var_expansion(token, dollar_pos, data);
 		if (expanded && *expanded == '\0')
 		{
 			free(expanded);

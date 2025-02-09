@@ -6,27 +6,27 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 21:17:55 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/07 22:09:48 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/09 17:03:01 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing_tools.h"
 
-char	*expand_var(char *var, t_data *data);
+char	*expand_var(char *var, t_data *data, char quote);
 char	*handle_exit_status(char *var_name, t_data *data);
 char	*fetch_env_value(char *value, t_env *list);
 
-char	*handle_var_expansion(char *value, char *dollar_pos, t_data *data)
+char	*handle_var_expansion(t_token *token, char *dollar_pos, t_data *data)
 {
 	char	*before;
 	char	*var_value;
 	char	*after;
 	char	*new;
 
-	before = get_str_before_dollar(value, dollar_pos);
+	before = get_str_before_dollar(token->value, dollar_pos);
 	if (!before)
 		return (print_error(0, NULL, data), NULL);
-	var_value = expand_var(dollar_pos + 1, data);
+	var_value = expand_var(dollar_pos + 1, data, token->quote);
 	if (!var_value)
 		return (free(before), print_error(0, NULL, data), NULL);
 	after = get_str_after_dollar(dollar_pos + 1);
@@ -42,7 +42,7 @@ char	*handle_var_expansion(char *value, char *dollar_pos, t_data *data)
 	return (free(before), free(var_value), free(after), new);
 }
 
-char	*expand_var(char *var, t_data *data)
+char	*expand_var(char *var, t_data *data, char quote)
 {
 	int		len;
 	char	*var_name;
@@ -60,6 +60,8 @@ char	*expand_var(char *var, t_data *data)
 	free(var_name);
 	if (!env_value)
 		return (ft_strdup(""));
+	if (quote == '\0')
+		return (ft_strepur(env_value));
 	return (ft_strdup(env_value));
 }
 

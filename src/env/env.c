@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 13:45:25 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/07 21:44:28 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/09 19:12:54 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	get_env_list(t_data *data, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		env_pair = get_env_raw(envp[i]);
+		env_pair = get_env_raw(envp[i], 1);
 		if (!env_pair)
 			return (print_error(0, NULL, data), 0);
 		add_env_node_to_list(&data->env_list, env_pair);
@@ -37,7 +37,7 @@ int	get_env_list(t_data *data, char **envp)
 	return (1);
 }
 
-t_env	*get_env_raw(char *current_env_pair)
+t_env	*get_env_raw(char *current_env_pair, int type)
 {
 	t_env	*new_env_pair;
 	char	*raw;
@@ -47,7 +47,7 @@ t_env	*get_env_raw(char *current_env_pair)
 	if (!raw)
 		return (NULL);
 	equal_pos = ft_strchr(raw, '=');
-	new_env_pair = create_env_pair(raw, equal_pos);
+	new_env_pair = create_env_pair(raw, equal_pos, type);
 	if (!new_env_pair)
 		return (NULL);
 	return (new_env_pair);

@@ -10,9 +10,9 @@ INC := $(INC_DIR)/minishell.h $(INC_DIR)/structs.h $(SRC_DIR)/builtin/builtin.h 
 		$(SRC_DIR)/parsing/parsing.h $(SRC_DIR)/parsing_tools/parsing_tools.h
 LIBFT := $(LIBFT_DIR)/libft.a
 
-ENV := env env2 env_utils shlvl shlvl_utils
+ENV := env env2 create_path env_utils env_utils2 shlvl shlvl_utils
 EXECUTION := cmd_paths_utils child_process execution redirs_utils \
-			heredoc_utils
+			heredoc_utils exec_utils
 MAIN := cleanup error main signals
 PARSING := exec_list expander lexer parser
 PARSING_TOOLS := utils_lexer utils_lexer_types token_list utils_exec_list \

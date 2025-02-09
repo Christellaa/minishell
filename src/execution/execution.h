@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 12:16:27 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/07 22:18:40 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/09 15:13:59 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 
 // child_process
 int		execute_child_process(t_exec *exec_node, t_data *data);
+// exec_utils
+char	*print_path_error(char *cmd, t_data *data);
+char	**convert_args_list_to_tab(t_arg *arg_list);
+char	**convert_env_list_to_tab(t_env *env_list);
 // cmd_paths_utils
 char	**get_and_split_paths(t_env *env_list);
 int		is_absolute_path(char *cmd);

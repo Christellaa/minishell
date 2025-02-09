@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:01:56 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 13:15:34 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/09 15:15:57 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	cleanup(t_data *data, int type)
 				handle_exit_shlvl();
 			if (data->env_list)
 				free_env(data->env_list);
+			data->env_list = NULL;
 			free(data);
 			rl_clear_history();
 		}

@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/07 22:15:08 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/09 16:25:34 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 
 void	init_data(t_data *data);
 void	process_input(t_data *data, char *input);
-void	test_it(t_data *data);
-void	test_it_2(t_data *data);
+void	test_parsing(t_data *data);
+void	test_exec(t_data *data);
 
 int		g_signal;
 
@@ -62,16 +62,16 @@ void	process_input(t_data *data, char *input)
 {
 	if (!parse_input(data, input))
 		return ;
-	test_it(data); // testing parsing
+	test_parsing(data);
 	if (!create_exec_list(data))
 		return ;
-	test_it_2(data); // testing exec struct
+	test_exec(data);
 	if (!handle_here_doc(data, data->exec_list))
 		return ;
 	execute(data);
 }
 
-void	test_it(t_data *data)
+void	test_parsing(t_data *data)
 {
 	t_token	*tmp;
 
@@ -83,7 +83,7 @@ void	test_it(t_data *data)
 	}
 }
 
-void	test_it_2(t_data *data)
+void	test_exec(t_data *data)
 {
 	t_exec	*tmp;
 	t_arg	*arg;
@@ -114,7 +114,5 @@ void	test_it_2(t_data *data)
 
 /*
 TODO:
-- normer
-- check tous les data.exit_code
 - faire les tests finaux avec et sans redirs files
 */

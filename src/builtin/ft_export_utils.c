@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 18:30:32 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/06 18:51:07 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/09 17:14:19 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,20 @@ int	is_first_char_valid(char *value, t_data *data)
 		return (0);
 	}
 	return (1);
+}
+
+void	replace_env_pair(t_env *current_env, t_env *new_node)
+{
+	free(current_env->raw);
+	free(current_env->key);
+	if (current_env->value)
+		free(current_env->value);
+	current_env->raw = new_node->raw;
+	current_env->key = new_node->key;
+	if (!new_node->value)
+		current_env->value = NULL;
+	else
+		current_env->value = new_node->value;
+	current_env->is_exported = new_node->is_exported;
+	free(new_node);
 }

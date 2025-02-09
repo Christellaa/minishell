@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 12:54:07 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/07 22:03:52 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/09 16:51:01 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ char	*get_str_before_dollar(char *value, char *dollar_pos);
 char	*get_str_after_dollar(char *var);
 int		env_var_len(char *var);
 // utils_expansion
-char	*handle_var_expansion(char *value, char *dollar_pos, t_data *data);
+char	*handle_var_expansion(t_token *token, char *dollar_pos, t_data *data);
 
 #endif
