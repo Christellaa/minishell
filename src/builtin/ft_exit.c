@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cylini <cylini@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:02:09 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/09 15:06:26 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/09 22:10:34 by cylini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	get_exit_number(t_exec *exec_node)
 	code = ft_strtoll(arg->value, &endptr, 10);
 	if (errno == ERANGE)
 	{
+		printf("B\n");
 		ft_dprintf(STDERR_FILENO, "exit: %s: numeric argument required\n",
 			arg->value);
 		return (2);
@@ -79,11 +80,12 @@ int	get_exit_number(t_exec *exec_node)
 	return (code);
 }
 
-int	is_number(char *exit_number)
+int	is_number(char *nb /* exit_number */)
 {
-	char	*nb;
-
-	nb = ft_strdup(exit_number);
+	// char	*nb;
+	if (!nb)
+		return (0);
+	// nb = ft_strdup(exit_number);
 	if (*nb == '-' || *nb == '+' || ft_isdigit(*nb))
 	{
 		nb++;
