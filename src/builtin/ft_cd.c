@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 23:51:04 by cylini            #+#    #+#             */
-/*   Updated: 2025/02/09 19:12:23 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/10 10:16:29 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ void	update_pwd(t_data *data, char *old_pwd_value)
 		replace_and_add_current_pwd(old_pwd_path, data);
 	}
 	free(current_cwd);
+	free(pwd_path);
+	free(old_pwd_path);
 }
 
 void	replace_and_add_current_pwd(char *current_pwd, t_data *data)

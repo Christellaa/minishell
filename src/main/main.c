@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/09 16:25:34 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:14:46 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 #include "../execution/execution.h"
 #include "../parsing/parsing.h"
 
-void	init_data(t_data *data);
+t_data	*init_data(void);
 void	process_input(t_data *data, char *input);
-void	test_parsing(t_data *data);
-void	test_exec(t_data *data);
+// void	test_parsing(t_data *data);
+// void	test_exec(t_data *data);
 
 int		g_signal;
 
@@ -29,11 +29,11 @@ int	main(int ac, char **av, char **envp)
 
 	(void)av;
 	g_signal = 0;
-	data = malloc(sizeof(t_data));
+	if (!isatty(STDOUT_FILENO))
+		return (1);
+	data = init_data();
 	if (!data)
-		return (print_error(0, NULL, data), 1);
-	data = ft_memset(data, 0, sizeof(data));
-	init_data(data);
+		return (print_error(0, NULL, data), cleanup(data, 1), 1);
 	if (ac != 1)
 		return (print_error(3, NULL, data), cleanup(data, 1), 1);
 	if (!get_env_list(data, envp))
@@ -50,27 +50,32 @@ int	main(int ac, char **av, char **envp)
 	}
 }
 
-void	init_data(t_data *data)
+t_data	*init_data(void)
 {
+	t_data	*data;
+
+	data = malloc(sizeof(t_data));
+	if (!data)
+		return (NULL);
+	data = ft_memset(data, 0, sizeof(data));
 	data->token_list = NULL;
 	data->exec_list = NULL;
 	data->env_list = NULL;
 	data->exit_code = 0;
+	return (data);
 }
 
 void	process_input(t_data *data, char *input)
 {
 	if (!parse_input(data, input))
 		return ;
-	test_parsing(data);
 	if (!create_exec_list(data))
 		return ;
-	test_exec(data);
 	if (!handle_here_doc(data, data->exec_list))
 		return ;
 	execute(data);
 }
-
+/*
 void	test_parsing(t_data *data)
 {
 	t_token	*tmp;
@@ -111,8 +116,4 @@ void	test_exec(t_data *data)
 		tmp = tmp->next;
 	}
 }
-
-/*
-TODO:
-- faire les tests finaux avec et sans redirs files
 */

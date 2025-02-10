@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:29:37 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/09 15:06:00 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:06:48 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,16 @@ void	save_stds_and_execute_builtin(t_data *data, t_exec *exec_node)
 		return (print_error(4, "Dup", data));
 	if (!handle_files(data, exec_node))
 	{
-		close(std_in);
-		close(std_out);
 		data->exit_code = 1;
-		return ;
+		return (dup_and_close_files(std_in, std_out, 0, data));
 	}
 	if (is_builtin(exec_node) == 7)
+	{
 		ft_exit(data, exec_node, std_in, std_out);
+		return (dup_and_close_files(std_in, std_out, 1, data));
+	}
 	execute_builtin(is_builtin(exec_node), data, exec_node);
-	if (dup2(std_in, STDIN_FILENO) == -1 || dup2(std_out, STDOUT_FILENO) == -1)
-		print_error(4, "Dup", data);
-	close(std_in);
-	close(std_out);
+	dup_and_close_files(std_in, std_out, 1, data);
 }
 
 int	create_pipes(t_data *data, t_exec *head_exec_list)

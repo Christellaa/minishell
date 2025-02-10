@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 17:50:47 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/07 22:05:36 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/10 09:39:10 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int	open_file(t_files *current_file, int *here_doc_nb)
 		fd = open(name, O_RDONLY);
 		if (fd > 0)
 			unlink(name);
+		free(name);
 	}
 	else if (current_file->type == TRUNC)
 		fd = open(current_file->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);

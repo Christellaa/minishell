@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 21:17:55 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/09 17:03:01 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:02:25 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*expand_var(char *var, t_data *data, char quote)
 	if (!ft_strcmp(var_name, "?"))
 		return (handle_exit_status(var_name, data));
 	else if (!ft_strcmp(var_name, "$"))
-		return (handle_pid(data));
+		return (free(var_name), handle_pid(data));
 	env_value = fetch_env_value(var_name, data->env_list);
 	free(var_name);
 	if (!env_value)
