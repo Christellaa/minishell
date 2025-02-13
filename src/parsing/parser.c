@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:08:29 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/09 16:26:44 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/13 13:58:58 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	parse_input(t_data *data, char *input)
 		return (0);
 	if (!validate_pipeline(&data->token_list, data))
 		return (0);
-	data->exit_code = 0;
 	g_signal = 0;
 	return (1);
 }

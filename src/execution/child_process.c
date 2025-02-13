@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 17:45:23 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/10 11:27:11 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/13 15:54:19 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 void	execute_cmd(t_exec *exec_node, t_data *data);
 char	*get_cmd_path(t_arg *arg_list, t_data *data);
+void	free_paths(char **paths);
 void	convert_and_execve(char *cmd_path, t_data *data, t_exec *exec_node);
 
 int	execute_child_process(t_exec *exec_node, t_data *data)
@@ -62,7 +63,6 @@ char	*get_cmd_path(t_arg *arg_list, t_data *data)
 {
 	char	*final_path;
 	char	**split_paths;
-	int		i;
 	char	*cmd;
 
 	if (!arg_list)
@@ -72,18 +72,25 @@ char	*get_cmd_path(t_arg *arg_list, t_data *data)
 	if (!split_paths)
 		return (print_error(9, arg_list->value, data), NULL);
 	if (is_absolute_path(cmd))
-		return (free(split_paths), ft_strdup(cmd));
+		return (free_paths(split_paths), ft_strdup(cmd));
 	final_path = get_relative_path(cmd, data, split_paths);
 	if (!final_path)
-		return (free(split_paths), NULL);
+		return (free_paths(split_paths), NULL);
 	else if (*final_path)
-		return (free(split_paths), final_path);
+		return (free_paths(split_paths), final_path);
 	free(final_path);
-	i = 0;
-	while (split_paths[i])
-		free(split_paths[i++]);
-	free(split_paths);
+	free_paths(split_paths);
 	return (print_path_error(cmd, data));
+}
+
+void	free_paths(char **paths)
+{
+	int	i;
+
+	i = 0;
+	while (paths[i])
+		free(paths[i++]);
+	free(paths);
 }
 
 void	convert_and_execve(char *cmd_path, t_data *data, t_exec *exec_node)

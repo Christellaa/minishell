@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:02:09 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/10 13:55:27 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/13 15:52:58 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int		check_exit_args(t_exec *exec_node);
 void	quit_ft_exit(t_data *data, int std_in, int std_out, int exit_nb);
-int		get_exit_number(t_exec *exec_node);
+int		get_exit_number(t_exec *exec_node, t_data *data);
 int		is_number(char *exit_number);
 
 void	ft_exit(t_data *data, t_exec *exec_node, int std_in, int std_out)
@@ -23,16 +23,15 @@ void	ft_exit(t_data *data, t_exec *exec_node, int std_in, int std_out)
 	int	exit_nb;
 
 	printf("exit\n");
-	if (!check_exit_args(exec_node))
+	exit_nb = check_exit_args(exec_node);
+	if (exit_nb != 0)
 	{
 		if (data->exec_list->next)
-		{
-			data->exit_code = 1;
-			quit_ft_exit(data, std_in, std_out, 1);
-		}
+			quit_ft_exit(data, std_in, std_out, exit_nb);
+		data->exit_code = exit_nb;
 		return ;
 	}
-	exit_nb = get_exit_number(exec_node);
+	exit_nb = get_exit_number(exec_node, data);
 	quit_ft_exit(data, std_in, std_out, exit_nb);
 }
 
@@ -42,10 +41,24 @@ int	check_exit_args(t_exec *exec_node)
 
 	args = exec_node->arg_list->next;
 	if (!args || (args && !args->next))
-		return (1);
+	{
+		if (args && !is_number(args->value))
+		{
+			ft_dprintf(STDERR_FILENO, "exit: %s: numeric argument required\n",
+				args->value);
+			return (2);
+		}
+		return (0);
+	}
+	if (!is_number(args->value))
+	{
+		ft_dprintf(STDERR_FILENO, "exit: %s: numeric argument required\n",
+			args->value);
+		return (2);
+	}
 	ft_dprintf(STDERR_FILENO, "%s: too many arguments\n",
 		exec_node->arg_list->value);
-	return (0);
+	return (1);
 }
 
 void	quit_ft_exit(t_data *data, int std_in, int std_out, int exit_nb)
@@ -62,7 +75,7 @@ void	quit_ft_exit(t_data *data, int std_in, int std_out, int exit_nb)
 	exit(exit_nb);
 }
 
-int	get_exit_number(t_exec *exec_node)
+int	get_exit_number(t_exec *exec_node, t_data *data)
 {
 	t_arg		*arg;
 	long long	code;
@@ -70,13 +83,7 @@ int	get_exit_number(t_exec *exec_node)
 
 	arg = exec_node->arg_list->next;
 	if (!arg)
-		return (0);
-	if (!is_number(arg->value))
-	{
-		ft_dprintf(STDERR_FILENO, "exit: %s: numeric argument required\n",
-			arg->value);
-		return (2);
-	}
+		return (data->exit_code);
 	code = ft_strtoll(arg->value, &endptr, 10);
 	if (errno == ERANGE)
 	{

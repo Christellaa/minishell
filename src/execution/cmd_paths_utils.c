@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 18:07:04 by carzhang          #+#    #+#             */
-/*   Updated: 2025/02/09 18:59:36 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/13 15:54:42 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ char	**get_and_split_paths(t_env *env_list)
 		free(path_value);
 		return (split_paths);
 	}
-	return (NULL);
+	split_paths = ft_split("\0", ' ');
+	return (split_paths);
 }
 
 t_env	*find_path_var(t_env *env_list)

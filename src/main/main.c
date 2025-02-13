@@ -6,7 +6,7 @@
 /*   By: cde-sous <cde-sous@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:33:43 by cde-sous          #+#    #+#             */
-/*   Updated: 2025/02/10 14:14:46 by cde-sous         ###   ########.fr       */
+/*   Updated: 2025/02/13 15:53:35 by cde-sous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 t_data	*init_data(void);
 void	process_input(t_data *data, char *input);
+int		check_exit_arg(t_exec *exec_list);
 // void	test_parsing(t_data *data);
 // void	test_exec(t_data *data);
 
@@ -44,7 +45,8 @@ int	main(int ac, char **av, char **envp)
 		input = readline("minishell$ ");
 		if (!input)
 			return (printf("exit\n"), free(input), cleanup(data, 1), 0);
-		add_history(input);
+		if (*input != '\0')
+			add_history(input);
 		process_input(data, input);
 		cleanup(data, 0);
 	}
@@ -71,9 +73,29 @@ void	process_input(t_data *data, char *input)
 		return ;
 	if (!create_exec_list(data))
 		return ;
+	if (check_exit_arg(data->exec_list))
+		data->exit_code = 0;
 	if (!handle_here_doc(data, data->exec_list))
 		return ;
 	execute(data);
+}
+
+int	check_exit_arg(t_exec *exec_list)
+{
+	t_exec	*exec;
+
+	exec = exec_list;
+	while (exec)
+	{
+		if (exec->arg_list && !ft_strcmp(exec->arg_list->value, "exit"))
+		{
+			if (!exec->arg_list->next)
+				return (0);
+			return (1);
+		}
+		exec = exec->next;
+	}
+	return (1);
 }
 /*
 void	test_parsing(t_data *data)
